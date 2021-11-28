@@ -1,6 +1,6 @@
 # TIL
 
-## CS
+### CS
 
 - DataStructure(자료구조)
 
@@ -12,8 +12,8 @@
 
 - Network(네트워크)
 
-## CodingTest
+### CodingTest
 
-## JSP
+### JSP
 
-## Spring
+### Spring
