@@ -28,4 +28,6 @@ JSP로 간단한 웹 프로그램을 만들어보겠다. 현재 시간을 출력
 위와 같은 방식으로 저장하고 나서 톰캣을 실행한다. 
 
 톰캣을 실행하고 나서 http://localhost:8080/chapter02/time.jsp 를 실행하자.
-<img src = " ">
+
+<img src = "/JSP/img/time실행결과.png">
+
