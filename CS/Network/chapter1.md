@@ -160,9 +160,54 @@ ARP를 통해서 수신지의 IP주소를 바탕으로 MAC 주소를 알아낼 �
 
 ![image](https://user-images.githubusercontent.com/64796257/147433762-41029cf0-bc2a-4bb2-95c8-abcc37c31895.png)
 
+### 1.5 DNS(Domain Name System)
 
+⇒ HTTP와 같이 응용 계층 시스템에서 도메인 이름(Domain Name)과 IP 주소(IP address)의 이름을 확인해준다.
 
+컴퓨터는 IP주소와 별도로 호스트 이름과 도메인 이름을 붙일 수 있다. ex. www.naver.com
 
+사용자는 IP 주소 대신에 www.naver.com 과 같이 이름을 사용하는 것이 친숙하지만 컴퓨터는 숫자를 나열하는 방법으로 통신한다.
+
+이를 위해서 DNS를 사용한다. DNS는 도메인 이름을 통해 IP 주소를 알아내거나 반대로 IP 주소를 가지고 도메인 이름을 알아내는 서비스를 제공한다.
+
+![image](https://user-images.githubusercontent.com/64796257/147438562-1d6071de-2f8b-4699-916b-4653ef6d51d7.png)
+
+### 1.6 IP/TCP/DNS와 HTTP와의 관계
+
+![image](https://user-images.githubusercontent.com/64796257/147438728-84227bbe-2c86-4b38-a71c-9278cbc4a44e.png)
+
+### 1.7 URI, URL 
+
+① URI - 리소스 식별자 (Uniform Resource Identifiers)
+
+- Uniform : 통일된 서식을 결정하는 것으로 여러 종류의 리소스 지정 방법을 같은 맥락에서 구별없이 취급할 수 있게 한다. 또한 새로운 스키마(http:, ftp 등등) 도입을 용이하게 한다.
+
+- Resource : `식별 가능한 모든 것`이라 정의된다. document 파일 뿐만 아니라 이미지, 서비스 등 다른 것과 구별할 수 있는 모든 것을 리소스라 한다. 
+
+- Identifier : 식별 가능한 것으로 참조하는 Object이며 식별자라고도 불린다. 
+
+⇒ 이를 통해서 URI는 스키마를 나타내는 리소스를 식별하기 위한 식별자를 의미한다는 것을 알 수 있다.
+
+HTTP는 http를 사용한다. 그 외에도 ftp, mailto, telnet, file 등이 있다. 
+
+URI는 리소스를 식별하는 모든 문자열을 나타내지만 URL은 리소스의 장소를 의미한다. 
+
+② URL 포맷
+
+절대 URL 포맷 
+
+![image](https://user-images.githubusercontent.com/64796257/147439193-2ed5b706-613c-4aea-a2ab-19a202107b52.png)
+
+- `http:`, `https:`와 같은 스키마를 사용해서 리소스를 얻기 위해 사용하는 프로토콜을 지시한다.
+
+- 자격정보(credential) : 서버로부터 리소스를 얻으려면 credential이 필요하다. 유저명과 패스워드를 선택적으로 지정할 수 있다.
+- 서버 주소 : 주소는 `www.naver.com` 과 같은 도메인 이름이나 `192.168.1.1`과 같은 IPv4 주소 또는 IPv6 주소를 통해 지정한다.
+
+- 서버 포트 : 서버의 접속 대상이 되는 네트워크 포트 번호를 지정한다. (옵션)
+
+- 계층적 파일 패스 : 특정 리소스를 식별하기 위해서 서버 상의 파일 패스를 지정한다. UNIX 디렉토리 지정 방법과 비슷
+- 쿼리 문자열 : 파일 패스로 지정된 리소스에 임의의 파라미터를 넘겨주기 위해 쿼리 문자열을 사용한다. (옵션)
+- 프래그먼트 식별자 : 취득한 리소스에서 서브 리소스를 가리키기 위해서 주로 사용한다. (옵션)
 
 
 
