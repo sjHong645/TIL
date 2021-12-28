@@ -53,21 +53,7 @@ request를 받은 server는 request 내용을 처리한 결과를 response로 cl
 
 이와 같이 response 메시지는 프로토콜 버전, 상태코드와 상태 코드에 대한 설명, 옵션의 response 헤더 필드와 바디 로 구성되어 있다. 
 
-### 2.3 상태를 유지하지 않는 HTTP 
-
-HTTP는 상태를 계속 유지하지 않는 stateless 프로토콜이다. 
-HTTP 프로토콜 레벨에서는 이전에 보냈던 request나 이미 돌려준 response에 대해서는 전혀 기억하고 있지 않는다. 
-
-![image](https://user-images.githubusercontent.com/64796257/147530797-86a2bf25-289e-4d7e-89c8-559955a3e853.png)
-
-이는 많은 데이터를 매우 빠르고 확실하게 처리하는 scalability(확장성)을 확보하기 위해서 간단하게 설계되어 있는 거다. 
-
-하지만, 웹이 진화함에 따라 stateless 특성만으로 처리하기 어려운 일이 증가하게 되었다. 
-예를 들면, 사이트에 로그인했을 때 다른 페이지로 이동하더라도 로그인 상태를 계속 유지할 수 있어야 한다. 
-
-이를 위해서는 누가 어떤 request를 보냈는지 파악하기 위해서 상태를 유지해야 할 필요가 있다. 이에 고안된 방법이 바로 쿠키(Cookie) 이다.
-
-### 2.4 Request URI로 리소스를 식별
+### 2.3 Request URI로 리소스를 식별
 
 HTTP는 URI를 가지고 인터넷 상에 리소스를 지정하고 인터넷 상의 특정 장소에 있는 리소스도 호출할 수 있다. 
 
@@ -77,7 +63,7 @@ request URI를 지정하는 방법은 여러 가지가 있다.
 
 ![image](https://user-images.githubusercontent.com/64796257/147531317-49eeb4e2-57a2-482a-bbe5-48dba0b30f1b.png)
 
-### 2.5 server에 임무를 부여받는 HTTP 메소드 ⇒ HTTP /1.1에서 사용할 수 있는 메소드에 대해 알아보자.
+### 2.4 server에 임무를 부여받는 HTTP 메소드 ⇒ HTTP /1.1에서 사용할 수 있는 메소드에 대해 알아보자.
 
 - GET : 리소스 획득 
 
@@ -129,7 +115,109 @@ cf) 204 No Content ==> 클라이언트의 요청은 정상적이다. 하지만 �
 
 ⇒ request URI로 지정한 리소스가 제공하고 있는 메소드를 조사하기 위해서 사용한다. 
 
-![image](https://user-images.githubusercontent.com/64796257/147533230-be7e67f9-4b76-4996-970e-6be03f681a22.png)
+![image](https://user-images.githubusercontent.com/64796257/147533332-7208ff90-7065-4d3a-a8f1-f7755654485e.png)
+
+- CONNECT : 프록시(proxy)에 터널 접속 확립을 요청 ⇒ TCP 통신을 터널링 하기 위해서 사용한다. 
+
+⇒ 주로 SSL, TLS 등의 프로토콜로 암호화 된 것을 터널링 하기 위해서 사용한다. 
+
+기본적인 양식은 다음과 같다.
+
+    CONNECT 프록시 서버 : 포트 HTTP 버전
+
+![image](https://user-images.githubusercontent.com/64796257/147533492-4b3ee325-9c81-4b95-ad62-85cbb969fc5a.png)
+
+지금까지 소개한 GET, POST, PUT, HEAD, DELETE, OPTIONS, CONNECT 등등의 메소드를 사용해서 request URI로 지정한 리소스에 request를 보낸다. 
+
+### 2.5 지속 연결 
+
+초기에는 작은 사이즈의 텍스트를 보내는 정도였지만 HTTP가 널리 보급됨에 따라 용량이 큰 이미지를 포함한 문서를 보내는 경우가 많아졌다. 
+
+이전 방식으로 이미지가 있는 HTML 문서를 브라우저에서 request 했다면 HTML 문서에 포함되어 있는 이미지를 획득하기 위해 여러 번 request를 송신해야 했다. request를 보낼 때마다 TCP를 연결하고 종료하는 과정을 반복했어야 했다. 
+
+![image](https://user-images.githubusercontent.com/64796257/147534238-ea0e56d0-076a-4936-aa8d-6677203eeb15.png)
+
+⇒ 이 문제를 해결하기 위해 `지속 연결(Persisitent Connections)`이라는 방법을 고안했다. 
+
+지속 연결의 특징은 어느 한 쪽이 명시적으로 연결을 종료하지 않는 이상 TCP 연결을 계속 유지한다. 
+
+![image](https://user-images.githubusercontent.com/64796257/147534335-42dc7860-fe8e-4378-9609-3a6c5fb9395a.png)
+
+지속 연결을 통해 TCP 커넥션의 연결과 종료를 반복하는 오버헤드가 줄어들기 때문에 서버의 부하가 줄어든다. 
+
+또한, 오버헤드(overhead)가 줄어든 만큼 HTTP request와 response가 빠르게 완료되기 때문에 웹 페이지를 더 빨리 표시할 수 있다.
+
+이러한 `지속 연결`은 여러 request를 보낼 수 있도록 하는 `파이프라인(HTTP pipelining)화`를 가능하게 한다. 
+
+`파이프라인화`를 하면 좋은 점은 다음과 같다. 
+
+이전에는 request 송신하고 나서 response를 수신할 때 까지 기다린 뒤에 다른 request를 송신할 수 있었는데...
+
+파이프라인화를 통해 response를 기다리지 않고 곧바로 다음 request를 보낼 수 있게 되었다. 
+
+![image](https://user-images.githubusercontent.com/64796257/147534772-7348434c-2fba-4ff6-a6b2-c79b631bcb39.png)
+
+### 2.6 상태를 유지하지 않는 HTTP = stateless 프로토콜 HTTP
+
+HTTP는 상태를 계속 유지하지 않는 stateless 프로토콜이다. 
+HTTP 프로토콜 레벨에서는 이전에 보냈던 request나 이미 돌려준 response에 대해서는 전혀 기억하고 있지 않는다. 
+
+![image](https://user-images.githubusercontent.com/64796257/147530797-86a2bf25-289e-4d7e-89c8-559955a3e853.png)
+
+이는 많은 데이터를 매우 빠르고 확실하게 처리하는 scalability(확장성)을 확보하기 위해서 간단하게 설계되어 있는 거다. 
+
+그리고 서버의 CPU 또는 메모리와 같은 리소스를 덜 소비할 수 있다는 장점도 있다. 
+
+하지만, 웹이 진화함에 따라 stateless 특성만으로 처리하기 어려운 일이 증가하게 되었다. 
+예를 들면, 사이트에 로그인했을 때 다른 페이지로 이동하더라도 로그인 상태를 계속 유지할 수 있어야 한다. 
+
+이를 위해서는 누가 어떤 request를 보냈는지 파악하기 위해서 상태를 유지해야 할 필요가 있다. 이에 고안된 방법이 바로 쿠키(Cookie) 이다.
+
+### 2.7 쿠키(Cookie) 
+
+⇒ request와 response에 쿠키 정보를 추가해서 client의 상태를 파악하기 위한 시스템
+
+⇒ 서버에서 response로 보내진 Set-Cookie 라는 헤더 필드에 의해 쿠키를 client에 보존하게 된다. 
+
+⇒ 그 다음에 client가 같은 서버로 request를 보낸다면 자동으로 쿠키 값을 넣어서 송신한다. 
+
+⇒ server는 client가 보내온 쿠키를 확인해서 어떤 client가 접속했는지 체크하고 server 상의 기록을 확인해 이전 상태를 알아낸다. 
+
+![image](https://user-images.githubusercontent.com/64796257/147535267-33ebb2c6-e8f3-4d02-adc8-c857b1e46697.png)
+
+위 그림과 같이 쿠키를 교환할 때 HTTP request와 response의 내용은 다음과 같다. 
+
+1) request (쿠키를 가지고 있지 않은 상황) 
+```
+  GET /reader/ HTTP /1.1
+  Host : www.naver.com # 헤더 필드에 쿠키가 없다.
+```
+
+2) response(서버가 쿠키를 발행) 
+```
+  HTTP /1.1 200 OK
+  Data : ~~ 
+  Server : Apache
+  <Set-Cookie : sid = 1342077140226724; path=/;expires=Wed, => 날짜 시간 >
+  Content-Type : text/plain; charset = UTF-8
+```
+
+3) request(보관하고 있던 쿠키를 자동 송신) 
+```
+  GET /image/ HTTP /1.1
+  Host : www.naver.com 
+  Cookie: sid = 1342077140226724
+```
+
+
+
+
+
+
+
+
+
+
 
 
 
