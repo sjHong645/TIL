@@ -34,10 +34,23 @@ ex.
 
 ### 2. HTTP 헤더 필드의 구조 
 
+HTTP 헤더 필드는 `헤더 필드 이름`과 `필드 값`으로 구성되어 있고 `:`으로 나뉘어져 있다. 
 
+``` 
+  헤더 필드 명 : 필드 값
+  
+  ex. Content-Type:text/html 
+```
+예시를 보면 `Content-Type`이 헤더 필드 명이고 `text/html`이 필드 값이 된다. 
 
+또한 하나의 HTTP 헤더 필드가 여러 개의 필드 값을 가질 수 있다.
+```
+ Keep-Alive:timeout=15,max=100
+```
 
+### 3. 4종류의 HTTP 헤더 필드 ⇒ 용도에 따라 4가지로 분류
 
+- 일반적 헤더 필드(General Header Fields) : request 메시지와 response 메시지에 둘 다 사용되는 헤더
 
 
 
