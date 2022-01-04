@@ -494,21 +494,76 @@ From 헤더 필드는 user agent가 사용하고 있는 유저의 메일 주소�
 
 ### 8 Host
 
+![image](https://user-images.githubusercontent.com/64796257/148068093-0aa8e7af-f5d0-4c2d-900c-22cf8421c7df.png)
+
+Host 헤더 필드는 request한 리소스의 인터넷 호스트와 포트 번호를 전달한다. 
+
+Host 헤더 필드가 존재하는 이유는 1대의 서버에서 복수의 도메인을 할당할 수 있는 가상 호스트의 구조와 깊은 관련이 있다.
+
+request가 서버에 오면 호스트 이름을 IP 주소로 변환해서 request가 처리된다.  
+이때 같은 IP 주소로 복수의 도메인이 적용되어 있다면 어떤 도메인에 대한 request인지 알 수 없다.
+
+그래서 Host 헤더 필드에 request를 받을 호스트 이름을 명확하게 해둘 필요가 있다. 
 
 ### 9 If-Match
 
+![image](https://user-images.githubusercontent.com/64796257/148068914-f9a9064f-de91-4027-bb8f-73a528365f14.png)
+
+If-xxx 라는 서식의 request 헤더 필드를 `조건부 리퀘스트`라고 한다. 
+
+조건부 리퀘스트를 받은 서버는 지정된 조건에 맞는 경우에서만 request를 받는다. 
+
+![image](https://user-images.githubusercontent.com/64796257/148069205-e4d33cca-6f62-4458-84a0-cc76514b17d6.png)
+
+If-Match 헤더 필드는 조건부 리퀘스트 중 하나로 서버 상의 리소스를 특정하기 위해서 엔티티 태그(ETag) 값을 전달한다. 
+
+서버는 `If-Match의 필드 값`과 `리소스의 ETag 값`이 `일치`하는 경우에만 request를 받아들인다.  
+일치하지 않으면 상태코드 412 Precondition Failed 리스폰스를 반환한다.
+
+If-Match의 필드 값을 `*`로 지정했다면 ETag 값에 상관없이 request를 처리할 수 있다.
 
 ### 10 If-Modified-Since
 
+![image](https://user-images.githubusercontent.com/64796257/148069527-5a4a2341-af62-486c-90a3-3454e8ec6de0.png)
+
+ex. If-Modified-Since : Thu, 15 Apr 2004 00:00:00 GMT
+
+If-Modified-Since 헤더 필드는 리소스의 갱신 날짜가 필드 값 이후의 값이라면 request를 받아들이겠다는 내용을 전달한다.
+
+필드 값 이후에 갱신되지 않았다면 상태코드 304 Not Modified 리스폰스를 반환한다.
+
+위 그림의 첫 번째 부분의 내용을 보면 갱신 날짜가 4/29 즉, 필드 값인 4/15 이후에 갱신되었기 때문에 request를 받아들인 것이다. 
 
 ### 11 If-None-Match
 
+![image](https://user-images.githubusercontent.com/64796257/148070144-62131d71-4549-404d-88ac-abd2bc1898bd.png)
+
+If-None-Match 헤더는 If-Match 헤더와 반대로 동작한다. 
+
+If-None-Match의 `필드 값에 지정된 ETag 값`이 `지정된 리소스의 ETag 값`과 `일치하지 않으면` request를 받아들인다.
+
+GET과 HEAD 메소드에서는 If-None-Match 헤더 필드를 통해 최신 리소스를 요구한다.
 
 ### 12 If-Range
+
+![image](https://user-images.githubusercontent.com/64796257/148070507-b5b3aa4e-c2c7-4bc6-a239-2f483904eb3d.png)
+
+If-Range 헤더 필드는 If-Range로 지정한 필드 값과 리소스의 ETag 값 혹은 날짜가 일치하면 리소스의 원하는 범위를 Range 를 통해 전달한다.  
+일치하지 않으면 리소스 전체를 반환하도록 한다.
+
+위 그림을 보면 If-Match를 통해 ETag 값이 일치하면 원하는 범위인 5001~10000을 보내도록 했다.  
+만약에 ETag 값이 일치하지 않으면 리소스 전체를 보낸다.
+
+서버 쪽에 있는 리소스가 갱신되어 있다면 If-Range를 사용하지 않아야 한다.
+
+왜냐하면 client 쪽에서 가지고 있는 것들은 서버쪽에서 새로 갱신된 리소스와는 당연히 맞지 않기 때문에 Range 리퀘스트 역시 무효가 되기 때문이다.
 
 
 ### 13 If-Unmodified-Range
 
+If-Modified-Range의 반대 동작이다. 지정된 리소스가 필드 값에 지정된 날짜 이전에 갱신되어 있다면 request를 받아들이도록 한다.
+
+이를 만족하지 않으면 상태코드 412 Precondition Failed 리스폰스를 반환한다.
 
 ### 14 Max-Forwards
 
