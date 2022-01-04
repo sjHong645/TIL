@@ -398,6 +398,236 @@ Request 헤더 필드는 client 측에서 server 측으로 송신된 request 메
 
 ![image](https://user-images.githubusercontent.com/64796257/148027083-ecc2fcd2-4f37-4730-ba95-f9e76175cc00.png)
 
+### 1 Accept 
+
+![image](https://user-images.githubusercontent.com/64796257/148028905-8133f39b-e481-4355-a8c0-b657f74ef548.png)
+
+Accept 헤더 필드는 user agent에 처리할 수 있는 미디어 타입과 미디어 타입의 상대적인 우선 순위를 전달하기 위해 사용된다.
+
+미디어 타입의 지정은 `타입/서브 타입` 과 같이 입력해서 한번에 여러 개 설정할 수 있다.
+
+![image](https://user-images.githubusercontent.com/64796257/148029152-199aeaff-de4d-409f-ba02-d7cef913c256.png)
+
+ex. 브라우저가 PNG 이미지를 표시하지 못한다면 
+
+Accept에 image/png를 지정하지 않고 image/gif 또는 image/jpeg 등을 지정해야 한다.
+
+표시하는 미디어 타입에 우선 순위를 붙이고 싶다면 `;`으로 구분하고 `q=`로 표시할 품질 지수를 덧붙힌다. 품질 계수는 0~1 범위에 있는 수치로 1이 높은 값이다. default로 ;q=1.0을 나타낸다. 
+
+ex. application/html;q = 원하는 가중치
+
+서버가 복수의 content를 반환할 수 있다면 가장 높은 품질 계수의 미디어 타입으로 반환한다.
+
+ex.  
+``` 
+  Accept: text/html, application/xhtml+xml, application/xml; q = 0.9, */*;q = 0.8 
+```
+받을 수 있는 타입 text/html, application/xhtml+xml, application/xml, */*(모든 타입)
+
+그 중에서 application/xml, */*(모든 타입)은 각각 가중치 0.9와 0.8을 할당받았다. 나머지는 default값으로 가중치가 1이다.
+
+### 2 Accept-Charset
+
+![image](https://user-images.githubusercontent.com/64796257/148029917-097c8a99-057e-436f-9ba3-2fe3cc77db30.png)
+
+Accept-Charset 헤더 필드는 user agent에서 처리할 수 있는 문자셋으로 문자셋의 상대적인 우선 순위를 전달하기 위해 사용된다.  
+물론, 한 번에 여러 개를 지정할 수 있다.
+
+Accept 헤더 필드와 마찬가지로 품질 지수에 의해서 상대적인 우선 순위를 표시할 수도 있다. 
+
+ex.  
+```
+  Accept-Charset: iso-8859-5, unicode-1-1; q=0.8
+```
+
+처리할 수 있는 문자셋은 iso-8859-5, unicode-1-1가 있다. 그 중에서 unicode-1-1은 가중치로 0.8을 부여받았다.
+
+### 3 Accept-Encoding 
+
+![image](https://user-images.githubusercontent.com/64796257/148030336-c3c9874e-8730-4013-b402-98022a63ce39.png)
+
+Accept-Encoding 헤더 필드는 user agent에서 처리할 수 있는 콘텐츠 코딩과 콘텐츠 코딩의 상대적인 우선 순위를 전달하기 위해서 사용된다.  
+물론, 한 번에 여러 개를 지정할 수 있다.
+
+- gzip, compress, deflate, identity  
+![image](https://user-images.githubusercontent.com/64796257/148030506-75e09e7a-2b94-4c72-966b-6ec6ec56868a.png)
+
+Accept 헤더 필드와 같이 품질 지수에 의해서 상대적인 우선순위를 표시하고 `*`를 통해서 모든 인코딩 포맷을 가리킬 수도 있다.
+
+### 4 Accept-Language 
+
+![image](https://user-images.githubusercontent.com/64796257/148030711-108e66b0-ff7b-4497-afbb-c01bc58edb3f.png)
+
+Accept-Language 헤더 필드는 user-agent가 처리할 수 있는 자연어 세트와 자연어 세트의 상대적인 우선 순위를 전달하기 위해서 사용된다.  
+한 번에 여러 개를 지정할 수 있다.
+
+``` 
+  Accept-Language: ko-kr, en-us; q=0.7, en;q=0.3
+```
+
+처리할 수 있는 문자셋은 ko-kr, en-us, en이 잇고 en-us와 en은 가중치로 각각 0.7, 0,3을 부여받았다.
+
+### 5 Authorization 
+
+![image](https://user-images.githubusercontent.com/64796257/148032014-2408a8bd-ead4-4a27-aa6a-481742878328.png)
+
+Authorization 헤더 필드는 user agent의 인증 정보를 전달하기 위해 사용된다. 
+
+일반적으로 서버에 인증을 받으려 하는 user agent는 상태 코드 401 response 다음에 request를 보낼 때 Authorization 헤더 필드를 포함한다.
+
+### 6 Expect 
+
+![image](https://user-images.githubusercontent.com/64796257/148032962-ecd3748b-fa05-49fc-894b-7687a1744465.png)
+
+Expect 헤더 필드는 client가 server에 특정 동작 요구를 전달할 때 사용한다.
+
+기대한 요구에 서버가 응답하지 못해서 에러가 발생할 때 417 Expectation Failed를 반환한다. 
+
+HTTP/1.1 사양에서는 100-continue 만 정의되어 있다.  
+그래서 상태코드 100 response를 가진 client는 request를 할 때 Expect: 100-continue를 지정해야 한다.
+
+### 7 From 
+
+![image](https://user-images.githubusercontent.com/64796257/148033314-c143acda-89e3-42e5-a173-b6f81fee6f29.png)
+
+From 헤더 필드는 user agent가 사용하고 있는 유저의 메일 주소를 전달한다.
+
+### 8 Host
+
+
+### 9 If-Match
+
+
+### 10 If-Modified-Since
+
+
+### 11 If-None-Match
+
+
+### 12 If-Range
+
+
+### 13 If-Unmodified-Range
+
+
+### 14 Max-Forwards
+
+
+### 15 Proxy-Authorization
+
+
+### 16 Range
+
+
+### 17 Referer
+
+
+### 18 TE
+
+
+### 19 User-Agent
+
+
+## 6.5 Response 헤더 필드 
+
+### 1 Accept-Ranges
+
+
+### 2 Age
+
+
+### 3 ETag
+
+
+### 4 Location
+
+
+### 5 Proxy-Authenticate
+
+
+### 6 Retry-After
+
+
+### 7 Server
+
+
+### 8 Vary
+
+
+### 9 WWW-Authenticate
+
+
+## 6.6 Entity 헤더 필드
+
+
+### 1 Allow
+
+
+### 2 Content-Encoding
+
+
+### 3 Content-Language
+
+
+### 4 Content-Length
+
+
+### 5 Content-Location
+
+
+### 6 Content-MD5
+
+
+### 7 Content-Range
+
+
+### 8 Content-Type
+
+
+### 9 Expires
+
+
+
+### 10 Last-Modified 
+
+
+## 6.7 Cookie와 관련된 헤더 필드
+
+### 1 Set-Cookie
+
+
+### 2 Cookie
+
+
+## 6.8 그 이외 
+
+### 1 X-frame-Option
+
+
+### 2 X-XSS-Protection
+
+
+### 3 DNT
+
+
+### 4 P3P
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
