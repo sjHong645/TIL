@@ -567,105 +567,349 @@ If-Modified-Range의 반대 동작이다. 지정된 리소스가 필드 값에 �
 
 ### 14 Max-Forwards
 
+![image](https://user-images.githubusercontent.com/64796257/148142613-2942f19f-a7cc-424f-8d32-d5c48dae1a84.png)
+
+Max-Forwards 헤더 필드는 TRACE 또는 OPTIONS 메소드에 대한 request를 할 때 전송할 수 있는 서버의 개수의 최대 값을 10진수 정수로 지정한다.
+
+서버는 다음 서버에 request를 전달할 때 마다 Max-Forwards 값을 1씩 뺀다. 그렇게 최종적으로 0이 되었을 때 서버에서 response를 반환한다.
+
+HTTP를 사용한 통신에서는 request가 프록시 서버 등과 같은 여러 대의 서버를 경유해 가는 경우가 있다.  
+전달 도중에 프록시 서버에서 알 수 없는 원인으로 request 전송을 실패한다면 client는 이에 대한 response가 되돌아오지 않기 때문에 전송을 실패했는지 여부를 알 수 없다.
+
+이러한 문제가 발생한 경우에 원인을 조사하기 위해서 Max-Forwards 헤더 필드가 활용된다.
+
+필드 값이 0이 된 서버에서 response를 반환하기 때문에 해당 서버까지의 상황을 파악할 수 있게 된다.
 
 ### 15 Proxy-Authorization
 
+Proxy-Authorization 헤더 필드는 프록시 서버에서 인증 요구를 받아들일 때 인증에 필요한 클라이언트의 정보를 전달한다.
+
+이는 클라이언트와 프록시 사이에서 인증이 이뤄진다. 
 
 ### 16 Range
 
+ex. Range: bytes=5001-10000
+
+앞서 얘기한 If-Range, If-Unmodified-Range 에서 사용되었다.
 
 ### 17 Referer
 
+![image](https://user-images.githubusercontent.com/64796257/148143257-c64778f9-8fe7-467b-b28e-24d1e1fe28ab.png)
+
+Referer 헤더 필드는 request의 URI가 어떤 웹 페이지로부터 발행되었는지를 나타낸다.
+
+기본적으로는 Referer 헤더 필드를 보내야 하지만 주소창에 직접 URI를 입력하는 건 보안상 바람직하지 않다고 판단할 수 있어서 꼭 보내지 않아도 된다.
 
 ### 18 TE
 
+ex. TE: gzip, deflate;q=0.5
+
+TE 헤더 필드는 response로 받을 수 있는 전송 코딩 형식과 상대적인 우선 순위를 전달한다.
+
+위 예시는 gzip, deflate를 받을 수 있는데 gzip의 가중치는 q=1이고 deflate의 가중치는 q=0.5로 gzip의 우선순위가 더 높다.
 
 ### 19 User-Agent
 
+![image](https://user-images.githubusercontent.com/64796257/148144460-6f6b6160-235c-4391-8a69-20b3d01c8379.png)
+
+User-Agent 헤더 필드는 request를 생성한 브라우저와 user agent의 이름 등을 전달하기 위한 헤더 필드이다.
 
 ## 6.5 Response 헤더 필드 
 
+Response 헤더 필드는 `서버` 에서 `클라이언트`로 송신되는 response 메시지에 적용되는 헤더로 
+
+response의 부가 정보, 서버 정보, client에 요구하는 부가적인 정보 등을 담고있다.
+
+![image](https://user-images.githubusercontent.com/64796257/148144651-e4b3af9e-87d0-4ae4-ac64-3a85b35485ca.png)
+
 ### 1 Accept-Ranges
 
+![image](https://user-images.githubusercontent.com/64796257/148144682-4cc61ff9-5b37-4d74-a3f2-efdf6342f014.png)
+
+Accept-Ranges 헤더 필드는 서버가 resource의 일부분만 지정해서 취득할 수 있는 Range 리퀘스트를 접수할 수 있는지 여부를 나타낸다.
+
+서버가 range 리퀘스트를 수신할 수 있다면 bytes, 수신할 수 없다면 none 이라고 지정한다.
 
 ### 2 Age
 
+![image](https://user-images.githubusercontent.com/64796257/148144849-f0f37184-faa0-4869-84db-0de26a64b3c8.png)
+
+Age 헤더 필드는 서버에서 response가 생성되고 나서 지난 시간을 의미한다. 
+
+즉, Age: 600 의미는 response가 생성되고 나서 600초 = 10분이 지났다는 것을 의미한다.
+
+만약에 response한 서버가 캐시 서버라면 캐시된 response가 origin 서버에서 리소스를 가져오고나서 얼마나 오랫동안 가지고 있었는지를 나타낸다.
+
+프록시가 response를 생성했다면 Age 헤더 필드는 필수적으로 있어야 한다.
 
 ### 3 ETag
 
+![image](https://user-images.githubusercontent.com/64796257/148145206-941e0211-b5fa-4858-a0ea-b86bfce30160.png)
+
+ETag 헤더 필드는 엔티티 태그라고 불리고 리소스를 특정하기 위한 문자열을 전달한다. 서버는 리소스마다 ETag 값을 할당한다.
+
+그리고 리소스가 갱신이 되면 ETag의 값도 바뀐다. 
+
+![image](https://user-images.githubusercontent.com/64796257/148145528-1b35ed2c-685e-408c-bd95-3b187dfe5635.png)
+
+리소스를 캐시할 때 리소스를 임의로 정하고 싶을 때가 있다.
+
+똑같은 www.google.com 에 접속해도 한국어 버전의 브라우저를 사용해서 접근하면 한국어 리소스가 반환되지만 영어 버전의 브라우저를 사용하면 영어 리소스를 반환한다.
+
+이렇게 URI는 같지만 URI 만으로 캐시했었던 리소스를 특정하기가 어려울 수 있다. 때문에 ETag 헤더 필드를 추가해서 리소스를 특정한다.
 
 ### 4 Location
 
+![image](https://user-images.githubusercontent.com/64796257/148145728-5100941e-a8c8-41be-a937-e5290b04b44c.png)
+
+Location 헤더 필드는 response의 수신자에게 다른 리소스로 접근하도록 유도하는 경우에 사용된다. 이는 기본적으로 `3xx: Redirection` 으로 응답한다.
+
+ex. Location: www.naver.com/sample.html 이라 하면
+
+클라이언트가 요청한 URI의 sample.html을 response하지 않고 Location 헤더 필드에서 지정한 www.naver.com/sample.html 을 response한다. 
 
 ### 5 Proxy-Authenticate
 
+Proxy-Authenticate 헤더 필드는 프록시 서버에서의 인증 요구를 client에 전달한다.
 
 ### 6 Retry-After
 
+Retry-After 헤더 필드는 client가 일정 시간 후에 request를 다시 시행해야 한다는 것을 전달한다.
+
+ex. Retry-After : 120 ⇒ 서버에서 다음과 같은 내용을 보냈다면 client는 120초=2분후에 다시 그 서버에 request를 하면 된다.
+
+주로 상태 코드 503 Service Unavailable 리스폰스나 3xx Redirect 리스폰스와 함께 사용된다.
 
 ### 7 Server
 
+![image](https://user-images.githubusercontent.com/64796257/148146346-7e9094aa-e576-43ea-99be-bc88d2a84e9c.png)
+
+Server 헤더 필드는 서버에 설치되어 있는 HTTP 서버의 SW를 전달한다.
+
+ex. Server: Apache/2.2.17(Unix)
 
 ### 8 Vary
 
+![image](https://user-images.githubusercontent.com/64796257/148146472-ed1cb6cd-a2ac-40fc-b1d8-74140eec39ab.png)
+
+Vary 헤더 필드는 캐시를 control 하기 위해서 사용한다. 
+origin server가 proxy server에 로컬 캐시를 사용하는 방법에 대한 지시를 전달한다.
+
+위 그림을 통해 좀 더 살펴보자.
+
+origin server에서 Vary: Accept-Language라고 했다. 
+
+이러한 response를 받은 프록시 서버는 캐시된 때의 request에서 받았던 Accept-Language: en-us를 가진 request에 대해서만 캐시를 반환한다.
+
+같은 Accept-Language 를 가지고 있다면 캐시에서 response하고 다르면 origin server로 부터 리소스를 가져와야 한다.
 
 ### 9 WWW-Authenticate
 
+WWW-Authenticate 헤더 필드는 HTTP 액세스 인증에 사용된다. 
+
+Request-URI에 지정했던 리소스에 적용할 수 있는 인증 스키마와 파라미터를 나타내는 challenge를 전달한다.
 
 ## 6.6 Entity 헤더 필드
 
+엔티티 헤더 필드는 request 메시지와 response 메시지에 모함된 엔티티에 사용되는 헤더이다. 
+
+콘텐츠의 갱신 시간과 같이 엔티티와 관련된 정보를 포함한다. 
 
 ### 1 Allow
 
+![image](https://user-images.githubusercontent.com/64796257/148148321-fcc013a6-72cb-4012-95ff-519226f54fb1.png)
+
+Allow 헤더 필드는 Request-URI에 지정된 리소스가 제공하는 메소드를 지정한다. 
+
+서버가 받을 수 없는 메소드를 수신한다면 상태코드 405 Method Not Allowed 리스폰스와 함께 수신 가능한 메소드의 내용을 담은 Allow 헤더 필드를 반환한다.
 
 ### 2 Content-Encoding
 
+Content-Encoding 헤더 필드는 서버가 엔티티 바디에 대해서 실시한 콘텐츠 코딩 형식을 전달한다. 
+
+ex. Content-Encoding : gzip ⇒ 콘텐츠의 코딩을 압축할 것을 지시함.
 
 ### 3 Content-Language
 
+: 엔티티 바디에 사용된 자연어를 전달한다. ex. Content-Language : en
 
 ### 4 Content-Length
 
+: 엔티티 바디의 크기를 byte 단위로 전달한다. ex. Content-Length: 15000
 
 ### 5 Content-Location
 
+ex. Content-Location : www.naver.com/index.html
+
+Content-Location 헤더 필드는 메시지 바디에 대응하는 URI를 전달한다. 
+
+Location 헤더 필드와 달리 Content-Location은 메시지 바디로 반환된 리소스의 URI를 나타낸다.
+
+ex. Accept-Language 헤더 필드를 사용한 서버 구동형 request는 실제로 요구한 오브젝트와는 다른 페이지가 반환되었을 때
+
+Content-Location 헤더 필드에 있는 URI에 접근한다.
 
 ### 6 Content-MD5
 
+![image](https://user-images.githubusercontent.com/64796257/148149649-2a0fc378-122a-4211-871e-d8eec6c9e83e.png)
+
+Content-MD5 헤더 필드는 메시지 바디가 변경되지 않고 도착했는지 확인하기 위해 MD5 알고리즘에 의해 생성된 값을 전달한다.
+
+메시지 바디에 MD5 알고리즘을 적용해서 얻은 128bit의 binary 값에 Base64 인코딩을 해서 필드 값에 기록한다.
+
+유효성을 확인하기 위해서 수신한 client의 메시지 바디에 똑같이 MD5 알고리즘을 실행한다.  
+여기서 출력된 값과 기존에 보냈던 Content-MD5의 필드 값을 비교해서 메시지 바디가 변경되지 않았는지 확인한다.
 
 ### 7 Content-Range
 
+![image](https://user-images.githubusercontent.com/64796257/148149907-a69ed00e-159e-41ae-a1ae-b8238281aa97.png)
+
+Content-Range 헤더 필드는 범위를 지정해서 일부분을 request 하는 Range 리퀘스트에 대해 response할 때 사용한다.
+
+response로 보낸 엔티티가 어느 부분에 해당하는가를 전달한다. 
+
+ex. Content-Range : bytes 5001-10000/10000 
+
+⇒ 전체 10000바이트 중에서 5001-10000 바이트 부분을 보내준다는 의미이다.
 
 ### 8 Content-Type
 
+ex. Content-Type: text/html; charset=UTF-8
+
+Content-Type 헤더 필드는 엔티티 바디에 포함되는 오브젝트의 미디어 타입을 전달한다.  
+여기서는 타입은 text, 서브 타입으로는 html 타입이 되도록 했다.
+
+charset 파라미터를 통해서 UTF-8 문자셋을 처리하도록 했다.
 
 ### 9 Expires
 
+![image](https://user-images.githubusercontent.com/64796257/148150399-e880cc47-2d01-4fc6-a5c6-4b3f8bcb4a38.png)
 
+ex. Expires: Wed, 04 Jul 2012 08:26:05 GMT
+
+Expires 헤더 필드는 리소스의 유효 기한 날짜를 전달한다. 
+
+캐시 서버가 Expires 헤더 필드를 포함한 리소스를 수신했다면 필드 값으로 지정된 날짜까지 response의 복사본을 유지한다.  
+위에 있는 예시를 가지고 설명하면 2012년 7월 4일까지 response의 복사본을 유지한다.
 
 ### 10 Last-Modified 
 
+![image](https://user-images.githubusercontent.com/64796257/148150647-8d668de6-4139-48e1-aced-541cb63729ec.png)
+
+Last-Modified 헤더 필드는 리소스가 마지막으로 갱신된 날짜 정보를 전달한다. 
 
 ## 6.7 Cookie와 관련된 헤더 필드
 
+쿠키는 유저 식별과 상태 관리에 사용되고 있는 기능이다. 
+
+웹 사이트가 유저의 상태를 관리하기 위해서 웹 브라우저를 통해 유저의 컴퓨터에 일시적으로 데이터를 기록하고 그 유저가 웹 사이트에 다시 액세스헸을 때 이전에 발행했던 쿠키를 이용한다.
+
+쿠키와 관련된 헤더 필드는 Set-Cookie, Cookie가 있다. 
+
+| 헤더 필드 명 | 설명 | 헤더 종류 | 
+| --- | --- | --- |
+| Set-Cookie | 상태 관리 개시를 위한 쿠키 정보 | response | 
+| Cookie | 서버에서 수신한 쿠키 정보 | request | 
+
+![image](https://user-images.githubusercontent.com/64796257/148151051-56f6ba21-db31-4e37-8f60-3fa0c85f08d2.png)
+
+각각에 대해서 살펴보자.
+
 ### 1 Set-Cookie
+```
+ex) Set-Cookie: status-enable; expires-Tue, 05 Jul 2011 07:26:31 GMT; =>path=/;domain=.hack.jp; 
+```
 
+서버가 클라이언트에 대해서 상태 관리를 시작할 때 다양한 정보를 전달한다. 필드 값은 다음과 같은 정보가 기록된다.
 
-### 2 Cookie
+- Set-Cookie 필드 속성 
 
+| 속성 | 설명 | 
+| --- | --- |
+| NAME=VALUE | 쿠키에 부여된 이름과 값 | 
+| Expires=DATE | 쿠키 유효 기간(지정하지 않았다면 브라우저를 닫을때까지 쿠키가 유효하다) | 
+| Path=PATH | 쿠키의 적용 대상이 되는 서버상의 디렉토리(지정하지 않았다면 document와 같은 디렉토리이다) | 
+| Domain=도메인 이름 | 쿠키의 적용 대상이 되는 도메인 이름(지정하지 않았다면 쿠키를 생성한 서버의 도메인) | 
+| Secure | HTTPS로 통신하고 있는 경우에만 쿠키글 송신 | 
+| HttpOnly | 쿠키를 JavaScript에서 access 하지 못하도록 제한 | 
+
+1) Expires 속성 : 브라우저가 쿠키를 송출할 수 있는 유효 기간을 지정한다.
+
+이 속성값을 생략한 경우에는 브라우저가 닫힐 때 까지 쿠키가 유효하게 된다. 유효기간이 지났다면 쿠키를 덮어써서 클라이언트 측의 쿠키를 삭제한다.
+
+2) Path 속성 : 쿠키를 송출하는 범위를 특정 디렉토리로 한정시킨다. 
+
+3) Domain 속성 
+
+ex. example.com 으로 지정했다면 `example.com` 이외에 `www.example.com`, `www2.example.com` 등에서도 쿠키가 송출된다. 
+
+그래서 의도적으로 여러 도메인에 쿠키를 송출하지 않는 이상 domain 속성은 잘 지정하지 않는다.
+
+4) Secure 속성 : 웹 페이지가 HTTPS에서 열렸을 때만 쿠키 송출을 할 수 있도록 제한한다.
+
+이와 같이 secure 속성을 사용한다. ex. Set-Cookie: name=value; secure
+
+위와 같이 설정하면 `https://www.example.com/`과 같이 HTTPS일 때만 쿠키를 보낼 수 있다.
+
+5) HttpOnly 속성 : 자바스크립트를 경유해서 쿠키를 획득하지 못하도록 하는 속성 
+
+이는 XSS로 부터 쿠키를 훔치지 못하도록 하는 것을 목적으로 한다.
+
+이와 같이 HttpOnly 속성을 사용한다. ex. Set-Cookie: name=value; HttpOnly
+
+### 2 Cookie 
+
+Cookie 헤더 필드는 클라이언트가 HTTP의 상태 관리 지원을 원할 때 서버로 수신한 쿠키를 앞으로 보낼 request에 포함해서 전달한다.
 
 ## 6.8 그 이외 
 
 ### 1 X-frame-Option
 
+ex. X-frame-Option : DENY 
+
+X-frame-Option 헤더 필드는 다른 웹 사이트의 프레임에서 표시되는 것을 제어하는 HTTP response 헤더이다.  
+클릭 재킹(click jacking) 이라는 공격을 막는데 목적을 두고 있다.
+
+지정할 수 있는 값은 다음과 같다. 
+
+- DENY : r거부
+- SAMEORIGIN : top-level-browsing-context가 일치하는 경우에만 프레임 표시를 허가한다.
+
+ex. `http://hackr.jp/sample.html`이 SAMEORIGIN을 지정하고 있다면 `hackr.jp` 상의 페이지를 프레임에 읽어 들이는 것은 가능하다.
+
+하지만, `example.com`과 같은 도메인의 페이지에서는 읽어들일 수 없다.
 
 ### 2 X-XSS-Protection
 
+X-XSS-Protection 헤더 필드는 브라우저의 XSS 보호 기능을 제어하는 HTTP response 헤더이다. 지정할 수 있는 값은 아래와 같다.
+
+- 0 : XSS 필터 무효
+- 1 : XSS 필터 유효
 
 ### 3 DNT
 
+![image](https://user-images.githubusercontent.com/64796257/148152803-084a76c5-8aea-4c55-a95e-5a5cf7cf1b85.png)
+
+DNT(Do Not Track) 헤더 필드는 개인 정보 수집을 거부하는 의사를 나타내는 HTTP request 헤더 이다.  
+타깃 광고 등에 이용되는 tracking의 거부 의사를 나타내느 방법 중 하나다.
+
+ex. DNT: 1
+
+- 0 : 트래킹 동의
+- 1 : 트래킹 거부
 
 ### 4 P3P
+
+P3P 헤더 필드는 웹 사이트 상의 프라이버시 정책에 P3P(The Platform for Privacy Preferences)를 사용하는 것으로  
+프로그램이 읽을 수 잇는 형태로 나타내기 위한 HTTP response 헤더이다.
+
+P3P 설정은 다음과 같은 순서로 진행된다.
+
+1) P3P 정책 작성
+2) P3P 정책 참조 파일을 작성해서 `/w3c/p3p.xml`에 배치
+3) P3P 정책으로부터 compact 정책을 작성하고 HTTP response 헤더에 출력
+
+cf) HTTP의 비표준 파라미터는 `X-` 를 붙이도록 했는데 이 방식은 폐지되었다. 다만, 이미 구현된 `X-` 파라미터는 변경되지 않는다.
 
 
 
