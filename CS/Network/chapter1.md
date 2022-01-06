@@ -172,6 +172,8 @@ ARP를 통해서 수신지의 IP주소를 바탕으로 MAC 주소를 알아낼 �
 
 ![image](https://user-images.githubusercontent.com/64796257/147438562-1d6071de-2f8b-4699-916b-4653ef6d51d7.png)
 
+[DNS에 관한 더 자세한 내용](./DNS_detailed.md)
+
 ### 1.6 IP/TCP/DNS와 HTTP와의 관계
 
 ![image](https://user-images.githubusercontent.com/64796257/147438728-84227bbe-2c86-4b38-a71c-9278cbc4a44e.png)
