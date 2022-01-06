@@ -13,3 +13,5 @@
 ### chapter8 : 인증
 
 ### DNS_detailed : DNS에 관해서 배운 내용 정리
+
+### HTTP_detailed : HTTP 관련해서 배운 내용 정리
