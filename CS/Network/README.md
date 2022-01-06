@@ -15,3 +15,5 @@
 ### DNS_detailed : DNS에 관해서 배운 내용 정리
 
 ### HTTP_detailed : HTTP 관련해서 배운 내용 정리
+
+### About_Internet : 인터넷이랑 네트워크의 큰 그림 정리
