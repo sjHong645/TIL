@@ -11,3 +11,5 @@
 ### chapter6 : HTTP 헤더
 
 ### chapter8 : 인증
+
+### DNS_detailed : DNS에 관해서 배운 내용 정리
