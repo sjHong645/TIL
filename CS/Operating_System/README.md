@@ -1,6 +1,6 @@
-### 1st week : 
+### 1st week : OT(OS의 목적, OS의 서비스)
 
-### 2&3th week : 
+### 2&3th week : Multiprogramming & Timesharing & Multitasking, Computer System & OS와 연관된 Computer System(kernel & user mode, interrupt)
 
 ### 4&5th week : OS Design & Structure, Kernel Structure
 
@@ -16,6 +16,6 @@
 
 ### 12th week : Memory Management - Contiguous Allocation & Paging 기법 (1)
 
-### 13th week : Memory Management - Paging 기법 (2)
+### 13th week : Memory Management - Paging 기법 (2) - (1)에서 다룬 내용의 보완점
 
-### 14th week : Memory Management - Paging 기법 (3)
+### 14th week : Memory Management - Paging 기법 (3) - demand paging
