@@ -9,36 +9,30 @@
 
 [01 JSP에서 HTML 문서를 생성하는 기본 코드 구조](/JSP/chapter3/01JSP에서HTML문서생성하는기본코드구조.md)
 
-[02 JSP 페이지의 구성 요소]()
+[02 JSP 페이지의 구성 요소](/JSP/chapter3/02JSP페이지구성요소.md)
 
-[03 page 디렉티브]()
+[03 page 디렉티브](/JSP/chapter3/03page디렉티브.md)
 
-[04 스크립트 요소]()
+[04 스크립트 요소](/JSP/chapter3/04스크립트요소.md)
 
-[05 request 기본 객체]()
+[05 request 기본 객체](/JSP/chapter3/05request기본객체.md)
 
-[06 response 기본 객체]()
-
-[07 JSP 주석] ()
+[06 response 기본 객체 & 07 JSP 주석](/JSP/chapter3/06response기본객체&07JSP주석.md)
 
 ### Chapter 4. 필수 이해 요소
 
-[01 JSP 처리 과정]()
+[01 JSP 처리 과정](/JSP/chapter4/01JSP처리과정.md)
 
-[02 출력 버퍼와 응답]()
+[02 출력 버퍼와 응답](/JSP/chapter4/02출력버퍼와응답.md)
 
-[03 웹 어플리케이션 폴더 구성과 URL 매핑]()
+[03 웹 어플리케이션 폴더 구성과 URL 매핑](/JSP/chapter4/03웹애플리케이션폴더구성과URL매핑.md)
 
 
 ## Part 2 필수 습득
 
 ### Chapter 5. 기본 객체와 영역
 
-[01 기본 객체]()
-
-[02 out 기본 객체]()
-
-[03 pageContext 기본 객체]()
+[01 기본 객체 & 02 out 기본 객체 & 03 pageContext 기본 객체](/JSP/chapter5/01기본객체&02out기본객체&03pageContext기본객체.md)
 
 [04 application 기본 객체]()
 
