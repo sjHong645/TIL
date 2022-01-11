@@ -133,7 +133,7 @@ ex)
 class 속성으로 지정했을 때는 새로운 MemberInfo 객체를 생성하지만  
 type 속성으로 지정했을 때는 에러가 발생한다. 
 
-다음과 같은 코드와 같은 의미를 갖는다.
+type 속성으로 지정했을 때는 아래의 코드와 같은 의미를 갖는다.
 
 ``` jsp
 MemberInfo info = (MemberInfo)request.getAttribute("info"); 
