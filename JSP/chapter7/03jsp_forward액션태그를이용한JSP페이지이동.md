@@ -107,15 +107,122 @@ ex) from.jsp & to.jsp
 이와 유사하게 buffer 속성을 none으로 해서 버퍼를 사용하지 않는 경우에도 `<jsp:forward>` 액션 태그는 제대로 동작하지 않는다.
 해당 내용은 JSP 규약에 따라 정의된 내용이다.
 
+### 3 `<jsp:forward>` 액션 태그 활용 
 
+아래 코드의 from.jsp는 `<jsp:forward>` 액션 태그의 동작 방식을 보여주기 위해 작성한 간단한 예제 코드다. 
+이 코드가 `<jsp:forward>` 액션 태그의 활용 방법을 보여주는 건 아니고 좀 더 유용하게 사용할 수 있는 경우를 조건에 따라 다르게 보여준다.  
+다음 코드를 보자.
 
+``` jsp 
+<%@ page contentType = "text/html; charset=utf-8" %>
+<% 
+   String forwardPage = null;
+   
+   // 조건에 따라 이동할 페이지를 지정
+   if(조건 판단 1) { 
+     forwardPage = "페이지 URI 1";
+   } else if(조건 판단 2) { 
+     forwardPage = "페이지 URI 2";
+   
+   } else if(조건 판단 3) { 
+     forwardPage = "페이지 URI 3";
+   }
+%>
 
+<jsp: forward page="<%= forwardPage %>" />
+```
 
+위 코드는 조건에 따라 다른 페이지로 이동하는 구조를 갖는다. 조건에 따라 이동할 페이지를 결정하고 `<jsp:forward>` 액션 태그를 사용해서  
+해당 페이지로 이동한다.
 
+![image](https://user-images.githubusercontent.com/64796257/148880528-77e6f087-6046-4271-b927-bf76b6a45ff9.png)
 
+내용 부분에 HTML 코드와 스크립트 코드가 섞이는 것까지 고려하면 위 코드는 매우 복잡해질 것이다.  
+하지만, `<jsp:forward>` 액션 태그를 사용한다면 다음과 같이 간단하게 코드를 작성할 수 있다.
 
+![image](https://user-images.githubusercontent.com/64796257/148880599-b68be01c-3cc8-4647-9dc9-388c8c1c888a.png)
 
+실제로 출력할 내용은 이동할 페이지에서 생성하게 된다. 
 
+선택한 옵션에 따라 서로 다른 화면을 보여주는 JSP 페이지를 작성해보자.  
+ex) select.jsp
+
+``` jsp
+<%@ page contentType = "text/html; charset=utf-8" %>
+<html>
+<head><title>옵션 선택 화면</title></head>
+<body>
+
+<form action="<%= request.getContextPath() %>/view.jsp">
+
+보고 싶은 페이지 선택:
+	<select name="code">
+		<option value="A">A 페이지</option>
+		<option value="B">B 페이지</option>
+		<option value="C">C 페이지</option>
+	</select>
+
+<input type="submit" value="이동">
+
+</form>
+
+</body>
+</html>
+```
+
+- 결과 창 
+
+![image](https://user-images.githubusercontent.com/64796257/148880798-235b8465-d862-4a42-96ca-41bacf9f3a68.png)
+
+위 그림에서 `이동` 버튼을 누르면 view.jsp로 선택한 옵션 값이 전달되고 그 값에 따라 알맞은 페이지로 이동한다.
+
+- view.jsp 
+
+``` jsp
+<%@ page contentType = "text/html; charset=utf-8" %>
+<%
+	String code = request.getParameter("code");
+	String viewPageURI = null;
+	
+	if (code.equals("A")) {
+		viewPageURI = "/viewModule/a.jsp";
+	} else if (code.equals("B")) {
+		viewPageURI = "/viewModule/b.jsp";
+	} else if (code.equals("C")) {
+		viewPageURI = "/viewModule/c.jsp";
+	}
+%>
+<jsp:forward page="<%= viewPageURI %>" />
+```
+
+"code" 파라미터 값이 A이면 a.jsp로/ B이면 b.jsp로/ C이면 c.jsp로 흐름이 이동한다.  
+그렇게 흐름이 이동하고 나서 해당 파일의 실행결과가 웹 브라우저에 출력된다.
+
+### 4 `<jsp:param>` 액션 태그를 이용해서 이동할 페이지에 파라미터 추가
+
+`<jsp:param>` 액션 태그를 사용하면 `<jsp:forward>` 액션 태그로 이동할 페이지에 파라미터를 추가로 전달할 수 있다.
+
+``` jsp 
+<jsp:forward page = "moveTo.jsp">
+  <jsp:param name = "first" value = "BK" />
+  <jsp:param name = "second" value = "Choi" />
+</jsp:forward>
+```
+`<jsp:param>` 의 동작 방식은 `<jsp:include>` 에서 설명한 것과 동일하다.
+
+`<jsp:param>`와 `<jsp:include>` 에서 page 속성을 통해 이동할 페이지 경로를 지정하는데 이때 절대 경로와 상대 경로 방법으로 지정할 수 있다.
+
+절대 경로 방법은 지금과 같이 하면 되니까 상대 경로 지정방법에 대해서 살펴보겠다.
+
+ex) from.jsp가 chap07\from\controller 폴더에 위치한다고 하자.
+
+이 경우 다음과 같은 상대 경로를 사용해서 from.jsp에서 to.jsp로 이동할 수 있다.
+
+`<jsp:forward page="../../to/to.jsp />`
+
+../../ 은 chap07\from\controller 폴더를 두 번 올라간 chap07 폴더를 의미한다. 
+
+따라서, 상위 폴더를 나타내고 싶다면 ../ 를 사용하면 되겠다.
 
 
 
