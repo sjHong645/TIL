@@ -1,3 +1,5 @@
+## 3 `<jsp:forward>` 액션 태그를 이용한 JSP 페이지 
+
 `<jsp:forward>` 액션 태그는 하나의 JSP 페이지에서 다른 JSP 페이지로 요청 처리를 전달할 때 사용한다. 
 
 어떻게 요청 흐름이 이동하는지 그림을 통해 보자.
@@ -223,6 +225,72 @@ ex) from.jsp가 chap07\from\controller 폴더에 위치한다고 하자.
 ../../ 은 chap07\from\controller 폴더를 두 번 올라간 chap07 폴더를 의미한다. 
 
 따라서, 상위 폴더를 나타내고 싶다면 ../ 를 사용하면 되겠다.
+
+## 05 기본 객체의 속성을 이용해서 값 전달하기
+
+`<jsp:include>` 액션 태그와 `<jsp:forward>` 액션 태그는 `<jsp:param>` 액션 태그를 이용해서 파라미터를 추가로 전달할 수 있다.  
+하지만, `<jsp:param>` 액션 태그는 파라미터를 이용해서 데이터를 추가하기 때문에 String 타입의 값만 전달할 수 있다는 한계가 있다.
+
+기본 객체의 속성을 이용하면 `<jsp:param>` 액션 태그를 사용하는 것보다 편리하게 값을 전달할 수 있다.  
+포함하거나 이동할 페이지는 동일한 요청 범위(request 범위)를 갖기 때문에 request 기본 객체의 속성을 이용해서 필요한 값을 전달할 수 있다.
+
+![image](https://user-images.githubusercontent.com/64796257/148882894-f397173f-746d-4928-9688-d7a40cd14703.png)
+
+request 기본 객체는 한 번의 요청에 대해 유효하게 동작하며 한 번의 요청을 처리하는데 사용되는 모든 JSP에서 공유된다.
+
+위 그림의 from.jsp는 `<jsp:forward>` 액션 태그를 사용해서 흐름을 to.jsp로 이동시키는데 이때 동일한 요청을 처리하기 위해 from.jsp와 to.jsp가 사용된다.  
+따라서, from.jsp와 to.jsp는 하나의 request 기본 객체를 공유하게 된다.
+
+이 특징을 이용해서 from.jsp에서 request 기본 객체에 새로운 속성을 추가하면 to.jsp는 그 속성을 읽어와 사용할 수 있다. 결과적으로 from.jsp에서 to.jsp로 값을 전달할 수 있게 된다.
+
+ex) makeTime.jsp
+``` jsp
+<%@ page contentType = "text/html; charset=utf-8" %>
+<%@ page import = "java.util.Calendar" %>
+<%
+	Calendar cal = Calendar.getInstance();
+	request.setAttribute("time", cal); 
+	
+	# 생성한 Calendar 객체를 time이라는 파라미터에 담아서 request 기본 객체에 저장했다.
+%>
+<jsp:forward page="/to/viewTime.jsp" />
+```
+
+forward를 통해 흐름을 받은 viewTime.jsp를 보자.
+``` jsp
+<%@ page contentType = "text/html; charset=utf-8" %>
+<%@ page import = "java.util.Calendar" %>
+<html>
+<head><title>현재 시간</title></head>
+<body>
+
+<%
+	Calendar cal = (Calendar) request.getAttribute("time");
+	
+	# request에 저장한 파라미터인 time의 값을 읽어온다.
+%>
+현재 시간은 <%= cal.get(Calendar.HOUR) %>시
+			<%= cal.get(Calendar.MINUTE) %>분
+			<%= cal.get(Calendar.SECOND) %>초 입니다.
+			
+# 그 값(cal)을 가지고 현재 시간/분/초를 화면에 출력했다.
+
+</body>
+</html>
+```
+
+- 결과 창
+
+![image](https://user-images.githubusercontent.com/64796257/148883613-94c1600d-0c99-4bcc-a31e-da786b33e0ff.png)
+
+속성을 이용한 값 전달 방식은 웹 어플리케이션 개발에서 중요한 기법 중 하나다.
+
+특히 이 방식은 MVC(Model-View-Controller) 패턴이라는 것에 기반한 웹 어플리케이션을 구현할 때 필수요소이기 때문에  
+request 기본 객체의 속성을 사용하는 방법은 반드시 이해하고 넘어가자.
+
+
+
+
 
 
 
