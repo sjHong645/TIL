@@ -88,13 +88,55 @@ members는 회원 데이터 목록을 갖고 있는 리스트 객체이다. 이 
 
 ### 5 sorted() 정렬 
 
+ex) 
+``` jsp
+$ { vals = {20, 17, 30, 2, 9, 23} ; sortedVals = vals.stream().sorted().toList() } 
+```
 
+vals라는 배열이 있다. 그 배열에 대해서 stream()을 통해 스트림을 생성해서 sorted() 메서드를 이용해 오름차순으로 정렬한 다음에 toList() 메서드를 가지고 List로 변환시켰다.
 
+물론 sorted() 메서드가 모든 타입의 원소를 정렬시킬 수 있는 건 아니다.
 
+Integer, Long, String 과 같은 타입은 이미 오름차순에 맞게 Comparable 인터페이스가 구현되어 있기 때문에 sorted()를 실행하면 오름차순으로 정렬된 결과를 구할 수 있다.
 
+그렇다면 Comparable 인터페이스가 구현되어 있지 않거나 오름차순이 아닌 다른 순서로 정렬하고 싶다면 어떻게 해야할까??  
+sorted() 메서드에 값을 비교할 때 사용할 람다식을 전달하면 된다. 
 
+ex) 람다식을 이용해서 숫자 값을 가지는 리스트를 `내림차순` 정렬했다.
+``` jsp
+$ { vals = {20, 17, 30, 2, 9, 23} ; sortedVals = vals.stream().sorted((x1,x2) -> x1 < x2 ? 1 : -1 ).toList() } 
+```
+sorted() 의 람다식이 2개의 파라미터를 갖도록 했다.  
+첫 번째 파라미터와 두 번째 파라미터를 비교해서 두 번째 파라미터값이 더 크면 1을 return하고 그렇지 않으면 -1을 return하도록 했다.  
 
+이렇게 람다식을 설정하면 내림차순으로 정렬할 수 있게 된다.  
 
+ex) Member라는 객체가 있다. 여기에 이름(name)과 나이(age)를 저장할 수 있다.
+
+``` jsp 
+<%
+     List<Member> memberList = Arrays.asList(new Member("김씨", 20), new Member("이씨", 54), 
+                                             new Member("박씨", 19), new Member("정씨", 20));
+     request.setAttribute("members", memberList);
+%>
+
+${ sortedMem = members.stream().sorted((m1, m2) -> m1.age.compareTo(m2.age)).toList(); '' }
+```
+sorted() 메서드에 m1과 m2라는 이름을 가진 Member 객체가 전달된다. 
+
+이때 두 객체의 age 값을 비교해서 age 값에 따른 오름차순 정렬을 진행한다.
+
+cf) A.compareTo(B) ⇒ A가 B보다 크면 1 / A가 B보다 작으면 -1 / A와 B가 같으면 0
+
+### 6 limit()을 이용한 개수 제한
+
+limit()은 지정한 개수를 갖는 새로운 스트림을 생성한다. 
+
+ex) 
+``` jsp
+${nums.stream().sorted().limit(3).toList() } 
+```
+nums라는 배열에 대해 스트림을 생성(stream() 메서드)하고 정렬(sorted() 메서드)한 다음에 앞에 있는 3개(limit(3) 메서드)의 원소만을 가지고 스트림을 새로 생성했다.
 
 
 
