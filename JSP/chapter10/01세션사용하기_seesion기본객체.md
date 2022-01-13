@@ -96,10 +96,151 @@ sessionInfo.jsp를 실행하면 위 그림과 같이 생성된 세션 정보를 
 
 ### 3 기본 객체의 속성 사용 
 
+한 번 생성된 세션은 지정한 유효시간 동안 유지된다.  
+따라서, 웹 어플리케이션을 실행하는 동안 지속적으로 사용해야 하는 데이터의 저장소로 세션이 적당하다.
 
+request 기본 객체가 하나의 요청을 처리하는데 사용되는 JSP 페이지 사이에 공유된다면,  
+session 기본 객체는 웹 브라우저의 여러 요청을 처리하는 JSP 페이지 사이에서 공유된다.
 
+따라서, 로그인한 회원 정보 등 웹 브라우저와 일대일로 관련된 값을 저장할 때에는 쿠키 대신 세션을 사용할 수 있다.
 
+세션에 값을 저장할 때는 속성을 사용한다. 속성에 값을 저장하려면 `setAttribute() 메서드`를 사용하고 속성값을 읽으려면 `getAttribute() 메서드`를 사용한다.
 
+ex) setMemberInfo.jsp : 사용자 정보 중 하나인 회원 아이디와 이름을 저장하는 코드
+
+``` jsp 
+<%@ page contentType = "text/html; charset=utf-8" %>
+<%
+	# session의 속성에 정보를 저장했다.
+	
+	session.setAttribute("MEMBERID", "madvirus");
+	session.setAttribute("NAME", "최범균");
+%>
+<html>
+<head><title>세션에 정보 저장</title></head>
+<body>
+
+세션에 정보를 저장하였습니다.
+
+</body>
+</html>
+```
+
+setMemberInfo.jsp를 사용하고 나면 session 기본 객체에 저장한 두 속성을 사용할 수 있게 된다. 
+
+이와 같이 session 기본 객체를 설정하고 나면 세션이 종료될 때까지 다음과 같이 속성값을 사용할 수 있게 된다.
+
+``` jsp 
+<% 
+  String name = (String)session.getAttribute("NAME"); 
+  # 이와 같이 작성하면 NAME이라는 이름을 가진 세션의 속성을 사용할 수 있다.
+  # 여기서는 "최범균" 이라는 값이 name에 저장된다.
+%>
+```
+
+### 4 세션 종료
+
+세션을 유지할 필요가 없다면 session.invalidate() 메서드를 사용해서 세션을 종료한다.  
+세션을 종료하면 현재 사용 중인 session 기본 객체를 삭제하고 session 기본 객체에 저장했던 속성 목록도 함께 삭제한다.
+
+ex) closeSession.jsp 
+``` jsp
+<%@ page contentType = "text/html; charset=utf-8" %>
+<%
+	session.invalidate();
+%>
+<html>
+<head><title>세션 종료</title></head>
+<body>
+
+세션을 종료하였습니다.
+
+</body>
+</html>
+```
+
+세션을 종료하면 기존 session 객체를 제거하고 세션을 종료한 후 다음 요청에서 session을 사용한다면 새로운 session 기본 객체를 생성한다.
+
+1) seesionInfo.jsp 실행 - 새로운 세션 생성
+
+![image](https://user-images.githubusercontent.com/64796257/149247254-7c2e780c-701f-4c9c-b9ed-c0f5040169db.png)
+
+2) closeSession.jsp 실행 - 세션 종료
+
+![image](https://user-images.githubusercontent.com/64796257/149247556-646fdd56-8077-4bae-bc6e-24d48dc34ced.png)
+
+3) seesionInfo.jsp 실행 - 다시 새로운 세션 생성
+
+![image](https://user-images.githubusercontent.com/64796257/149247612-c6072934-cc81-44ef-a921-3c434d9613db.png)
+
+### 5 세션 유효 시간
+
+세션은 최근 접근 시간을 갖는다. session 기본 객체를 사용할 때마다 세션의 최근 접근 시간이 갱신된다. 
+
+이를 알아내기 위해서 사용한 메서드가 `session.getLastAccessedTime()` 이다.
+
+`session.getLastAccessedTime()` 메서드는 최근에 session 기본 객체에 접근한 시간을 나타낸다.
+
+세션은 마지막 접근 이후 일정 시간 이내에 다시 세션에 접근하지 않는 경우 자동으로 세션을 종료하는 기능을 갖고 있다.  
+예를 들어, 세션의 유효 시간이 30분이라고 해보자.
+
+아래 그림과 같이 마지막 접근 시간에서 30분이 지나면 자동으로 세션을 종료하고 이후 세션을 요청하면 새로운 세션을 생성한다.
+
+![image](https://user-images.githubusercontent.com/64796257/149248049-b9c69ccd-8336-47d1-92a9-382f7c1f8fa0.png)
+
+세션 유효 시간은 2가지 방법으로 설정할 수 있다.  
+
+1) WEB-INF\web.xml 파일에 아래와 같이 `<session-config>` 태그를 사용해서 세션 유효 시간을 지정하는 방법
+
+``` xml
+<?xml version="1.0" encoding="euc-kr"?>
+
+...
+
+  <session-config>
+	  <session-timeout> 50 </session-timeout>
+	  # 세션의 타임아웃 시간을 50분으로 설정했다.
+	  
+  <session-config>
+...
+
+```
+
+2) session 기본 객체가 제공하는 setMaxInactiveInterval() 메서드를 사용하는 방법
+
+세션의 유효시간을 60분으로 지정하고 싶다면 다음과 같이 메서드를 사용하면 된다.
+
+``` jsp 
+<% 
+   session.setMaxInactiveInterval(60 * 60); 
+   # 초 단위로 유효시간을 설정한다.
+%>
+```
+
+유효시간을 0 또는 음수로 설정한다면 session.invalidate() 메서드를 호출하기 전까지 세션 객체는 서버에 유지된다.  
+
+즉, 유효시간이 없는 상태에서 session.invalidate() 메서드가 실행되지 않는다면 세션 객체는 계속 메모리에 남게 되어 메모리 부족 현상이 발생한다.
+
+![image](https://user-images.githubusercontent.com/64796257/149248648-a4266a25-08f5-4519-ab16-84c5c16af5fe.png)
+
+### 6 request.getSession() 을 이용한 세션 생성
+
+HttpSession을 생성하는 또 다른 방법은 request 기본 객체의 getSession() 메서드를 사용하는 것이다.
+
+request.getSession() 메서드는 현재 요청과 관련된 session 객체를 return한다.
+
+ex) request.getSession()을 이용해서 세션을 구하므로 page 디렉티브의 session 속성값은 false로 지정한다.
+``` jsp
+<%@ page session = "false" %>
+<%
+   HttpSession httpSession = request.getSession(); # session이 존재하면 해당 session을 return하고 
+   						   # 존재하지 않으면 새롭게 session을 생성해서 return한다.
+   List list = (List)httpSession.getAttribute("list");
+   list.add(productId);
+%>
+```
+
+세션이 생성된 경우에만 session 객체를 구하고 싶다면 request.getSession(false)를 실행하면 된다. (만약에 세션이 없다면 null을 return한다)
 
 
 
