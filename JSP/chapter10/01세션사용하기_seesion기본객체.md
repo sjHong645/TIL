@@ -243,15 +243,40 @@ ex) request.getSession()을 이용해서 세션을 구하므로 page 디렉티�
 세션이 생성된 경우에만 session 객체를 구하고 싶다면 request.getSession(false)를 실행하면 된다. (만약에 세션이 없다면 null을 return한다)
 
 
+### 세션에 여러 속성을 사용해서 연관 정보를 저장할 때
 
+이 경우에 문제점을 줄일 수 있는 방법으로 클래스를 사용하는 방법이 있다. 예를 들어 아래와 같이 회원과 관련된 정보를 클래스에 묶어서 저장한다고 하자.
+``` java
+public class MemberInfo { 
 
+  private String id;
+  private String name;
+  private String email;
+  private boolean male;
+  private int age;
 
+} 
+```
 
+연관된 정보를 클래스로 묶어서 저장하면 각 정보를 개별 속성으로 저장하지 않고 다음과 같이 1개의 속성을 이용해서 저장할 수 있게 된다.
 
+``` jsp
+<% 
+  MemberInfo memberInfo = new MemberInfo(id, name);
+  session.setAttribute("memberInfo", memberInfo); # 위에서 지정한 memberInfo라는 이름의 객체를 
+  						  # "memberInfo"라는 이름의 세션의 속성으로 저장했다
+%>
+```
 
+연관된 정보를 한 객체에 담아서 저장하기 때문에 세션에 저장한 객체를 사용할 때도 다음과 같이 객체를 가져온 뒤 객체로부터 필요한 값을 읽어올 수 있다.
 
-
-
+``` jsp
+<% 
+  MemberInfo memberInfo = (MemberInfo) seesion.getAttribute("memberInfo");
+  
+  # "memberInfo"라는 세션으로부터 속성값을 불러온다. 앞서 이 값은 MemberInfo 형으로 지정된 값이었다.
+%>
+```
 
 
 
