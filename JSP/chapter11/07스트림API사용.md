@@ -269,7 +269,8 @@ ${ matchOpt = lst.stream().noneMatch( v -> v > 4); '' } # lst 배열에 있는 �
 $ {matchOpt.get() } # 여기서는 false를 return한다.
 ```
 
-
+anyMatch(), allMatch(), noneMatch() 모두 빈 스트림에 대해 값이 없는 Optional을 return한다.  
+따라서, 위에서 소개한 세 메서드를 사용할 때 스트림에 값이 없을 가능성이 있다면 get() 대신에 orElse() 또는 ifPresent() 등을 사용해서 에러가 발생하지 않도록 해야 한다.
 
 
 
