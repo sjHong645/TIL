@@ -138,9 +138,136 @@ ${nums.stream().sorted().limit(3).toList() }
 ```
 nums라는 배열에 대해 스트림을 생성(stream() 메서드)하고 정렬(sorted() 메서드)한 다음에 앞에 있는 3개(limit(3) 메서드)의 원소만을 가지고 스트림을 새로 생성했다.
 
+### 7 toList()와 toArray()를 이용한 결과 생성
 
+`toList()`는 자바 리스트 객체를 생성하고 `toArray()`는 자바 배열 객체를 생성한다.
 
+EL에서 리스트타입의 경우 각 원소의 값을 문자열로 변환해서 출력한다.  
+ex) 
+``` jsp
+<%
+     List<Member> memberList = Arrays.asList(new Member("김씨", 24), new Member("이씨", 33), 
+                                             new Member("박씨", 15), new Member("정씨", 59));
+     request.setAttribute("members", memberList);
+%>
 
+$ { members.stream().map(m -> m.name).toList(); ⇒ ["김씨", "이씨", "박씨", "정씨"] 출력
+
+$ { members.stream().map(m -> m.name).toArray(); ⇒ [Ljava.lang.Object; ~~ ] 출력
+```
+
+### 8 count()를 이용한 개수 확인
+
+ex) `${ members.stream().count()}` ⇒ 스트림의 원소 개수를 return 한다. 타입은 Long이다.
+
+### 9 Optional 타입
+
+average(), max(), min()과 같이 결과값이 존재하거나 존재하지 않는 경우가 있을 때 사용하는 타입이 Optional이다.  
+Optional은 아래와 같은 메서드를 제공한다.
+
+- get() : 값이 존재할 경우 값을 return한다. 값이 존재하지 않으면 ELException을 발생한다.
+- orElse(other) : 값이 존재하면 해당 값을 return하고 그렇지 않으면 other를 return 한다.
+- orElseGet( (() -> T) other) : 값이 존재하면 해당 값을 return하고 그렇지 않으면 람다식 other를 실행한 결과를 return한다.
+- ifPresent( ( ((x) -> void) consumer ) : 값이 존재하면 람다식 consumer를 실행한다. 존재하는 값을 람다식의 파라미터로 전달한다.
+
+ex) max() 는 최대값을 구할 때 사용하는데 이는 Optional을 결과로 return하기 때문에 결과값을 구하기 위해 get() 메서드를 사용할 수 있다.
+
+``` jsp
+${ [1, 2, 3].stream().max().get() } ⇒ 최대값 3을 return한다.
+```
+
+값이 존재하지 않은 상태에서 get()을 사용하면 ELException을 발생하기 때문에  
+값이 존재하지 않을 수 있다면 get() 대신 orElse()를 사용해서 값이 없을 때 다른 값을 사용하도록 해야 한다.
+
+ex)  
+``` jsp
+${ [].stream().min().orElse('없음') } ⇒ 값이 없으므로 '없음'을 출력한다.
+${ [1, 2, 3].stream().min().orElse('없음') } ⇒ 값이 존재하기 때문에 결과값 1을 출력한다.
+```
+
+orElse()가 값을 출력한다면 orElseGet()은 값이 없을 때 람다식을 출력하도록하는 메서드이다.  
+ex)
+``` jsp
+${ [].stream().min().orElseGet(()->-1)} ⇒ 값이 존재하지 않기 때문에 -1을 출력한다
+```
+
+값이 존재할 때 코드를 실행하고 싶다면 ifPresent()를 사용하면 된다. ifPresent는 결과값을 받아 코드를 실행할 람다식을 파라미터로 갖는다.
+
+ex) 
+``` jsp
+$ {minValue = '-' ; ''} # minValue 변수에 '-'를 저장했다.
+
+$ { [1, 2, 3].stream().min().ifPresent(x -> (minValue = x)) } #[1, 2, 3]의 최소값을 1이다. 
+                                        # 1이라는 값이 존재하기 때문에 ifPresent()에 의해 minValue 변수에 1이 저장된다.
+                                        # 만약에 값이 없었다면 minValue 변수는 이전에 저장한 것과 똑같이 '-'를 가지고 있었을 것이다.
+
+최소값은 ${minvalue} 입니다.
+```
+
+### 10 sum()과 average()
+- sum() : 스트림이 숫자로 구성된 경우 sum()을 이용해서 합을 구한다.
+``` jsp
+$ {[1, 2, 3, 4, 5].stream().sum()} ⇒ 15 출력
+```
+
+- average() : 값의 평균을 구한다. EL의 Optional 타입을 return 한다. 이때 Optional은 Double 타입 값을 갖는다.
+``` jsp
+$ {[1, 2, 3, 4, 5].stream().average().get() } ⇒ 2.5 출력
+```
+
+### 11 min()과 max()를 이용한 최소/최대 구하기
+
+스트림 원소가 Long이나 String과 같이 Comparable을 구현하고 있다면 min(), max()를 통해 최소값과 최대값을 구할 수 있다.
+
+둘 다 Optional 타입을 return한다.
+
+크기를 구하는 규칙이 달라야 한다면 sorted() 처럼 크기 비교를 위한 람다식을 사용할 수 있다.
+
+ex) age 프로퍼티 값이 가장 큰 객체를 구하고 싶을 때
+``` jsp
+<%
+     List<Member> memberList = Arrays.asList(new Member("김씨", 24), new Member("이씨", 33), 
+                                             new Member("박씨", 15), new Member("정씨", 59));
+     request.setAttribute("members", memberList);
+%>
+
+$ {maxAgeMemOpt = members.stream().max((m1, m2) -> m1.age.compareTo(m2.age)) ; '' }
+
+# 객체 자레로는 최대/최소값을 알아낼 수 없다.
+# 여기서는 객체의 age 값의 최대값을 알고 싶기 때문에 위와 같은 람다식을 설정했다.
+```
+
+### 12 anyMatch(), allMatch(), noneMatch() 를 이용한 존재 여부 확인
+
+ex) anyMatch() 
+``` jsp
+$ {lst = [1, 2, 3, 4, 5] ; '' }
+
+<%-- 4보다 큰 원소가 존재하는지 확인 --%>
+${ matchOpt = lst.stream().anyMatch( v -> v > 4); '' } # lst 배열에 있는 모든 값들 중에서 하나라도 4보다 큰 값이 있다면 true를 return하고 
+                                                       # 모든 값이 다 4보다 작다면 false를 return한다.
+$ {matchOpt.get() } # 여기서는 true를 return한다.
+```
+
+ex) allMatch()
+``` jsp
+$ {lst = [1, 2, 3, 4, 5] ; '' }
+
+<%-- 4보다 큰 원소가 존재하는지 확인 --%>
+${ matchOpt = lst.stream().allMatch( v -> v > 4); '' } # lst 배열에 있는 모든 값이 4보다 크다면 true 를 return하고 
+                                                       # 그렇지 않으면 false를 return한다.
+$ {matchOpt.get() } # 여기서는 false를 return한다.
+```
+
+ex) noneMatch() 
+``` jsp
+$ {lst = [1, 2, 3, 4, 5] ; '' }
+
+<%-- 4보다 큰 원소가 존재하는지 확인 --%>
+${ matchOpt = lst.stream().noneMatch( v -> v > 4); '' } # lst 배열에 있는 모든 값이 4보다 크다는 조건을 만족하지 않으면 true를 return하고 
+                                                       # 그렇지 않으면 false를 return한다.
+$ {matchOpt.get() } # 여기서는 false를 return한다.
+```
 
 
 
