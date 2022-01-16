@@ -19,7 +19,7 @@ https://gist.github.com/ihoneymon/652be052a0727ad59601
 
 - Network(네트워크)
 
-- OperatingSystem(운영체제)
+- Operating_System(운영체제)
 
 - 알고리즘&자료구조
 
