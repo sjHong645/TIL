@@ -1,7 +1,7 @@
 # 개념 목록
 
-## 시간복잡도
-## 재귀
+## [시간복잡도(Complexity)](./Complexity.md)
+## [재귀(Recursion)](./Recursion.md)
 ## 연결리스트 
 ## 스택 
 ## 큐 
