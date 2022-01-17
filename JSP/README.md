@@ -52,9 +52,9 @@
 
 ### Chapter 7. 페이지 모듈화와 요청 흐름 제어
 
-[01 `<jsp:include>` 액션 태그를 이용한 공통 영역 작성]
+[01 `<jsp:include>` 액션 태그를 이용한 공통 영역 작성](/JSP/chapter7/01jsp_include액션태그를이용한공통영역작성.md)
 
-[02 include 디렉티브를 이용한 중복된 코드 삽입]
+[02 include 디렉티브를 이용한 중복된 코드 삽입](/JSP/chapter7/02include디렉티브를이용한중복코드삽입.md)
 
 [03 `<jsp:forward>` 액션 태그를 이용한 JSP 페이지 이동 & 04 `<jsp:include>` 와 `<jsp:forward>` 액션 태그의 page 속성 경로 & 05 기본 객체의 속성을 이용해서 값 전달하기](/JSP/chapter7/03jsp_forward액션태그를이용한JSP페이지이동&05기본객체의속성을이용해서값전달.md)
 
