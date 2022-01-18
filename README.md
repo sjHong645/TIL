@@ -27,4 +27,12 @@ https://gist.github.com/ihoneymon/652be052a0727ad59601
 
 ### JSP
 
+- 톰캣 실행(내 컴퓨터 기준) : C:\apache-tomcat-8.5.73\bin\startup 실행해주면 됨
+
+- JSP 파일 : C:\apache-tomcat-8.5.73\webapps 에 있음
+
 ### Spring
+
+
+
+   
