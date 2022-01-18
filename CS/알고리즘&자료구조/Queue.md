@@ -121,47 +121,31 @@ MQS는 원형 큐의 길이이다. 위 예시에서는 MQS = 8이 되겠다.
 
 ### 원형 큐의 구현(배열을 이용했다)
 
-위에서 설명한 enqueue를 보면 R이 한 칸 움직이고 변경된 R에 해당하는 index에 값을 저장한다.
-
-아래 코드에서의 enqueue를 보면 topOfQueue가 한 칸 움직이고 변경된 topOfQueue에 해당하는 index에 값을 저장한다.
-
-따라서, R과 topOfQueue를 동일시하면 되겠다.
-
-[출처](https://github.com/sponbob-pat/Java/blob/master/src/main/java/com/thealgorithms/datastructures/queues/CircularQueue.java)
-
 ``` java
+package prob91;
+
 //This program implements the concept of CircularQueue in Java
 //Link to the concept: (https://en.wikipedia.org/wiki/Circular_buffer)
 public class CircularQueue {
 
     int[] arr;
-    int topOfQueue;
-    int beginningOfQueue;
+    int rear;
+    int front;
     int size;
 
     public CircularQueue(int size) { 
         arr = new int[size]; // 매개변수로 전달하는 size에 따라 배열 설정
-        topOfQueue = -1; 
-        beginningOfQueue = -1; // topOfQueue(=R)와 beginningOfQueue(=F)를 초기화
+        rear = 0; 
+        front = 0;
         this.size = size;
     }
 
     public boolean isEmpty() {
-        if (beginningOfQueue == -1) {
-            return true;
-        } else {
-            return false;
-        }
+        return (front == rear) ;
     }
 
     public boolean isFull() {
-        if (topOfQueue + 1 == beginningOfQueue) {
-            return true;
-        } else if (topOfQueue == size - 1 && beginningOfQueue == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return ((rear + 1) % size == front);
     }
 
     public void enQueue(int value) {
@@ -169,56 +153,28 @@ public class CircularQueue {
         if (isFull()) { 
         // 큐가 꽉 차있으니까 이에 대한 메시지 출력
             System.out.println("The Queue is full!");
-        } else if (isEmpty()) {
-        // 큐가 비어있으니까 beginningOfQueue의 값(=F값)을 0으로 바꾸고
-        // topOfQueue(=R값)을 1 증가시키고 
-        // 변경된 topOfQueue에 해당하는 index 위치에 값을 저장한다.
-            beginningOfQueue = 0;
-            topOfQueue++;
-            arr[topOfQueue] = value;
-            System.out.println(value + " has been successfully inserted!");
         } else {
-            if (topOfQueue + 1 == size) { // 저장하고 나서  데이터의 위치가 기존 배열의 길이를 넘어섰을 때
-                                          // topOfQueue를 0으로 초기화해서 원형 큐가 되도록 했다.
-                topOfQueue = 0;
-            } else {
-                topOfQueue++; // 그렇지 않다면 증가시키면 된다.
-            }
-            arr[topOfQueue] = value; // 변경된 topOfQueue에 해당하는 index 위치에 데이터를 저장한다.
+        	
+        	rear = (rear + 1) % size;
+        	arr[rear] = value; // 변경된 rear에 해당하는 index 위치에 데이터를 저장한다.
             System.out.println(value + " has been successfully inserted!");
         }
     }
-
     public int deQueue() {
         if (isEmpty()) { // 비어 있으면 이에 대한 메시지 출력
             System.out.println("The Queue is Empty!");
             return -1;
         } else {
-            int res = arr[beginningOfQueue]; // 삭제할 값을 res에 저장
-            
-            arr[beginningOfQueue] = Integer.MIN_VALUE; // 삭제할 위치에 데이터를 삭제함
-                                                       // 그걸 Integer.MIN_VALUE로 표현함
-                                                       
-            if (beginningOfQueue == topOfQueue) { // 이 조건을 만족한다는 건가 비어있는 거니까 -1로 초기화
-                beginningOfQueue = topOfQueue = -1;
-            } else if (beginningOfQueue + 1 == size) { // 삭제하고 나서 변경될 beginningOfQueue의 위치가 
-                                                       // 기존 배열의 길이를 넘어섰을 때
-                                                       // beginningOfQueue를 0으로 초기화해서 원형 큐의 동작을 수행하도록 했다.
-                beginningOfQueue = 0;
-            } else {
-                beginningOfQueue++; 
-            }
-            return res;
+            front = (front + 1) % size;           
+            return arr[front];
         }
-
     }
-
     public int peek() {
         if (isEmpty()) {
             System.out.println("The Queue is Empty!");
             return -1;
         } else {
-            return arr[beginningOfQueue];
+            return arr[(front + 1) % size];
         }
     }
 
@@ -251,6 +207,12 @@ public class CircularQueue {
         cq.enQueue(8);
         System.out.println(cq.peek());
         System.out.println(cq.peek());
+        
+        System.out.println(cq.deleteRear());
+        
+        cq.addFront(400);
+        System.out.println(cq.peek());
+        
         cq.deleteQueue();
 
     }
@@ -259,9 +221,9 @@ public class CircularQueue {
 
 - main 함수 실행 결과  
 
-![image](https://user-images.githubusercontent.com/64796257/149864582-35dacc37-0f61-4058-99e7-c97853787d43.png)
+![image](https://user-images.githubusercontent.com/64796257/149885696-c9d5b632-f594-4251-9aef-c04374c33de0.png)
 
-## 덱(Deque)
+## 덱(Deque) - 배열을 이용한 덱
 
 : 원형 큐 클래스를 확장해서 `원형 덱`을 만들 수 있다.
 
@@ -277,7 +239,7 @@ getFront는 peek과 똑같은 동작이다.
 
 그래서 덱에서 추가되는 연산은 deleteRear(), addFront(), getRear()가 되겠다.
 
-1) deleteRear() ⇒ 현재 rear(=topOfQueue)가 가리키던 데이터를 삭제하고 나서 rear를 한 칸 뒤로 옮긴다.
+1) deleteRear() ⇒ 현재 rear가 가리키던 데이터를 삭제하고 나서 rear를 한 칸 뒤로 옮긴다.
 
 ![image](https://user-images.githubusercontent.com/64796257/149872718-bf20ebce-6de0-4f07-98d6-26b079949a2d.png)
 
@@ -289,39 +251,44 @@ public int deleteRear() {
     		return -1;
     	}
     	else {
-    		int res = arr[topOfQueue]; // topOfQueue(=R)에 위치한 값을 삭제하고 출력할 거니까 
-                                    // 해당 데이터를 res에 저장
-    		arr[topOfQueue] = Integer.MIN_VALUE; // topOfQueue 인덱스에 있는 값을 삭제
-         
-    		if(topOfQueue == beginningOfQueue) { // 이 조건을 만족한다는 건 큐가 비어있다는 거니까 초기화
-    			topOfQueue = beginningOfQueue = -1;
-    		} else if(topOfQueue - 1 == -1) { // 삭제하고나서 변경될 topOfQueue의 값이 배열의 범위를 넘어선다면 
-                                           // 원형 큐의 동작으로 할 수 있도록 topOfQueue의 값을 변경함 
-    			topOfQueue = size;
-    		} else { // 별다른 조건이 없다면 -1씩 감소
-    			topOfQueue--;
-    		}
-    	    return res;
-       	}
-    }
+    		int ret = arr[rear]; // rear에 위치한 값을 삭제하고 출력할 거니까 해당 데이터를 res에 저장
+    		rear = (rear -1 + size) % size;
+    	   return ret;
+      }
+}
 ```
 
 rear가 가리키고 있던 데이터를 삭제하는 함수다.  
-1. rear(=topOfQueue)가 가리키던 데이터를 임시변수 res에 저장했다.
+1. rear가 가리키던 데이터를 임시변수 ret에 저장한다.
 2. rear를 한 칸 뒤로 옮긴다.
 
 ⇒ 뒤로 옮길 때 배열의 범위를 넘어선다면 원형 큐가 되도록 topOfQueue에 size값을 저장한다.
 
-⇒ 기존에 rear(=topOfQueue)가 가리키던 값에서 한 칸 앞으로 가는 동작을 구현했다.
+⇒ 기존에 rear가 가리키던 값에서 한 칸 앞으로 가는 동작을 구현했다.
 
-2) addFront() ⇒ 현재 front(=beginningOfQueue)가 가리키고 있는 위치에 데이터를 넣고 front를 한 칸 뒤로 이동 시킨다.
+2) addFront() ⇒ 현재 front가 가리키고 있는 위치에 데이터를 넣고 front를 한 칸 뒤로 이동 시킨다.
 
 ![image](https://user-images.githubusercontent.com/64796257/149878083-1fe5bcda-0252-4ed3-b83c-602bdb5ca6f4.png)
 
 ``` java
-
+public void addFront(int value) { // 전단에 삽입
+    	if(isFull()) {
+    		System.out.println("The Queue is full!");
+    	}
+    	else{
+    		arr[front] = value;
+    		front = (front - 1 + size) % size;
+    		System.out.println(value + " has been successfully inserted!");
+    	}
+}
 ```
 
+`데이터`를 `front가 가리키고 있는 곳`에 추가시킨다.
+
+1. front가 가리키고 있던 곳에 데이터를 넣고
+2. front를 한 칸 뒤로 이동시킨다. ⇒ front를 한 칸 뒤로 이동시키는 동작은 deleteRear에서 작성한 코드의 내용과 똑같이 작성해주면 된다.
+
+### 연결리스트를 이용한 큐
 
 
 
