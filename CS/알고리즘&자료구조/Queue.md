@@ -119,7 +119,7 @@ R과 F를 회전시키는 배열을 그림으로 그려보면 다음과 같이 �
 
 MQS는 원형 큐의 길이이다. 위 예시에서는 MQS = 8이 되겠다.
 
-### 원형 큐의 구현
+### 원형 큐의 구현(배열을 이용했다)
 
 위에서 설명한 enqueue를 보면 R이 한 칸 움직이고 변경된 R에 해당하는 index에 값을 저장한다.
 
@@ -199,8 +199,7 @@ public class CircularQueue {
             arr[beginningOfQueue] = Integer.MIN_VALUE; // 삭제할 위치에 데이터를 삭제함
                                                        // 그걸 Integer.MIN_VALUE로 표현함
                                                        
-            if (beginningOfQueue == topOfQueue) { // 그렇게 beginningOfQueue를 변경하고 나서 이와 같은 조건을 만족한다면
-                                                  // 큐가 비어있는 거니까 -1로 초기화
+            if (beginningOfQueue == topOfQueue) { // 이 조건을 만족한다는 건가 비어있는 거니까 -1로 초기화
                 beginningOfQueue = topOfQueue = -1;
             } else if (beginningOfQueue + 1 == size) { // 삭제하고 나서 변경될 beginningOfQueue의 위치가 
                                                        // 기존 배열의 길이를 넘어섰을 때
@@ -264,16 +263,64 @@ public class CircularQueue {
 
 ## 덱(Deque)
 
-: 원형 큐 클래스를 확장해서 구현하는 ‘원형 덱’을 만들 수 있다.
+: 원형 큐 클래스를 확장해서 `원형 덱`을 만들 수 있다.
 
+![image](https://user-images.githubusercontent.com/64796257/149872406-7b3750b9-666c-4423-8fed-203945e45024.png)
 
+- 덱의 연산
 
+![image](https://user-images.githubusercontent.com/64796257/149872493-dfc51f70-b897-4127-a175-37581ec9eac5.png)
 
+여기서 addRear는 위에서 다룬 enqueue와 똑같은 동작이고 deleteFront는 dequeue와 똑같은 동작이다. 
 
+getFront는 peek과 똑같은 동작이다.
 
+그래서 덱에서 추가되는 연산은 deleteRear(), addFront(), getRear()가 되겠다.
 
+1) deleteRear() ⇒ 현재 rear(=topOfQueue)가 가리키던 데이터를 삭제하고 나서 rear를 한 칸 뒤로 옮긴다.
 
+![image](https://user-images.githubusercontent.com/64796257/149872718-bf20ebce-6de0-4f07-98d6-26b079949a2d.png)
 
+``` java
+// 여기서 사용한 isEmpty()와 size는 위에서 구현한 CircularQueue.java에 있는 메서드와 변수다.
+public int deleteRear() {
+    	if(isEmpty()) { // 비어 있다면 이에 대한 오류 메시지를 출력
+    		System.out.println("The Queue is Empty!");
+    		return -1;
+    	}
+    	else {
+    		int res = arr[topOfQueue]; // topOfQueue(=R)에 위치한 값을 삭제하고 출력할 거니까 
+                                    // 해당 데이터를 res에 저장
+    		arr[topOfQueue] = Integer.MIN_VALUE; // topOfQueue 인덱스에 있는 값을 삭제
+         
+    		if(topOfQueue == beginningOfQueue) { // 이 조건을 만족한다는 건 큐가 비어있다는 거니까 초기화
+    			topOfQueue = beginningOfQueue = -1;
+    		} else if(topOfQueue - 1 == -1) { // 삭제하고나서 변경될 topOfQueue의 값이 배열의 범위를 넘어선다면 
+                                           // 원형 큐의 동작으로 할 수 있도록 topOfQueue의 값을 변경함 
+    			topOfQueue = size;
+    		} else { // 별다른 조건이 없다면 -1씩 감소
+    			topOfQueue--;
+    		}
+    	    return res;
+       	}
+    }
+```
+
+rear가 가리키고 있던 데이터를 삭제하는 함수다.  
+1. rear(=topOfQueue)가 가리키던 데이터를 임시변수 res에 저장했다.
+2. rear를 한 칸 뒤로 옮긴다.
+
+⇒ 뒤로 옮길 때 배열의 범위를 넘어선다면 원형 큐가 되도록 topOfQueue에 size값을 저장한다.
+
+⇒ 기존에 rear(=topOfQueue)가 가리키던 값에서 한 칸 앞으로 가는 동작을 구현했다.
+
+2) addFront() ⇒ 현재 front(=beginningOfQueue)가 가리키고 있는 위치에 데이터를 넣고 front를 한 칸 뒤로 이동 시킨다.
+
+![image](https://user-images.githubusercontent.com/64796257/149878083-1fe5bcda-0252-4ed3-b83c-602bdb5ca6f4.png)
+
+``` java
+
+```
 
 
 
