@@ -288,7 +288,224 @@ public void addFront(int value) { // 전단에 삽입
 1. front가 가리키고 있던 곳에 데이터를 넣고
 2. front를 한 칸 뒤로 이동시킨다. ⇒ front를 한 칸 뒤로 이동시키는 동작은 deleteRear에서 작성한 코드의 내용과 똑같이 작성해주면 된다.
 
-### 연결리스트를 이용한 큐
+### 연결리스트를 이용한 큐 (LinkedQueue)
+
+배열을 이용한 큐와 구현이 다를 뿐 ADT는 동일하다.
+
+- enqueue
+- dequeue
+
+이 두 가지 메서드가 중요한 동작들이다.
+
+- 노드의 구성 
+``` java
+ class Node {
+
+        int data;
+        Node next;
+
+        public Node() { this(0); }
+
+        public Node(int data) { this(data, null); }
+
+        public Node(int data, Node next) {
+            this.data = data;
+            this.next = next;
+        }
+}
+```
+
+노드를 그림으로 표현하면 아래와 같다. 
+
+![image](https://user-images.githubusercontent.com/64796257/149949253-1a66cbb4-c223-4070-bdd7-b73485e3574e.png)
+
+
+- 기본 코드 
+
+``` java
+public class LinkedQueue {
+
+    class Node {
+
+        int data;
+        Node next;
+
+        public Node() { this(0); }
+
+        public Node(int data) { this(data, null); }
+
+        public Node(int data, Node next) {
+            this.data = data;
+            this.next = next;
+        }
+    }
+    
+    private Node front; // 큐의 앞 부분을 가리키는 변수
+    private Node rear; // 큐의 뒷 부분을 가리키는 변수
+    
+    private int size; // 큐의 길이
+
+    public LinkedQueue() {
+        front = rear = new Node();
+        // System.out.println("this is front = " + front);
+        // System.out.println("this is rear = " + rear);
+        // 출력 결과를 통해 front와 rear가 둘 다 같은 노드를 가리킨다는 걸 알 수 있다.
+    }
+
+    // 큐가 비어있는지 확인. 비어 있으면 true 아니면 false
+    public boolean isEmpty() {
+        return size == 0;
+    }
+   
+    // private 변수인 size에 접근하기 위한 메서드
+    public int size() {
+        return size;
+    }   
+}
+```
+
+front와 rear가 더미 노드를 가지면서 큐가 시작된다. 이때 더미 노드는 데이터가 0이고 next가 지정되지 않은 노드이다.
+
+![image](https://user-images.githubusercontent.com/64796257/149950105-f8f46a6a-3aeb-4306-b32c-87dcfa626d12.png)
+
+이제 메서드 구현에 대해서 살펴보겠다.
+
+- enqueue
+
+``` java
+public void enqueue(int data) {
+        Node newNode = new Node(data); // 삽입할 데이터를 가진 노드를 만들어서
+        rear.next = newNode; // rear의 next가 새 노드를 가리키게 하고
+        rear = newNode; // rear가 새 노드를 가리키도록 한다.
+        
+        size++; // 그렇게 하고 나서 size는 1 증가
+    }
+```
+
+위와 같이 코드를 구현하면 큐의 뒷 부분(rear)에 노드가 점차 쌓이게 된다. 
+
+![image](https://user-images.githubusercontent.com/64796257/149951218-4fa590a3-25b7-45e6-9f53-0d6fa73509dc.png)
+
+- dequeue 
+
+``` java
+public int dequeue() {
+        if (isEmpty()) { // 비어있는데 dequeue를 한다면 관련 오류 메시지를 보낸다.
+            throw new NoSuchElementException("queue is empty");
+        }
+        
+        Node destroy = front.next; // 삭제할 노드는 더미노드의 next이다.
+                                   // 그래서 front.next를 destroy라는 이름으로 저장했다.
+        int retValue = destroy.data; // return할 값을 retValue에 저장
+        front.next = front.next.next; // 이제 front는 삭제할 노드가 아닌 삭제할 노드 다음에 있는 노드를 가리켜야 한다.
+                                      
+        destroy = null; // 삭제할 노드는 null로 바꿨다.
+        /* clear let GC do it's work */
+        size--; // size를 1 감속
+
+        if (isEmpty()) { // 모든 작업읆 마치고나서 만약 큐가 비어있다면 rear와 front가 같은 더미 노드를 가리키도록 했다
+            front = rear;
+        }
+
+        return retValue;
+    }
+```
+
+위와 같이 코드를 구현하면 큐의 앞 부분(front.next)에 있는 노드가 삭제된다.
+
+![image](https://user-images.githubusercontent.com/64796257/149953877-2cbaa6de-4113-41ba-a6de-a7e120c36473.png)
+
+- peek 
+
+● peekFront()
+
+``` java
+public int peekFront() {
+    if (isEmpty()) {
+        throw new NoSuchElementException("queue is empty");
+    }
+    return front.next.data;
+}
+```
+
+● peekRear()
+
+
+``` java
+public int peekRear() {
+    if (isEmpty()) {
+        throw new NoSuchElementException("queue is empty");
+    }
+    return rear.data;
+}
+```
+
+연결리스트를 이용해서 덱(deque)을 구현하고 싶다면 배열을 이용한 큐와 같이 addFront, deleteRear 메서드만 추가해주면 된다.
+
+- addFront
+``` java
+public void addFront(int data) {
+        Node newNode = new Node(data); // 삽입할 데이터를 가진 노드를 만들어서
+        
+        newNode.next = front.next; // newNode의 next가 현재 front의 next가 가리키는 노드를 가리키도록 하고
+        front.next = newNode; // front의 next가 새 노드를 가리키면 끝난다.
+               
+        size++; // 그렇게 하고 나서 size는 1 증가
+    }
+```
+그림으로 표현하면 아래와 같다. 
+
+![image](https://user-images.githubusercontent.com/64796257/149955246-67613869-d440-46f3-8ccd-960149de5151.png)
+
+- deleteRear
+
+``` java
+public int deleteRear() {
+        if (isEmpty()) { // 비어있는데 deleteRear를 한다면 관련 오류 메시지를 보낸다.
+            throw new NoSuchElementException("queue is empty");
+        }
+        
+        Node destroy = rear; // 삭제할 노드는 rear가 가리키는 노드이다.
+                             // 그래서 rear 노드를 destroy라는 이름으로 저장했다.
+        int retValue = destroy.data; // return할 값을 retValue에 저장
+        
+        Node beforeRear; // rear가 가리키는 노드 앞에 있는 노드
+        
+        // rear 앞에 있는 노드를 찾기 위한 반복문
+        // front 부터 시작해서 next를 통해 한 칸씩 움직이면서 탐색한다.
+        // 조건을 만족하면 멈춘다.
+        for(Node node = front; ; node = node.next ) {
+        	if(node.next == rear) {
+        		beforeRear = node;
+        		break;
+        	}        	
+        }
+        
+        rear = beforeRear; // rear가 가리키는 노드를 
+        				         // beforeRear가 가리키는 것과 똑같이한다.
+        destroy = null; // 삭제할 노드는 null로 바꿨다.
+        size--; // size를 1 감속
+
+        if (isEmpty()) { // 모든 작업을 마치고나서 만약 큐가 비어있다면 rear와 front가 같은 더미 노드를 가리키도록 했다
+            front = rear;
+        }
+
+        return retValue;
+    }
+```
+그림으로 표현하면 아래와 같다.
+
+![image](https://user-images.githubusercontent.com/64796257/149959784-a3747fe4-5498-4ccb-9185-4d5a1bcbf6a0.png)
+
+
+
+
+
+
+
+
+
+
 
 
 
