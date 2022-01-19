@@ -170,6 +170,13 @@ public void replace(int pos, int item) { // 원하는 위치(pos)에 원하는 �
 
 ### 단순 연결 리스트(Singly LinkedList) 
 
+![image](https://user-images.githubusercontent.com/64796257/150093075-cfa83e78-ca93-4170-88dc-5b1d3104f692.png)
+
+하나의 노드에 대해서
+
+`데이터를 저장할 장소`와 `다른 노드를 가리키기 위한 장소`를 서로 구분한다.
+
+그렇게 정의해놓은 노드가 서로를 연결하면서 하나의 리스트를 만드는 것이 `단순 연결 리스트`이다.
 
 
 ### 이중 연결 리스트(Doubly LinkedList)
