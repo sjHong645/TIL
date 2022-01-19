@@ -350,6 +350,10 @@ public int get(int pos) {
 
 ![image](https://user-images.githubusercontent.com/64796257/150104755-95d75d1c-f6cb-4d9d-b9bf-f4b7c704986b.png)
 
+insert_front, remove_front, insert_front가 효율적인 이유는 
+
+rear가 맨 뒤에 있는 노드를 가리키고 rear.next가 맨 앞에 있는 노드를 가리키면서 head와 rear에 모두 접근하기 쉽기 때문이다.   
+
 remove_rear가 효율적이지 못한 이유는
 
 각각의 노드들은 그 노드의 다음 노드만을 가리키기 때문에   
