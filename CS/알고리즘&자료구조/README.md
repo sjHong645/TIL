@@ -2,7 +2,7 @@
 
 ## [시간복잡도(Complexity)](./Complexity.md)
 ## [재귀(Recursion)](./Recursion.md)
-## 연결리스트 
+## 리스트 
 ## 스택 
 ## 큐 
 ## 트리 
