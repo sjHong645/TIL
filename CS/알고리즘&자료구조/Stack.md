@@ -169,8 +169,27 @@ public class StackLinkedList {
 	}
 ```
 
+- pop 함수 
 
+![image](https://user-images.githubusercontent.com/64796257/150048729-c02add6e-f13c-4b83-b739-8d5a9327ff4f.png)
 
+``` java
+public int pop() {
+	if(empty()) {
+	throw new NoSuchElementException("Stack is empty!!");
+	}
+	
+	else { // 삭제할 노드는 top이 가리키는 노드이다.
+	
+		Node p = top; // 지금 top이 가리키는 노드를 p가 가리키도록 하고
+		top = top.next; // top은 그 다음 노드를 가리킨다.
+		int data = p.data; // 반환할 데이터를 data 변수에 저장했다.
+		if(p != null) p = null; // p가 null이 아니라면 p를 없애기 위해 p가 null이 되도록 했다.
+		return data; // 데이터를 반환한다.
+	}
+		
+}
+```
 
 
 
