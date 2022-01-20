@@ -350,8 +350,14 @@ case 3) 자식 노드가 2개 있을 때
 2) `대체할 노드의 key와 value`를 `삭제할 노드의 key와 value`에 대입한다.
 3) 이제 대체를 완료했으니 처음에 대체한 노드에 위치한 노드를 삭제해주고 나서 반환해주면 된다.
 
+### 시간 복잡도 
 
+![image](https://user-images.githubusercontent.com/64796257/150286617-e8be5a1b-0de7-4ba3-9dfa-dbcdba8dc149.png)
+![image](https://user-images.githubusercontent.com/64796257/150286638-05258fce-071a-44b0-a5fa-bd58fefb0e43.png)
 
+![image](https://user-images.githubusercontent.com/64796257/150286656-dbc8b6fc-a0fb-4af4-8446-9521f0ecbfc6.png)
+
+![image](https://user-images.githubusercontent.com/64796257/150286746-009062fd-efe1-4d48-ab43-addfe1ffa583.png)
 
 
 
