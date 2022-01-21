@@ -146,9 +146,19 @@ ex)
 
 [출처](https://github.com/sponbob-pat/Java/blob/master/src/main/java/com/thealgorithms/sorts/QuickSort.java) 
 
+헷갈리지 말아야 할 내용
+- while문 : 조건문이 `참`일 때 블록 안에 있는 문장을 수행하고 조건문이 `거짓`이 되는 순간 while 문 동작을 멈춘다.
+- less 함수 
+
+| 상황 | 리턴 값 | less 함수의 return값 |
+| --- | --- | ---|
+| x < y | -1 | true | 
+| x == y | 0 | false |
+| x > y | 1 | false |
 ### 과정 
 
 ### 구현 
+
 
 
 
