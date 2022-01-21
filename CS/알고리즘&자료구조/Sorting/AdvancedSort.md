@@ -157,6 +157,20 @@ ex)
 | x > y | 1 | false |
 ### 과정 
 
+[3, 2, 4, 1, 7, 6, 5] 을 퀵 정렬한다고 하자. 
+
+변수 설정 
+- left : 배열 가장 왼쪽 index
+- right : 배열 가장 오른쪽 index
+- mid : left와 right의 중간값
+- pivot : array[mid] 값
+
+이 변수들을 표시해서 직접 써보면 아래와 같다. 
+
+![image](https://user-images.githubusercontent.com/64796257/150547641-28431f26-36c1-4dab-8f0d-45de8cbd6c09.png)
+
+어떻게 정렬되는지 하나씩 살펴보겠다. 
+
 ### 구현 
 
 
