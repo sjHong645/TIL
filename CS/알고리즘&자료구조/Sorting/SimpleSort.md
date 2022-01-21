@@ -92,22 +92,98 @@ public <T extends Comparable<T>> T[] sort(T[] array) {
 이를 구현하려면 임시적으로 데이터를 저장할 변수 하나는 선언해놓아야 한다.
 
 ### 구현
+``` java
+  public <T extends Comparable<T>> T[] sort(T[] arr) {
+    int n = arr.length; // 배열의 크기 n
+    
+    for (int i = 0; i < n - 1; i++) {
+      int minIndex = i; // 일단 i값을 minIndex에 저장한다.
+      for (int j = i + 1; j < n; j++) {
+      
+      // minIndex번째 값이 j번째 값보다 크다면 minIndex에 j를 저장한다.
+        if (arr[minIndex].compareTo(arr[j]) > 0) {
+          minIndex = j;
+        }
+      }
+      // 기존에 저장한 minIndex 값이 달라졌다면 
+      // i번째 값과 minIndex번째 값을 서로 바꾼다.
+      if (minIndex != i) {
+        // swap(arr, i, minIndex); 과 동일한 내용
+        T temp = arr[i];
+        arr[i] = arr[minIndex];
+        arr[minIndex] = temp;
+      }
+    }
+    return arr;
+  }
+```
 
+### 성능 평가 
+바깥쪽 for문의 i = 0일 때 안쪽 for문의 j =  1 ~ (n-1) 까지 증가하면서 비교연산을 n-1번 진행한다.
+i = 1일 때 안쪽 for문의 j = 2 ~ (n-1)까지 증가하면서 연산을 n-2번 진행한다.
 
+이런식으로 진행되는 비교연산의 횟수는 다음과 같다. 
 
+![image](https://user-images.githubusercontent.com/64796257/150484054-c2b0808f-61da-4573-a235-c9f1fd3cbdd9.png)
 
+이동횟수와 교환횟수는 O(n^2)이라는 시간복잡도에 영향을 끼치지 않기 때문에 계산에 넣지 않았다.
 
+## 삽입 정렬(Insertion Sort) 
 
+### 과정 
 
+아래 그림은 정렬이 `완료된 부분`과 `완료되지 않은 부분`으로 나뉘어 있다.  
+이렇듯 `삽입 정렬`은 정렬 대상을 두 부분으로 나눠서 `정렬이 안 된 부분에 있는 데이터`를 `정렬된 부분의 특정 위치`에 `삽입`하면서 정렬을 진행하는 알고리즘이다.
 
+![image](https://user-images.githubusercontent.com/64796257/150484923-ecef483e-6d40-48d8-bb3b-dc46b64d25c0.png)
 
+5, 3, 2, 4, 1의 오름차순 정렬과정을 살펴보도록 하자.
 
+![image](https://user-images.githubusercontent.com/64796257/150484953-faae2588-6853-4934-955a-17dede5fbbe1.png)
 
+`첫 번째 데이터`와 `두 번째 데이터`를 비교해서 정렬된 상태가 되도록 두 번째 데이터를 옮기면서 정렬이 시작된다.
 
+이 과정을 통해 첫 번째/두 번째 데이터가 `정렬이 완료된 영역`을 형성하게 된다.
 
+곧이어 `세 번째/네 번째 데이터`가 정렬이 완료된 영역으로 삽입되면서 정렬을 이어간다. 
 
+여기서 정렬된 영역으로 삽입하기 위해서는 특정위치를 비워야 하고 비우기 위해서는 데이터를 한 칸씩 뒤로 미는 연산을 수행해야 한다. 
 
+다음 그림을 보자.
 
+![image](https://user-images.githubusercontent.com/64796257/150485107-f1ea53ab-781f-4192-a591-1382b9a02f65.png)
+
+삽입위치를 찾는 과정과 삽입을 위한 공간 마련의 과정을 구분할 필요가 없다.
+
+어차피 정렬된 영역에서 삽입의 위치를 찾는 것이기 때문에 삽입위치를 찾으면서 삽입을 위한 공간의 마련을 병행할 수 있다.
+
+### 구현 
+
+``` java
+  public <T extends Comparable<T>> T[] sort(T[] array) {
+    for (int i = 1; i < array.length; i++) {
+      T insertValue = array[i]; // 삽입할 데이터를 insertValue 변수에 저장 
+      int j;
+      
+      // j >= 0 이고 insertValue가 array[j]보다 작으면 for문을 실행한다.
+      for (j = i - 1; j >= 0 && less(insertValue, array[j]); j--) {
+        array[j + 1] = array[j];
+      }
+      
+      if (j != i - 1) {
+        array[j + 1] = insertValue;
+      }
+    }
+    return array;
+  }
+```
+
+### 성능 평가 
+
+최악의 경우를 고려해보면 안쪽 for문의 if-else문의 조건이 항상 참이 되면서 break가 단 한 번도 발생하지 않을 때가 최악의 경우이다.  
+그래서 바깥쪽 for문의 반복횟수와 안쪽 for문의 반복횟수를 곱한 만큼 연산이 진행된다.
+
+따라서, Big-O는 O(n^2) 가 된다는 걸 알 수 있다.
 
 
 
