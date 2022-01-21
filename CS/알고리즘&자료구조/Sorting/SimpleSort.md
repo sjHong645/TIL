@@ -1,0 +1,174 @@
+## SortUtil : 정렬할때 사용하는 유용한 메소드들 
+[출처](https://github.com/sponbob-pat/Java/blob/master/src/main/java/com/thealgorithms/sorts/SortUtils.java)
+
+``` java
+import java.util.Arrays;
+import java.util.List;
+
+final class SortUtils {
+
+  // 배열 array의 idx번째 값과 idy번째 값을 서로 바꾼다.
+  static <T> boolean swap(T[] array, int idx, int idy) {
+    T swap = array[idx];
+    array[idx] = array[idy];
+    array[idy] = swap;
+    return true;
+  }
+
+  // v가 w보다 작으면 true 아니면 false
+  static <T extends Comparable<T>> boolean less(T v, T w) {
+    return v.compareTo(w) < 0;
+  }
+
+  // v가 w보다 크면 true 아니면 false
+  static <T extends Comparable<T>> boolean greater(T v, T w) {
+    return v.compareTo(w) > 0;
+  }
+
+  // 전달한 매개변수 리스트의 성분을 출력
+  static void print(List<?> toPrint) {
+    toPrint.stream().map(Object::toString).map(str -> str + " ").forEach(System.out::print);
+
+    System.out.println();
+  }
+
+  // 전달한 매개변수 배열의 성분을 출력
+  static void print(Object[] toPrint) {
+    System.out.println(Arrays.toString(toPrint));
+  }
+
+  /**
+   * Swaps all position from {@param left} to @{@param right} for {@param array}
+   *
+   * @param array is an array
+   * @param left is a left flip border of the array
+   * @param right is a right flip border of the array
+   */
+  static <T extends Comparable<T>> void flip(T[] array, int left, int right) {
+    while (left <= right) {
+      swap(array, left++, right--);
+    }
+  }
+}
+```
+
+## 버블 정렬 : Bubble Sort
+
+정렬 방법 중 가장 잘 알려준 정렬방법이다. 이해와 구현은 쉽지만 성능에는 아쉬움이 있다.  
+그럼 3, 2, 4, 1 순서대로 저장된 다음 그림의 배열을 `오름차순(큰 값이 뒤에 있는 방법)`으로 정렬하는 과정을 보자.
+
+### 과정 
+
+- 1단계 
+
+![image](https://user-images.githubusercontent.com/64796257/150472504-d0f86536-3ddf-442b-a689-bbc918c50523.png)
+
+`버블 정렬`은 인접한 두 개의 데이터를 비교해가면서 정렬하는 방식이다.   
+두 데이터를 비교하면서 정렬순서상 위치가 바뀌어야 하는 경우에는 두 데이터의 위치를 바꿔나간다. 
+
+여기서는 `오름차순`으로 정렬해야 하기 때문에 `큰 값이 오른쪽으로` 이동해야 한다.  
+즉, 두 데이터를 비교했을 때 왼쪽 데이터가 오른쪽 데이터보다 크다면 서로 위치를 바꾼다.
+
+⇒ 이렇게 1단계를 마치고 나면, 가장 큰 값이 가장 오른쪽에 위치하게 된다. 이제 2단계에서는 2번째로 큰 값을 4의 왼쪽에 위치시켜야 한다.
+
+- 2단계 
+
+![image](https://user-images.githubusercontent.com/64796257/150472613-c6dacdcc-69da-4301-8c28-c0eea92fcd20.png)
+
+똑같이 한다. 인접한 두 데이터를 비교해서 왼쪽의 값이 크면 오른쪽으로 이동시킨다.
+
+- 3단계 
+
+![image](https://user-images.githubusercontent.com/64796257/150472638-cfb8c083-5f83-46d7-b49e-5152e4e27287.png)
+
+### 구현 
+
+이제 남은 두 개의 데이터는 2와 1을 정렬하면 최종적으로 정렬이 완료된다.
+``` java
+// 배열에 어떤 자료형이 올지 모르기 때문에 Generic을 이용해서 T라고 정했다.
+// 이와 같은 정렬을 하고 나면 배열 array는 오름차순으로 정렬된다. 
+
+// swap, greater는 sortutil 클래스에 정의되어 있다. 
+
+public <T extends Comparable<T>> T[] sort(T[] array) {
+    for (int i = 0, size = array.length; i < size - 1; ++i) {
+      for (int j = 0; j < size - 1 - i; ++j) {
+    	  
+    	// array[j]가 array[j+1]보다 클 때
+    	// 즉, 왼쪽 원소의 값이 오른쪽 원소 값보다 클 때
+        if (greater(array[j], array[j + 1])) {
+          swap(array, j, j + 1);
+          // 서로 값을 바꾼다. 
+          // array 행렬의 j번째 값과 j+1번째 값을 바꾼다.
+        }
+      }
+
+    }
+    return array;
+  }
+```
+
+### 성능 평가 
+정렬 알고리즘의 성능은 다음 두 가지를 근거로 판단하는 것이 일반적이다. 두 연산은 정렬과정의 핵심연산이기 때문.
+- `비교연산` : 두 데이터간의 비교연산의 횟수
+- `대입연산` : 위치의 변경을 위한 데이터의 이동횟수
+
+실제로 시간 복잡도에 대한 Big-O를 결정하는 기준은 `비교의 횟수`이다.  
+여기에 `이동횟수`까지 살펴본다면 Big-O의 복잡도를 갖는 알고리즘간의 세밀한 비교가 가능하다.
+
+버블 정렬의 비교횟수는 다음 반복문 안에 위치한 if문의 실행 횟수를 기준으로 계산할 수 있다.  
+![image](https://user-images.githubusercontent.com/64796257/150474559-d47b0579-7d40-4cb3-ae9c-82d0e9ccba7f.png)
+
+하지만 이 경우는 그림으로 설명한 알고리즘의 동작 방식을 근거로 비교의 횟수를 계산하는 것이 훨씬 간단하다.  
+배열에 담긴 4개의 데이터를 3단계에 걸쳐서 정렬했는데... 단계별로 진행된 비교횟수를 더한 결과는 3+2+1이다.
+
+따라서, 데이터의 개수가 n일 때 진행되는 비교횟수는 
+
+![image](https://user-images.githubusercontent.com/64796257/150474614-b615a355-1ce9-4d59-b9c6-a68d971a4a7b.png)
+
+이동횟수의 최악의 경우를 보면 한 번 단계를 거칠 때 마다 3번씩 이동한다는 걸 알 수 있다. 그래서 시간복잡도는 똑같이 O(n^2) 이 된다.
+
+## 선택 정렬 : Selection sort 
+
+### 과정 
+![image](https://user-images.githubusercontent.com/64796257/150474727-3effb8a3-3fc6-466c-83b6-2dca2725971b.png)
+
+선택정렬은 그림에서 보이는 바와 같이 정렬 대상에 있는 데이터를 정렬순서에 맞게 하나씩 선택하고 옮기면서 정렬하는 알고리즘이다.
+
+여기서 별도의 메모리 공간이 필요하다는 걸 알 수 있다. 
+
+하지만 데이터를 하나씩 옮길 때 마다 공간이 하나씩 비기 때문에 아래와 같이 알고리즘을 개선하면 별도의 메모리 공간을 마련할 필요는 없다.
+
+![image](https://user-images.githubusercontent.com/64796257/150474870-c1b3e0f1-a4e1-49f2-9707-07dc563c8015.png)
+
+정렬순서상 가장 앞서야 하는 것을 선택해서 가장 왼쪽으로 이동시키고 원래 그 자리에 있던 데이터는 빈 자리에 놓는다.
+
+이를 구현하려면 임시적으로 데이터를 저장할 변수 하나는 선언해놓아야 한다.
+
+### 구현
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
