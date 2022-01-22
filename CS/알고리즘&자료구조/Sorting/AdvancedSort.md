@@ -1,3 +1,7 @@
+## Heap Sort(힙 정렬) 
+
+[해당 내용](https://github.com/sponbob-pat/TIL/blob/main/CS/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%26%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/Heap.md)
+
 ## Merge Sort(병합 정렬) 
 
 ### 과정 
@@ -147,7 +151,7 @@ ex)
 [출처](https://github.com/sponbob-pat/Java/blob/master/src/main/java/com/thealgorithms/sorts/QuickSort.java) 
 
 헷갈리지 말아야 할 내용
-- while문 : 조건문이 `참`일 때 블록 안에 있는 문장을 수행하고 조건문이 `거짓`이 되는 순간 while 문 동작을 멈춘다.
+- while문 : 조건문이 `참(true)`일 때 블록 안에 있는 문장을 수행하고 조건문이 `거짓(false)`이 되는 순간 while 문 동작을 멈춘다.
 - less 함수 
 
 | 상황 | 리턴 값 | less 함수의 return값 |
@@ -162,7 +166,7 @@ ex)
 변수 설정 
 - left : 배열 가장 왼쪽 index
 - right : 배열 가장 오른쪽 index
-- mid : left와 right의 중간값
+- mid : left와 right의 중간값 ⇒ `(left+right) >>> 1` 로 계산 
 - pivot : array[mid] 값
 
 이 변수들을 표시해서 직접 써보면 아래와 같다. 
@@ -171,19 +175,166 @@ ex)
 
 어떻게 정렬되는지 하나씩 살펴보겠다. 
 
+left = 0 <= right = 6 을 만족하기 때문에 left와 right을 각각 1씩 증가/감소 시킬 수 있다. 
+
+단, `left`를 `1씩 증가`시키 위해서는 `array[left]`의 값이 `pivot보다 작아야`한다.  
+`right`를 `1씩 감소`시키기 위해서는 `pivot`의 값이 `array[right]보다 작아야` 한다.
+
+단 한 번이라도 조건을 만족하지 않으면 left와 right는 그곳에 머문다. 그러면 다음과 같이 left와 right가 각 배열에서 값을 가진다. 
+
+![image](https://user-images.githubusercontent.com/64796257/150617862-b78d613d-86a4-4ad0-9f7e-ccd54b77e72b.png)
+
+이때, left와 right가 left <= right 조건을 만족하므로 해당 인덱스에 있는 값을 서로 교환하고 left와 right를 각각 1씩 증가/감소시킨다. 
+
+여전히 `pivot값`은 기존의 값이었던 `1`이다. 
+
+![image](https://user-images.githubusercontent.com/64796257/150617907-4c5b7a93-2d93-409d-81d4-1f9a135d396d.png)
+
+`array[left]`는 `2`이기 때문에 조건을 만족하지 않아서 left의 변화는 없다.
+`array[right]`는 조건을 만족하기 때문에 계속해서 `right--` 연산을 진행한다.  
+그러다가 `array[right] = pivot = 1` 일 때 즉, `right = 0` 일 때 멈춘다.
+
+![image](https://user-images.githubusercontent.com/64796257/150617953-84102cb1-a6da-48b9-ab7b-df24616799f0.png)
+
+이렇게 되면 `left <= right 조건`을 만족하지 않기 때문에 return 값으로 left값을 반환한다. 이 값이 바로 `pivot`이 된다.  
+이렇게 정해진 pivot을 기준으로 `left ~ (pivot-1)` 부분과 `pivot ~ right` 부분에 재귀적으로 퀵 정렬을 수행한다.
+
+![image](https://user-images.githubusercontent.com/64796257/150617991-73c2bfb4-652b-435e-ab41-566384d3fd04.png)
+
 ### 구현 
+``` java
+import static sorts.SortUtils.*;
 
+class QuickSort implements SortAlgorithm {
 
+    @Override
+    // main 함수에서 사용할 sort 함수. 매개변수로 배열만 전달하면 된다. 
+    public <T extends Comparable<T>> T[] sort(T[] array) { 
+        doSort(array, 0, array.length - 1);
+        return array;
+    }
+    
+    // array 배열의 left 부터 right 까지의 정렬을 진행한다.
+    private static <T extends Comparable<T>> void doSort(T[] array, int left, int right) {
+        if (left < right) {
+            int pivot = partition(array, left, right); // array 배열의 left에서 right까지의 범위 중 기준점 pivot을 정한다.
+            doSort(array, left, pivot - 1); // array 배열의 left ~ pivot -1 까지 정렬
+            doSort(array, pivot, right);    // array 배열의 pivot ~ right 까지 정렬
+        }
+    }
+ 
+    private static <T extends Comparable<T>> int partition(T[] array, int left, int right) {
+        int mid = (left + right) >>> 1; // left와 right의 중간값을 mid에 저장
+        T pivot = array[mid];           // pivot은 array[mid]로 설정
 
+        // left <= right 조건을 만족하는 동안 계속 while문 실행
+        while (left <= right) {
+        
+            // array[left]의 값이 pivot보다 작다면 계속 while문 실행
+            // 한 번이라도 조건을 만족하지 않으면 멈춘다.
+            while (less(array[left], pivot)) { 
+                left++;
+            }
+            // pivot의 값이 array[right]보다 작다면 계속 while문 실행
+            // 한 번이라도 조건을 만족하지 않으면 멈춘다.
+            while (less(pivot, array[right])) {
+                right--;
+            }
+            
+            // left <= right를 만족할 때 array[left]의 값과 array[right]의 값을 서로 바꾼다.
+            // 그러고 나서 left와 right를 각각 1씩 증가/감소시킨다.
+            if (left <= right) {
+                swap(array, left, right);
+                left++;
+                right--;
+            }
+        }
+        // 최종적인 left값이 pivot값이 된다.
+        return left;
+    }
 
+    // Driver Program
+    public static void main(String[] args) {
 
+    	QuickSort quickSort = new QuickSort();
+      
+      Integer[] intArray = {3, 2, 4, 1, 7, 6, 5};
+      quickSort.sort(intArray);
+        
+      print(intArray);
+    }
+}
+```
 
+### 성능평가 
 
+pivot이 결정되면 `left는 오른쪽`으로 `right는 왼쪽`으로 이동한다.  
+이때 이동의 과정에서 `left`와 `right`는 `pivot값과 비교`하면서 이동 여부가 결정된다.  
 
+그래서 `데이터의 수가 n`이라 할 때 하나의 pivot이 제 자리를 찾아가는 과정에서 발생하는 `비교연산의 횟수는 O(n)`이라 할 수 있다. 
 
+pivot에 의해 반으로 나뉘어진 상황에서도 `left`와 `right`는 각각 `pivot과의 비교연산`이 진행된다.  
+pivot을 제외한 나머지 데이터가 `n`이라 할 때 `비교연산의 횟수 역시 n`이라 할 수 있다.
 
+그렇다면 이러한 비교횟수 n번이 총 몇 번 일어날까?? 
 
+31개의 데이터가 있다고 가정해보자.  
+이때 둘로 나뉘는 횟수를 k라 할 때 데이터수 n에 대해 `k = log_2(n)` 라는 관계를 가진다고 한다.
 
+따라서, `퀵 정렬의 Big-O`는 `O(nlog_2(n))`이 된다고 할 수 있다.   
+퀵 정렬의 경우에는 최선에 가까운 성능을 평균적으로 보이기 때문에 굳이 최악의 경우에 대한 Big-O를 따지지 않는다.
+
+이렇듯 퀵 정렬은 `O(nlog_2(n))`의 복잡도를 갖는 다른 정렬 알고리즘과 비교했을 때에도 평균적으로 제일 빠른 것으로 알려져 있다.  
+
+데이터 이동횟수가 상대적으로 적고 별도의 메모리 공간을 요구하지 않기 때문이다.
+
+## 다양한 정렬방식 비교 & 비교정렬의 한계 
+
+### 비교 
+1) 대체적으로는 `quick sort`를 많이 사용한다. 왜냐하면, 이 방법이 평균적으로 time cost를 가장 덜 사용하기 때문이다.
+
+2) 만약에 정렬하고자 하는 대상이 `연결 리스트`로 이루어져 있다면 `merge sort`가 더 좋다.
+
+3) `O(nlog_2(n))`의 시간복잡도와 O(1)의 extra space를 보장해야 한다면 `heap sort`를 사용해야 한다.  
+왜냐하면 다른 sort 방식들은 `최악의 경우` 시간복잡도와 공간복잡도가 더 커질 수 있기 때문에다.
+
+그리고 모든 자료가 아닌 `가장 큰 자료 k개만 필요`하다면 이때도 역시 `heap sort`를 사용하는 것이 더 좋다.
+
+이와 같이 `비교`를 기반으로 정렬이 이뤄지는 `비교 정렬(Comparsion Sort)`은 최악의 경우 `O(nlog_2(n))`을 밑돌 수 없다.  
+그런데 진짜로 그럴까? 비교정렬이 진짜로 그런 한계를 가지고 있는지 파악해보자.
+
+![image](https://user-images.githubusercontent.com/64796257/150618624-4074c2f3-11c6-4a1b-8adc-1e9d363cc67e.png)
+
+a,b,c는 서로 중복되지 않는다고 하자. sorting 알고리즘들을 일반화해서 표현한 트리가 위 그림이다.
+
+위 트리를 통해 알 수 있는 사실은 `비교를 통한 정렬`을 하게 되면 `최악의 경우`에 `트리의 높이만큼` 비교연산이 이뤄진다는 것이다. 
+
+만약에 중복되지 않은 자료 3개를 정렬한다고 하면 최대 3번의 비교연산이 필요하다. 
+==> 3개의 자료를 가지고 결정 트리를 만들었을 때 결정 트리의 높이는 ![image](https://user-images.githubusercontent.com/64796257/150618834-d36b068c-3f90-4cb6-8d87-846213eeacb1.png)
+으로 결정된다.
+
+즉, `n개의 자료`를 가지고 결정트리를 만들면 단말 노드는 `n!`개 만큼 생성되고 이에 따른 결정 트리의 높이는 ![image](https://user-images.githubusercontent.com/64796257/150618863-2b7d0666-151e-4894-b224-1c74350c09cc.png)
+ 이 된다. 왜 이런 관계가 성립하는지 따져보자. 
+ 
+![image](https://user-images.githubusercontent.com/64796257/150618879-ac3c266d-7667-489a-9f05-99979a21098f.png)
+ 
+완전 이진 트리에서 `높이를 h` 라 할 때 
+`h=0`이면, 그 높이의 단말 노드 개수는 `2^0 = 1`
+`h=1`이면, 그 높이의 단말 노드 개수는 `2^1 = 2`   
+`h=2`이면, 그 높이의 단말 노드 개수는 `2^2 = 4`  
+
+따라서, h=n이면 단말 노드의 개수는 `2^n`이 된다. 
+
+정리하면 단말 노드의 개수가 `2^n`이면 높이는 `n` <=> 단말 노드의 개수가 `n`이라면 높이는 `log_2(n)`이 된다.
+
+앞서 언급했듯이 `트리의 높이`에 따라서 자료의 최악의 경우의 비교횟수가 결정된다고 했다. 
+
+`n개의 자료`를 정렬할 때 만들어지는 결정 트리의 높이는 ![image](https://user-images.githubusercontent.com/64796257/150618863-2b7d0666-151e-4894-b224-1c74350c09cc.png)이다. 이 식을 가지고 비교횟수의 최악의 경우를 아래와 같이 계산해볼 수 있다. 
+
+![image](https://user-images.githubusercontent.com/64796257/150618968-75e82b64-399c-4117-bf83-d7b914247b61.png)
+![image](https://user-images.githubusercontent.com/64796257/150618985-fff8fbb3-e3f3-4364-8fdd-7a686c6c1ada.png)
+
+Ω(nlogn)을 뛰어 넘는 정렬에 대해서 이제 살펴볼 것이다. 대표적으로 `기수 정렬(Radix sort)`와 `계수 정렬(Counting sort)`가 있는데 이에 대해서 다른 문서에서 살펴보겠다.
 
 
 
