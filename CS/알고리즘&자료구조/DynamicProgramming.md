@@ -226,32 +226,153 @@ maximum <- max(maximum, pebbie(i-1, q))의 의미는.
 이를 통해서 돌 놓기 문제는 최적 부분 구조를 가지면서 재귀적 구현에서 중복 호출 문제가 발생하므로
 동적 프로그래밍을 하기에 적절한 대상임을 알 수 있다.
 
+![image](https://user-images.githubusercontent.com/64796257/150720809-18a10270-0291-4357-b558-75ea087fa47b.png)
+
+pebble의 부분 문제의 개수를 보면 `문제의 크기가 n`일 때 이에 따른 `패턴은 4개`로 정해져 있으므로 `부분 문제의 개수는 4n`이다. 
+
+![image](https://user-images.githubusercontent.com/64796257/150720862-34077524-69fb-4368-aadd-8a2a9486762f.png)
+
+`pebble(n)`의 의미를 보면 `1열부터 n열까지` 돌을 놓았을 때 `최대 합을 출력`하는 함수를 의미한다.
+
+여기서는 부분문제가 되는 `C_(i,p)의 값`을 각각 계산하면서 저장까지 한다.  
+이러한 과정을 통해 최대 합을 `bottom-up 방식`으로 값들을 저장하면서 구할 것이다.
+
+i = 1부터 시작해서 i = 2일 때의 상황을 예시로 들어서 설명하면 금방 이해된다.
+
+이에 대한 `시간 복잡도`와 `공간 복잡도`는 `O(n)`이다.
+
+왜냐하면, 내가 원하는 `행렬의 열 크기`만큼 for문이 동작하고  
+`부분문제의 개수` 역시 `행렬의 열 크기`와 선형적으로 `비례`하기 때문에 `시간/공간 복잡도`를 `O(n)`이라 할 수 있다.
 
 ### 행렬 곱셈 순서 문제 
 
+#### 조건 및 규칙
 
+![image](https://user-images.githubusercontent.com/64796257/150722595-c566c0df-ab2c-4eb2-8e61-74fa328ca3a3.png)
 
+가장 단순한 방법은 앞에서부터 곱하는 방법이다. 
 
+그런데 행렬의 곱셈은 `결합법칙`이 성립한다. 즉, `(AB)C = A(BC)`가 성립한다.  
+따라서, n개의 행렬을 `2개씩 짝지어 계산`해도 결과는 동일하다. 다음은 `4개의 행렬을 곱`하는 모든 경우다.
 
+![image](https://user-images.githubusercontent.com/64796257/150722678-51384f30-a184-406d-aa09-c05a91543370.png)
 
+이렇게 5가지가 존재한다. 하지만, 괄호를 어떻게 바꾸든지 간에 `3번의 행렬 곱셈`을 한다는 건 변함없다.  
+따라서, 일반적으로 `n개의 행렬 곱셈`에 대해서 `총 n-1번 의 곱셈`을 하게 된다.
 
+하지만, `스칼라 곱`은 순서에 따라 달라질 수 있다. 3개의 행렬 A, B, C가 있다고 하자.  
 
+A: 10 * 100, B: 100 * 5, C: 5 * 50
 
+![image](https://user-images.githubusercontent.com/64796257/150722750-5a09e947-854e-49c3-bcff-226eaf9132a7.png)
+![image](https://user-images.githubusercontent.com/64796257/150722752-e44eee78-23ce-486e-8e80-f434394a4849.png)
 
+이러한 차이가 발생한다.
 
+`n개의 행렬`을 곱하기 위해 `괄호를 묶는 방법`의 경우의 수는 `Ω(2ⁿ)`이 된다. 모든 경우의 수를 일일히 세는 건 비효율적이다.
+
+#### DP 조건 만족 여부 및 구현 
+
+![image](https://user-images.githubusercontent.com/64796257/150725637-8f7d7314-6c2f-4d9c-9975-4fd187e315e5.png)
+
+![image](https://user-images.githubusercontent.com/64796257/150725700-f7ef6f67-e349-4914-ba05-612de92c7e57.png)
+
+위의 계산 식 모두 `Ai ~ Aj`를 계산한 식이기 때문에 `C_(i,j)`의 값이 될 수 있는 후보들이다.  
+그 중에서 최솟값이 바로 `C_(i,j)`가 된다.
+
+그러면 어떻게 위와 같은 계산식이 나올 수 있을까. 그 이유는 아래와 같다. 
+
+![image](https://user-images.githubusercontent.com/64796257/150726105-bbb82c16-e17d-45ea-81c6-8e49d6b7976c.png)
+
+![image](https://user-images.githubusercontent.com/64796257/150726500-78497d97-0de7-42c0-91a6-43f0f68a6b25.png)
+
+그 중에서 최소값이 되는 것을 찾으려고 한다. 다음과 같은 식을 세울 수 있다.  
+![image](https://user-images.githubusercontent.com/64796257/150726532-53b3ae1f-307b-4e97-a5b0-5773bb886d80.png)
+
+여기서 `i < j`인 이유는 위에서 계산한 것처럼 ![image](https://user-images.githubusercontent.com/64796257/150726575-5948a915-0eba-4b01-b4bf-b14b4c2e57b5.png)로 계산되기 때문에 `i < j`라는 대소관계가 성립.
+
+이를 바탕으로 pseudo-code를 작성하면 아래와 같다. `matrix-chain(i,j)`는 `C_(i,j)`를 계산하는 함수다.  
+![image](https://user-images.githubusercontent.com/64796257/150726625-52cfce9d-81a9-4e7a-aa86-b9a6e04c4d9e.png)
+
+여기서 `minimum의 값`은 잡을 수 있는 최대한의 값으로 `초기화한 상태`에 함수를 시작한다.
+
+하지만, 이러한 방식에서 끝나면 재귀호출의 중복이 심해진다.  
+
+그러나, `A₁ × A₂ × ... × A_n`에 대한 C_i,j의 부분 문제의 개수는 ![image](https://user-images.githubusercontent.com/64796257/150726866-89730535-6c7a-4243-a0bf-aa2b300bc362.png)
+개 밖에 되지 않으므로
+
+각각의 해를 `아래부터 저장`하면서 구하는 동적 프로그래밍을 사용하는 것이 적합하다.
+
+이제 각각의 `C_i,j`의 값을 저장하는 코드를 작성하자.
+
+![image](https://user-images.githubusercontent.com/64796257/150726903-8eb5a5e5-9133-457c-a07b-17f8ec9b714d.png)
+
+일단, 1부터 n까지 `C_i,i`의 값을 0으로 초기화. 
+
+그렇게 하고 나서 `C_i,j의 값`을 구할 때마다 저장할 것이다. 이에 대한 시간 복잡도는 for문이 중첩되어 있기 때문에
+![image](https://user-images.githubusercontent.com/64796257/150727013-2e441395-8a04-47f5-b0a5-fc0fbd95429b.png)
+이라 할 수 있다.
+
+함수의 return값은 `C_(1,n)`. 즉, `A₁ × A₂ × ... × A_n`을 계산할 때 발생하는 최소 스칼라 곱셈횟수가 된다.
 
 ### 최장 공통 부분 순서(Longest Common Sub-Sequence) 
 
+#### 조건 및 규칙
 
+두 문자열 `X_m`과 `Y_n`이 있다. 여기서 `m,n`은 `X_m과 Y_n 문자열`의 각각의 `길이`를 의미한다.
 
+이때, 두 문자열의 `공통 부분`이 있을 수 있는데 공통 부분 중에서 `가장 긴 공통 부분의 길이`가 뭔지 알아내려 한다.  
+⇒ 이를 이용한 것이 git의 `diff`가 되겠다.
 
+뭔 말인지 이해하기 힘들 수 있으니 단계적으로 의미를 살펴보자.
+- sub-sequence
+ex. A**BC**B**D**A**B**가 있다고 할 때 해당 문자열 중에서 **BCDB**를 sub-sequence라 할 수 있다.
 
+![image](https://user-images.githubusercontent.com/64796257/150727452-04096e11-1fc8-4d58-a178-faf3b501167e.png)
 
+#### DP 조건 만족 여부 및 구현
 
+그럼 이것도 동적 프로그래밍을 적용할 수 있을까? 먼저 `최적 부분 구조`를 살펴보자.
 
+![image](https://user-images.githubusercontent.com/64796257/150727486-47a98848-885b-42b8-8341-6b303cd075e2.png)
 
+1) ![image](https://user-images.githubusercontent.com/64796257/150727494-5b99ca05-e829-4088-82d3-efb534486055.png)
+이라면, 
 
+`X_m`과 `Y_n`의 `LCS`는 `X_(m-1)과 Y_(n-1)의 LCS`보다 `1 크다`.  
+왜냐하면, 이미 각 문자열의 끝 부분인 `x_m과 y_n`이 `서로 같아서` 해당 문자열의 이전 부분인 `X_(m-1)과 Y_(n-1)의 LCS`를 구하고  
+`x_m = y_n`은 성립하므로 `1`만 더해주면 된다.
 
+즉, `(m,n) 크기 문제의 해`는 `(m-1, n-1) 크기 문제의 해`를 `포함`한다고 할 수 있다.
 
+2) ![image](https://user-images.githubusercontent.com/64796257/150727670-94e5c4ed-06d4-4a91-a933-527aacd75c32.png)
+이면, 
 
+`X_m과 Y_n의 LCS 길이`는 이미 ![image](https://user-images.githubusercontent.com/64796257/150727721-6435611f-b1a5-4856-8d97-58d60d62ffc0.png)
+라는 조건을 내걸었기 때문에 X_m과 Y_n을 굳이 `다 비교할 필요는 없다`. 
 
+그래서 `x_m` 또는 `y_n`을 `하나씩 제외`하고 `각각의 문자열을 비교`한다.  
+그러면, `X_m과 Y_(n-1) 사이의 LCS`와 `X_(m-1)과 Y_n 사이의 LCS`를 각각 구해서 `더 큰 값`이 `X_m과 Y_n의 LCS`가 되겠다.
+
+![image](https://user-images.githubusercontent.com/64796257/150727818-a0746e29-7712-47fe-b3c9-ab31090bbf34.png)
+
+이를 통해 점화식을 구하면 다음과 같다.
+
+![image](https://user-images.githubusercontent.com/64796257/150727883-21ec6a68-b1a0-4c5d-9564-838f80880f71.png)
+
+`C_(i,j)`는 ![image](https://user-images.githubusercontent.com/64796257/150727900-032d60b1-9983-4dd2-9246-62a6c57f244b.png) 과 ![image](https://user-images.githubusercontent.com/64796257/150727911-3a751ad1-538d-464e-b2ae-54ca76084901.png)
+의 LCS라 하자.
+
+![image](https://user-images.githubusercontent.com/64796257/150728002-c03ae0bc-a6f8-4612-b581-27decec21ab9.png)
+
+여기서 끝내면 중복 호출을 많이 발생시킨다. 그래서 아래서부터 시작해서 각각의 계산 결과값을 저장하면서 재귀적으로 함수를 진행한다.
+
+![image](https://user-images.githubusercontent.com/64796257/150728046-e66e9610-b721-4c1b-9bd6-efaa9cd51047.png)
+
+이렇게 되면 최종적으로 `길이가 m인 문자열`과 `길이가 n인 문자열`의 `LCS`를 구할 수 있다. 
+
+`시간복잡도`는 m번 반복하는 for문을 n번 반복하므로 `mn`이 되고
+
+`공간복잡도`는 `i가 1부터 m까지` 이고 `j가 1부터 n까지` 이므로 필요한 `C_(i,j)`의 저장 공간개수는 `mn`이 된다.
+
+따라서, 둘 다 `Θ(mn)`이다.
