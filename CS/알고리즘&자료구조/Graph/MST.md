@@ -116,13 +116,100 @@ ex) 가중치 무방향 그래프
 
 간선이 연결되었는지 확인하기 위해서 DFS 또는 BFS를 활용해야 한다.
 
+![image](https://user-images.githubusercontent.com/64796257/150932186-84b2eb4e-f21a-4173-8c18-d8f2ec8f20d5.png)
 
 
+### 프림 알고리즘(Prim Algorithm) 
 
 
+#### 개념 
 
+: `시작 정점`에서부터 `출발`해서 `신장 트리` 집합을 `단계적으로 확장`해나가는 방법.
 
+1) `시작 단계`에서는 `시작 정점만`이 MST 집합에 `포함`된다.
+2) 앞 단계에서 만들어진 `MST 집합에 인접한 정점`들 중에서 `최소 간선으로 연결된 정점`을 선택해서 트리를 `확장`
+3) 위의 과정을 `트리`가 `N-1개의 간선을 가질 때까지` 반복한다.
 
+#### 의사코드 및 구현모델 
 
+![image](https://user-images.githubusercontent.com/64796257/150929912-d1d9f9ab-2734-4471-87d0-d8175fe1f72f.png)
+![image](https://user-images.githubusercontent.com/64796257/150929917-fe5bbc22-7277-43d1-86df-2a4c1ffa0819.png)
 
+extract-min(Q, c[]) : `Q`라는 그래프에 있는 노드 중에서 `최소 비용을 가지는 노드`를 반환한다.
 
+즉, prim(G, r)의 의미는 `그래프 G`에 있는 `r 노드`에서 `MST`를 찾기 시작할 거라는 얘기다.
+
+예제를 따라가면서 의사코드에 적힌 내용을 이해해보자.
+
+![image](https://user-images.githubusercontent.com/64796257/150930093-bad5c467-fb8d-4ac8-b76b-d6956f6fb753.png)
+![image](https://user-images.githubusercontent.com/64796257/150930101-0b22e6e6-6e29-4494-8794-be7a4e46833f.png)
+
+![image](https://user-images.githubusercontent.com/64796257/150930142-b49867ab-2c8e-4ba5-a342-dd5e3272f261.png)
+![image](https://user-images.githubusercontent.com/64796257/150930149-ca915f03-b941-4e00-94ab-c4aedf3b93fc.png)
+
+![image](https://user-images.githubusercontent.com/64796257/150930170-1e8ff80f-6028-469c-80e4-b3bd3646a0fd.png)
+![image](https://user-images.githubusercontent.com/64796257/150930180-557d8ba7-185e-4960-b24b-ad3372343fbd.png)
+
+이제 while 반복문을 시작한다.   
+![image](https://user-images.githubusercontent.com/64796257/150930435-5a877d93-19b7-4204-b969-1d014b344b38.png)
+![image](https://user-images.githubusercontent.com/64796257/150930450-b849bcd7-e274-4ba5-b453-4f1a2ef064cf.png)
+
+기존에 `S`는 `공집합`이었다. 그러면 `V-S`는 아직 `그래프 전체`가 된다. 
+
+그래프 전체 중에서 `가장 작은 값`을 가지는 `노드`를 `u`로 가리킨 다음에 해당 노드가 `S의 원소`가 되도록 했다.
+
+그러고 나서 `for문`을 실행하는데 `u가 가리키는 노드`의 `이웃한 노드`들을 각각 가리키도록 하고
+
+이때, `u에 이웃`한 노드들이 `V-S의 원소`이면서 `u와 연결된 간선의 가중치 값`보다 `이웃한 노드들이 가지고 있는 값`이 더 크다면
+(V-S는 S를 제외한 나머지 부분이라고 이해하면 되겠다)
+
+`u와 연결된 간선의 가중치 값`이 `노드의 값`이 `되도록` 하고 `해당 노드`는 `u 노드`를 가리키도록 한다.
+
+이 과정을 한 번 거치면 아래와 같은 그림을 그릴 수 있다.
+
+![image](https://user-images.githubusercontent.com/64796257/150931751-ed588dbc-571e-4899-86f5-fb5da110f210.png)
+
+이후에도 계속해서 `while 문`을 실행한다. 
+
+S를 제외한 가장 작은 값을 가진 `노드 8`을 `u`가 가리킨다.
+
+`u`가 현재 가리키는 노드 = `8을 가진 노드`의 `이웃한 노드`가  
+
+`V-S`에 속하면서 `그 노드의 값`이 `u와 연결된 간선의 가중치 값`보다 `크다`면
+
+`해당 노드의 값`이 `u와 연결된 간선의 가중치 값`이 `되도록`하고 `해당 노드`는 `u 노드`를 가리킨다.
+
+이 과정을 반복하면 어느 순간 `S = V`가 되고 `각각의 노드`가 `가리키고 있는 경로`가 남아있게 되는데 `그 경로가 MST`가 된다.
+
+#### 구현할 때 필요한 상황 
+
+![image](https://user-images.githubusercontent.com/64796257/150932341-09ebf205-6cd3-4902-b045-2673d4218e8f.png)
+
+`R`이라는 집합을 설정한다. 이때 `R`은 `V에서 S를 뺀` `나머지 집합`이다.   
+`Prim algorithm`을 보면 알겠지만, 그래프 전체와 같았던 `V`가 `하나씩 줄어`들면서 `S가 V가 될 때까지` 알고리즘이 지속된다.
+
+여기서 `V가 S와 똑같아진다`는 건, `나머지 집합 R`이 `하나씩 없어진다`는 것으로도 얘기할 수 있다.
+
+그래서 while문의 조건문인 `S is not V` 와 `R is not empty`는 `동치`가 된다.
+
+delete-min(R, c) : 집합 R에서 cost가 가장 작은 노드의 값을 return하고 해당 노드를 집합 R에서 제거한다.
+
+![image](https://user-images.githubusercontent.com/64796257/150932578-ebef87f7-a3e1-4996-a6c6-1e9a1fd50b49.png)
+![image](https://user-images.githubusercontent.com/64796257/150932583-b7a76317-d76c-4b23-947f-a0242299af83.png)
+
+앞서 살펴본 과정을 `표현만 달리한 것`이라 생각하면 되겠다.  
+
+앞에서는 최소값을 가지는 노드를 MST에 해당하는 `집합 S`에 `하나씩 추가`한 것이라면  
+여기서는 최소값을 가지는 노드를 MST에 `해당하지 않는 집합 R`에서 `하나씩 삭제`하는 과정이라 생각하면 되겠다.
+
+#### 시간/공간 복잡도 
+
+![image](https://user-images.githubusercontent.com/64796257/150932766-d331a507-9b37-4682-9ce7-c4d13a60d571.png)
+
+m = 간선의 개수 / n = 노드의 개수 ![image](https://user-images.githubusercontent.com/64796257/150932805-17521e09-65f2-4a66-95a1-0174bec66387.png)
+
+### 사용하기에 적합한 경우
+
+1) 그래프가 dense(밀집되어 있다면) Prim 알고리즘을 사용하는 것이 더 좋다.
+
+2) 그래프가 sparse(듬성듬성)하거나 edge들이 어느 정도 정렬되어 있다면... Kruskal 알고리즘을 사용하는 것이 더 좋다.
