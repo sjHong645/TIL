@@ -37,7 +37,7 @@ out.println(someValue);
 ```
 
 ex. useOutObject.jsp - out 기본 객체를 JSP 페이지의 스크립트릿에서 직접 사용할 수 있다.
-```
+``` jsp
 <%@ page contentType = "text/html; charset=utf-8" %>
 <html>
 <head><title>out 기본 객체 사용</title></head>
@@ -90,7 +90,7 @@ out 기본 객체는 버퍼와 관련해서 아래와 같은 메서드를 제공
 | isAutoFlush() | boolean | page 디렉티브의 autoFlush의 값을 출력한다 | 
 
 ex. bufferInfo.jsp 
-``` 
+``` jsp
 <%@ page contentType = "text/html; charset=utf-8" %>
 <%@ page buffer="8kb" autoFlush="false" %>
 <html>
@@ -144,7 +144,7 @@ JSP는 웹 환경에서 사용되기 때문에 getRequest(), getResponse()가 �
 
 ex. usePageContext.jsp - 위에서 소개한 메서드를 가지고 request 기본 객체와 out 기본 객체 사용하기(실제로 이렇게 구하지는 않음) 
 
-```
+``` jsp
 <%@ page contentType = "text/html; charset=utf-8" %>
 <html>
 <head><title>pageContext 기본 객체</title></head>
