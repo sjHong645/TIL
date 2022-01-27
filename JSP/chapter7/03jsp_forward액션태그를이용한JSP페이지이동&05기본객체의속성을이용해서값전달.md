@@ -251,7 +251,7 @@ ex) makeTime.jsp
 	Calendar cal = Calendar.getInstance();
 	request.setAttribute("time", cal); 
 	
-	# 생성한 Calendar 객체를 time이라는 파라미터에 담아서 request 기본 객체에 저장했다.
+	// 생성한 Calendar 객체를 time이라는 파라미터에 담아서 request 기본 객체에 저장했다.
 %>
 <jsp:forward page="/to/viewTime.jsp" />
 ```
@@ -267,13 +267,13 @@ forward를 통해 흐름을 받은 viewTime.jsp를 보자.
 <%
 	Calendar cal = (Calendar) request.getAttribute("time");
 	
-	# request에 저장한 파라미터인 time의 값을 읽어온다.
+	// request에 저장한 파라미터인 time의 값을 읽어온다.
 %>
 현재 시간은 <%= cal.get(Calendar.HOUR) %>시
 			<%= cal.get(Calendar.MINUTE) %>분
 			<%= cal.get(Calendar.SECOND) %>초 입니다.
 			
-# 그 값(cal)을 가지고 현재 시간/분/초를 화면에 출력했다.
+<%-- 그 값(cal)을 가지고 현재 시간/분/초를 화면에 출력했다. --%>
 
 </body>
 </html>
