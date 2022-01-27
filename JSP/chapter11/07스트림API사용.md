@@ -3,10 +3,10 @@ EL 3.0 버전에는 컬렉션 객체를 위한 스트림 API가 추가되었다.
 ex) 
 ``` jsp
 <c:set var="lst" value = "<%= java.util.Arrays.asList(1,2,3,4,5) %>" />
-# lst라는 이름의 Array를 만들었다. 이 Array는 1,2,3,4,5라는 값들을 가지고 있다.
+<%-- lst라는 이름의 Array를 만들었다. 이 Array는 1,2,3,4,5라는 값들을 가지고 있다. --%>
 
 <c:set var="sum" value = "${lst.stream().sum()}" />
-# lst라는 Array의 값을 스트림을 이용해서 계산했다. 그 값을 sum이라는 변수에 저장했다.
+<%-- lst라는 Array의 값을 스트림을 이용해서 계산했다. 그 값을 sum이라는 변수에 저장했다. --%>
 ```
 
 여기에 세미콜론과 할당 연산자를 함께 사용하면 JSTL 태그를 사용하지 않고 EL 만의 합을 sum 변수에 할당할 수 있다.
@@ -26,9 +26,9 @@ lst라는 이름의 배열을 생성했다. 그 배열은 {1,2,3,4,5}로 이뤄�
 ex) 리스트 lst에서 짝수인 값만 골라 제곱한 결과를 List로 표현하려 한다.
 ``` jsp
 ${lst.stream()
-     .filter(x -> x % 2 == 0) # lst의 원소 값 중에서 짝수인 값만 필터링
-     .map(x -> x * x) # 각 원소들을 제곱해서
-     .toList() }  # 리스트로 출력
+     .filter(x -> x % 2 == 0) // lst의 원소 값 중에서 짝수인 값만 필터링
+     .map(x -> x * x) // 각 원소들을 제곱해서
+     .toList() }  <%-- 리스트로 출력 --%>
 ```
 
 대부분 자바에서 사용하는 스트림과 유사하다. 
@@ -61,8 +61,8 @@ Map에 stream() 메서드를 사용하고 싶다면 다음과 같이 Map.entrySe
 %>
 ${map.entrySet().stream().map(entry -> entry.value).toList()}
 
-# Map 타입의 값에 stream()을 지원하지 않는다. 
-# 그래서 map.stream()이 아니라 map.entrySet().stream()으로 작성해줘야 한다.
+<%-- Map 타입의 값에 stream()을 지원하지 않는다. --%>
+<%-- 그래서 map.stream()이 아니라 map.entrySet().stream()으로 작성해줘야 한다. --%>
   
 ```
 
@@ -197,9 +197,9 @@ ex)
 ``` jsp
 $ {minValue = '-' ; ''} # minValue 변수에 '-'를 저장했다.
 
-$ { [1, 2, 3].stream().min().ifPresent(x -> (minValue = x)) } #[1, 2, 3]의 최소값을 1이다. 
-                                        # 1이라는 값이 존재하기 때문에 ifPresent()에 의해 minValue 변수에 1이 저장된다.
-                                        # 만약에 값이 없었다면 minValue 변수는 이전에 저장한 것과 똑같이 '-'를 가지고 있었을 것이다.
+$ { [1, 2, 3].stream().min().ifPresent(x -> (minValue = x)) } <%-- [1, 2, 3]의 최소값을 1이다. --%>
+                                        <%-- 1이라는 값이 존재하기 때문에 ifPresent()에 의해 minValue 변수에 1이 저장된다. --%>
+                                        <%-- 만약에 값이 없었다면 minValue 변수는 이전에 저장한 것과 똑같이 '-'를 가지고 있었을 것이다. --%>
 
 최소값은 ${minvalue} 입니다.
 ```
@@ -233,8 +233,8 @@ ex) age 프로퍼티 값이 가장 큰 객체를 구하고 싶을 때
 
 $ {maxAgeMemOpt = members.stream().max((m1, m2) -> m1.age.compareTo(m2.age)) ; '' }
 
-# 객체 자레로는 최대/최소값을 알아낼 수 없다.
-# 여기서는 객체의 age 값의 최대값을 알고 싶기 때문에 위와 같은 람다식을 설정했다.
+<%-- 객체 자레로는 최대/최소값을 알아낼 수 없다. --%>
+<%-- 여기서는 객체의 age 값의 최대값을 알고 싶기 때문에 위와 같은 람다식을 설정했다. --%>
 ```
 
 ### 12 anyMatch(), allMatch(), noneMatch() 를 이용한 존재 여부 확인
@@ -244,9 +244,9 @@ ex) anyMatch()
 $ {lst = [1, 2, 3, 4, 5] ; '' }
 
 <%-- 4보다 큰 원소가 존재하는지 확인 --%>
-${ matchOpt = lst.stream().anyMatch( v -> v > 4); '' } # lst 배열에 있는 모든 값들 중에서 하나라도 4보다 큰 값이 있다면 true를 return하고 
-                                                       # 모든 값이 다 4보다 작다면 false를 return한다.
-$ {matchOpt.get() } # 여기서는 true를 return한다.
+${ matchOpt = lst.stream().anyMatch( v -> v > 4); '' } <%-- lst 배열에 있는 모든 값들 중에서 하나라도 4보다 큰 값이 있다면 true를 return하고 --%>
+                                                       <%-- 모든 값이 다 4보다 작다면 false를 return한다. --%>
+$ {matchOpt.get() } <%-- 여기서는 true를 return한다. --%>
 ```
 
 ex) allMatch()
@@ -254,9 +254,9 @@ ex) allMatch()
 $ {lst = [1, 2, 3, 4, 5] ; '' }
 
 <%-- 4보다 큰 원소가 존재하는지 확인 --%>
-${ matchOpt = lst.stream().allMatch( v -> v > 4); '' } # lst 배열에 있는 모든 값이 4보다 크다면 true 를 return하고 
-                                                       # 그렇지 않으면 false를 return한다.
-$ {matchOpt.get() } # 여기서는 false를 return한다.
+${ matchOpt = lst.stream().allMatch( v -> v > 4); '' } <%-- lst 배열에 있는 모든 값이 4보다 크다면 true 를 return하고 --%>
+                                                       <%-- 그렇지 않으면 false를 return한다. --%>
+$ {matchOpt.get() } <%-- 여기서는 false를 return한다. --%>
 ```
 
 ex) noneMatch() 
@@ -264,9 +264,9 @@ ex) noneMatch()
 $ {lst = [1, 2, 3, 4, 5] ; '' }
 
 <%-- 4보다 큰 원소가 존재하는지 확인 --%>
-${ matchOpt = lst.stream().noneMatch( v -> v > 4); '' } # lst 배열에 있는 모든 값이 4보다 크다는 조건을 만족하지 않으면 true를 return하고 
-                                                       # 그렇지 않으면 false를 return한다.
-$ {matchOpt.get() } # 여기서는 false를 return한다.
+${ matchOpt = lst.stream().noneMatch( v -> v > 4); '' } <%-- lst 배열에 있는 모든 값이 4보다 크다는 조건을 만족하지 않으면 true를 return하고 --%>
+                                                       <%-- 그렇지 않으면 false를 return한다. --%>
+$ {matchOpt.get() } <%-- 여기서는 false를 return한다. --%>
 ```
 
 anyMatch(), allMatch(), noneMatch() 모두 빈 스트림에 대해 값이 없는 Optional을 return한다.  
