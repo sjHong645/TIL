@@ -25,7 +25,7 @@
 ### 1.1 `<jsp:include>` 액션 태그 이용법
 
 `<jsp:include>` 액션 태그의 기본적인 사용방법은 다음과 같다. 
-```
+``` jsp
 <jsp:include page = "포함할 페이지" flush = "true" />
 ```
 
@@ -50,9 +50,9 @@ ex) main.jsp
 
 main.jsp에서 생성한 내용. # sub.jsp 이전에 생성되는 내용
 
-<jsp:include page="sub.jsp" flush="false" /> # sub.jsp로 요청 처리 흐름이 이동함
+<jsp:include page="sub.jsp" flush="false" /> <%-- sub.jsp로 요청 처리 흐름이 이동함 --%>
 
-include 이후의 내용. # sub.jsp 이후에 생성되는 내용
+include 이후의 내용. <%-- sub.jsp 이후에 생성되는 내용 --%>
 
 </body>
 </html>
@@ -110,13 +110,13 @@ ex) layout.jsp
 <tr>
 	<td colspan="2">
 		<jsp:include page="/module/top.jsp" flush="false" /> 
-    # 상단 영역의 코드 - 직접 코드를 작성하지 않고 관련 영역 생성
+    <%-- 상단 영역의 코드 - 직접 코드를 작성하지 않고 관련 영역 생성 --%>
 	</td>
 </tr>
 <tr>
 	<td width="100" valign="top">
 		<jsp:include page="/module/left.jsp" flush="false" />
-    # 좌측 영역의 코드 - 직접 코드를 작성하지 않고 관련 영역 생성
+    <%-- 좌측 영역의 코드 - 직접 코드를 작성하지 않고 관련 영역 생성 --%>
 	</td>
 	<td width="300" valign="top">
 		<!-- 내용 부분: 시작 -->
@@ -128,7 +128,7 @@ ex) layout.jsp
 <tr>
 	<td colspan="2">
 		<jsp:include page="/module/bottom.jsp" flush="false" />
-    # 하단 영역의 코드 - 직접 코드를 작성하지 않고 관련 영역 생성
+    <%-- 하단 영역의 코드 - 직접 코드를 작성하지 않고 관련 영역 생성 --%>
 	</td>
 </tr>
 </body>
@@ -177,10 +177,10 @@ ex) info.jsp - `<jsp:param>` 액션 태그를 사용해서 infoSub.jsp에 파라
 <body>
 <table width="100%" border="1" cellpadding="0" cellspacing="0">
 <tr>
-	<td>제품번호</td> <td>XXXX</td> # 제품번호 XXXX
+	<td>제품번호</td> <td>XXXX</td> <%-- 제품번호 XXXX --%>
 </tr>
 <tr>
-	<td>가격</td> <td>10,000원</td> # 가격 10,000
+	<td>가격</td> <td>10,000원</td> <%-- 가격 10,000 --%>
 </tr>
 </table>
 
@@ -188,7 +188,7 @@ ex) info.jsp - `<jsp:param>` 액션 태그를 사용해서 infoSub.jsp에 파라
 	<jsp:param name="type" value="A" /> 
 </jsp:include>
 
-# infoSub.jsp에 이름이 type이고 값이 A인 파라미터를 추가했다.
+<%-- infoSub.jsp에 이름이 type이고 값이 A인 파라미터를 추가했다. --%>
 
 </body>
 </html>
@@ -200,7 +200,7 @@ ex) info.jsp - `<jsp:param>` 액션 태그를 사용해서 infoSub.jsp에 파라
 <%
 	String type = request.getParameter("type");
 	if (type == null) {
-		return;           # type이 null이면 돌려보냄
+		return;           // type이 null이면 돌려보냄
 	}
 %>
 <br>
@@ -212,9 +212,9 @@ ex) info.jsp - `<jsp:param>` 액션 태그를 사용해서 infoSub.jsp에 파라
 <tr>
 	<td>특징</td>
 	<td>
-<%  if (type.equals("A")) { %> # type이 A이면 "강한 내구성"을 출력
+<%  if (type.equals("A")) { %> <%-- type이 A이면 "강한 내구성"을 출력 --%>
 	강한 내구성.
-<%  } else if (type.equals("B")) { %> # type이 B이면 "뛰어난 대처 능력"을 출력
+<%  } else if (type.equals("B")) { %> <%-- type이 B이면 "뛰어난 대처 능력"을 출력 --%>
 	뛰어난 대처 능력
 <%  } %>
 	</td>
@@ -254,19 +254,19 @@ ex) body_main.jsp - `<jsp:param>`을 실행하기 전/후 파라미터 값에 �
 <head><title>INFO</title></head>
 <body>
 
-include 전 name 파라미터 값: <%= request.getParameter("name") %> # URL에서 전달한 name 파라미터 값을 출력할 것이다.
+include 전 name 파라미터 값: <%= request.getParameter("name") %> <%-- URL에서 전달한 name 파라미터 값을 출력할 것이다. --%>
 
 <hr>
 
 <jsp:include page="body_sub.jsp" flush="false">
-	<jsp:param name="name" value="최범균" /> # body_sub.jsp에 name 파라미터 값으로 "최범균"을 전달
-                                          # 우선순위에 의해 목록은 [최범균, cbk] 순서로 출력될 것이다.
+	<jsp:param name="name" value="최범균" /> <%-- body_sub.jsp에 name 파라미터 값으로 "최범균"을 전달 --%>
+                                          <%-- 우선순위에 의해 목록은 [최범균, cbk] 순서로 출력될 것이다. --%>
 </jsp:include>
 
 <hr/>
 
-include 후 name 파라미터 값: <%= request.getParameter("name") %> # <jsp:param>에 의해서 파라미터값을 전달하지 않았기 때문에
-                                                                # URL에서 전달한 name 파라미터 값을 출력한다.
+include 후 name 파라미터 값: <%= request.getParameter("name") %> <%-- <jsp:param>에 의해서 파라미터값을 전달하지 않았기 때문에 --%>
+                                                                <%-- URL에서 전달한 name 파라미터 값을 출력한다. --%>
 
 </body>
 </html>
@@ -280,10 +280,10 @@ body_sub에서 name 파라미터 값: <%= request.getParameter("name") %>
 name 파라미터 값 목록:
 <ul>
 <%
-	String[] names = request.getParameterValues("name"); #name 파라미터의 목록을 names 배열에 저장
+	String[] names = request.getParameterValues("name"); <%-- name 파라미터의 목록을 names 배열에 저장 --%>
 	for (String name : names) {
 %>
-	<li> <%= name %> </li> # 파라미터의 값들을 하나씩 출력한다.
+	<li> <%= name %> </li> <%-- 파라미터의 값들을 하나씩 출력한다. --%>
 <%
 	}
 %>
@@ -302,7 +302,7 @@ GET 방식으로 http://localhost:8080/chap07/body_main.jsp?name=cbk 라고 입�
 
 body_main.jsp를 보면 request.setCharacterEncoding() 메서드를 통해서 요청 파라미터의 캐릭터 셋을 지정하고 있는 것을 알 수 있다.
 
-``` 
+``` jsp
   request.setCharacterEncoding("utf-8");
 ```
 
