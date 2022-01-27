@@ -13,13 +13,13 @@ JSP 페이지에는 총 7가지의 요소가 있다.
 
 디렉티브(Directive)는 JSP 페이지에 대한 설정 정보를 지정할 때 사용되며 다음과 같은 구문을 통해서 디렉티브를 선언할 수 있다.
 
-```
+``` jsp
 <%@ 디렉티브이름 속성1 = "값1" 속성2 = "값2" ... %>
 ```
 
 위 문장은 디렉티브의 큰 구조를 의미하는데 01.md에서 썼던 디렉티브를 살펴보자.
 
-```
+``` jsp
 <%@ page contentType = "text/html; charset = uft-8" %>
 ```
 
@@ -53,7 +53,7 @@ JSP의 스크립트 요소는 자바 문법을 그대로 사용할 수 있기 �
 
 하지만, 스크립트 요소를 사용하면 JSP 코드가 다소 복잡해진다. 예시와 함께 보자.
 
-``` 
+``` jsp
 <% 
   int a = Integer.parseInt(request.getParameter("a")); 
   int b = Integer.parseInt(request.getParameter("b")); 
@@ -65,7 +65,7 @@ a * b = <% = a * b &>
 
 위 코드를 표현 언어를 사용하면 다음과 같이 작성할 수 있다.
 
-```
+``` jsp
 a * b = ${param.a * param.b}
 ```
 
@@ -77,7 +77,7 @@ a * b = ${param.a * param.b}
 
 액션 태그는 JSP 페이지에서 특별한 기능을 제공한다. 아래의 코드를 보자.
 
-```
+``` jsp
 <%@ page contentType = "text/html; charset = utf-8" %>
 <html>
 ...
