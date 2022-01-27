@@ -42,23 +42,23 @@ ex)
 그리고 request 기본 객체의 "info" 속성의 값으로 생성된 객체를 저장한다. 즉, 다음과 비슷한 코드가 실행된다.
 
 ``` jsp
-MemberInfo info = new MemberInfo(); # MemberInfo 클래스의 객체를 생성해서 이름이 info인 변수에 할당
+MemberInfo info = new MemberInfo(); <%-- MemberInfo 클래스의 객체를 생성해서 이름이 info인 변수에 할당 --%>
 
-request.setAttribute("info", info); # request 기본 객체의 "info" 속성의 값으로 생성된 객체를 저장
+request.setAttribute("info", info); <%-- request 기본 객체의 "info" 속성의 값으로 생성된 객체를 저장 --%>
 ```
 
 `<jsp:useBean>` 액션 태그는 지정한 영역에 이미 id 속성에서 지정한 이름의 속성값이 존재하면 객체를 새로 생성하지 않고 기존에 존재하는 객체를 그대로 사용한다.  
 즉, 위에서 다룬 `<jsp:useBean>` 액션 태그의 내용을 다시쓰면 아래와 같다.
 
-``` jsp
+``` java
 MemberInfo info = (MemberInfo)request.getAttribute("info"); 
-# info 라는 이름의 속성값이 존재하지 않으면 MemberInfo의 info는 null이 된다.
-# 그렇지 않으면 그대로 사용한다.
+// info 라는 이름의 속성값이 존재하지 않으면 MemberInfo의 info는 null이 된다. 
+// 그렇지 않으면 그대로 사용한다. 
 
 if(info == null) { 
-  MemberInfo info = new MemberInfo(); # MemberInfo 클래스의 객체를 생성해서 이름이 info인 변수에 할당
+  MemberInfo info = new MemberInfo(); // MemberInfo 클래스의 객체를 생성해서 이름이 info인 변수에 할당
 
-  request.setAttribute("info", info); # request 기본 객체의 "info" 속성의 값으로 생성된 객체를 저장
+  request.setAttribute("info", info); // request 기본 객체의 "info" 속성의 값으로 생성된 객체를 저장
 }
 ```
 
@@ -77,14 +77,14 @@ ex) makeObject.jsp - `<jsp:useBean>` 액션 태그를 사용해서 MemberInfo �
 ``` jsp
 <%@ page contentType = "text/html; charset=utf-8" %>
 <jsp:useBean id="member" scope="request" class="chap08.member.MemberInfo" />
-# 이름이 member인 객체를 생성해서 request 기본 객체에 저장한다. 
-# 클래스는 chap08/member 폴더에 있는 MemberInfo.java 파일 즉, MemberInfo 클래스를 사용한다.
+<%-- 이름이 member인 객체를 생성해서 request 기본 객체에 저장한다. --%>
+<%-- 클래스는 chap08/member 폴더에 있는 MemberInfo.java 파일 즉, MemberInfo 클래스를 사용한다. --%>
 
 <%
 	member.setId("madvirus"); 
-	member.setName("최범균"); # member 객체의 id는 "madvirus"로 name은 "최범균"으로 설정했다.
+	member.setName("최범균"); // member 객체의 id는 "madvirus"로 name은 "최범균"으로 설정했다.
 %>
-<jsp:forward page="/useObject.jsp" /> # member 객체의 id, name을 설정하고 나서 useObject.jsp로 이동
+<jsp:forward page="/useObject.jsp" /> <%-- member 객체의 id, name을 설정하고 나서 useObject.jsp로 이동 --%>
 ```
 
 이제 useObject.jsp는 `<jsp:useBean>` 액션 태그를 사용해서 makeObject.jsp가 request 기본 객체에서 생성한 객체인 member를 사용한다.  
@@ -95,17 +95,17 @@ ex) makeObject.jsp - `<jsp:useBean>` 액션 태그를 사용해서 MemberInfo �
 <%@ page contentType = "text/html; charset=utf-8" %>
 <jsp:useBean id="member" scope="request" class="chap08.member.MemberInfo" />
 
-# 앞서 makeObject.jsp에서 useObject.jsp로 forward 했다. 
-# 이제 useObject.jsp는 <jsp:useBean> 액션 태그를 사용해서 makeObject.jsp가 생성한 객체인 member를 사용할 것이다.
-# 여기서 request 기본 객체를 사용할 거라서 scope를 request로 설정했다.
+<%-- 앞서 makeObject.jsp에서 useObject.jsp로 forward 했다. --%>
+<%-- 이제 useObject.jsp는 <jsp:useBean> 액션 태그를 사용해서 makeObject.jsp가 생성한 객체인 member를 사용할 것이다. --%>
+<%-- 여기서 request 기본 객체를 사용할 거라서 scope를 request로 설정했다. --%>
 
-# 이를 코드로 나타낸게 위에 있는 <jsp:useBean> 부분이다.
+<%-- 이를 코드로 나타낸게 위에 있는 <jsp:useBean> 부분이다. --%>
    
 <html>
 <head><title>인사말</title></head>
 <body>
 
-<-- member 객체의 name과 id값을 출력하도록 했다 -->
+<%-- member 객체의 name과 id값을 출력하도록 했다 --%>
 <%= member.getName() %> (<%= member.getId() %>) 회원님
 안녕하세요.
 
@@ -163,10 +163,10 @@ ex) 자바빈 객체의 name 프로퍼티의 값을 "최범균"으로 지정하�
 
 ``` jsp 
 <jsp:useBean id = "member" class="chap08.member.MemberInfo" /> 
-# 이름이 member인 MemberInfo 형 객체를 생성했다
+<%-- 이름이 member인 MemberInfo 형 객체를 생성했다 --%>
 
 <jsp:setProperty name = "member" property = "name" value = "최범균" /> 
-# member 객체의 name이라는 프로퍼티가 있는데 그 값을 "최범균"으로 설정했다
+<%-- member 객체의 name이라는 프로퍼티가 있는데 그 값을 "최범균"으로 설정했다 --%>
 ```
 
 value 대신 param 속성을 사용할 수도 있다. param 속성은 파라미터 값을 프로퍼티 값으로 지정할 때 사용된다.
@@ -250,20 +250,20 @@ proecssJoining.jsp에 전달한 데이터를 MemberInfo 자바빈 클래스의 �
 <%@ page contentType = "text/html; charset=utf-8" %>
 <%
 	request.setCharacterEncoding("utf-8");
-	# 읽어올 파라미터의 캐릭터 인코딩을 UTF-8로 지정함
+	// 읽어올 파라미터의 캐릭터 인코딩을 UTF-8로 지정함
 %>
 <jsp:useBean id="memberInfo" class="chap08.member.MemberInfo" />
-# MemberInfo 형 자바빈 클래스르 memberInfo 라는 이름의 객체로 생성했다.
+<%-- MemberInfo 형 자바빈 클래스르 memberInfo 라는 이름의 객체로 생성했다. --%>
 
 <jsp:setProperty name="memberInfo" property="*" />
-# 파라미터의 값을 memberInfo 객체의 프로퍼티로 저장할 거다.
-# 즉, membershipForm.jsp에서 전달한 id, name, email 파라미터의 값을 memberInfo 객체의 id, name, email 프로퍼티로 설정했다.
+<%-- 파라미터의 값을 memberInfo 객체의 프로퍼티로 저장할 거다. --%>
+<%-- 즉, membershipForm.jsp에서 전달한 id, name, email 파라미터의 값을 memberInfo 객체의 id, name, email 프로퍼티로 설정했다. --%>
 
 <jsp:setProperty name="memberInfo" property="password"
 				 value="<%= memberInfo.getId() %>" />
-# memberInfo 객체에 password라는 프로퍼티가 있는데 그 값을 <%= memberInfo.getId() %>로 지정한다
-# 위에서 정의한 membershipForm.jsp에는 비밀번호를 설정하는 부분이 따로 없어서
-# 아이디와 비밀번호를 똑같이 설정한다고 가정했을 때 이와 같은 코드를 작성할 수 있다.
+<%-- memberInfo 객체에 password라는 프로퍼티가 있는데 그 값을 <%= memberInfo.getId() %>로 지정한다 --%>
+<%-- 위에서 정의한 membershipForm.jsp에는 비밀번호를 설정하는 부분이 따로 없어서 --%>
+<%-- 아이디와 비밀번호를 똑같이 설정한다고 가정했을 때 이와 같은 코드를 작성할 수 있다. --%>
 				 
 <html>
 <head><title>가입</title></head>
@@ -273,21 +273,21 @@ proecssJoining.jsp에 전달한 데이터를 MemberInfo 자바빈 클래스의 �
 <tr>
 	<td>아이디</td>
 	<td><jsp:getProperty name="memberInfo" property="id" /></td>
-	# memeberInfo에 id라는 프로퍼티의 값을 return해줌
+	<%-- memeberInfo에 id라는 프로퍼티의 값을 return해줌 --%>
 	
 	<td>암호</td>
 	<td><jsp:getProperty name="memberInfo" property="password" /></td>
-	# memeberInfo에 password라는 프로퍼티의 값을 return해줌
+	<%-- memeberInfo에 password라는 프로퍼티의 값을 return해줌 --%>
 </tr>
 <tr>
 <tr>
     <td>이름</td>
     <td><jsp:getProperty name="memberInfo" property="name" /></td>
-    # memeberInfo에 name 이라는 프로퍼티의 값을 return해줌
+    <%-- memeberInfo에 name 이라는 프로퍼티의 값을 return해줌 --%>
     
     <td>이메일</td>
     <td><jsp:getProperty name="memberInfo" property="email" /></td>
-    # memeberInfo에 email 이라는 프로퍼티의 값을 return해줌
+    <%-- memeberInfo에 email 이라는 프로퍼티의 값을 return해줌 --%>
     
 </tr>
 </table>
