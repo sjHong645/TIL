@@ -31,7 +31,7 @@ request 기본 객체는 웹 브라우저, 즉 `클라이언트가 전송한 정
 
 ex. requestInfo.jsp
 
-```
+``` jsp
 <%@ page contentType = "text/html; charset=utf-8" %>
 <html>
 <head><title>클라이언트 및 서버 정보</title></head>
@@ -70,7 +70,7 @@ ex. requestInfo.jsp
 
 ex. 
 
-```
+``` jsp
 <form action = "/chap03/viewParameter.jsp" method = "post">
 이름 : <input type = "text" name = "name" size = "10"> <br>
 주소 : <input type = "text" name = "address" size = "30"> <br>
@@ -116,7 +116,7 @@ ex. 이름 입력 요소에는 "홍길동", 주소 입력 요소에는 "아차�
 실제로 파라미터를 어떻게 읽어올 수 있는지 확인하기 위해서 폼에 입력한 값을 출력해주는 JSP 페이지를 만들어보자 
 
 ex. form.jsp
-```
+``` jsp
 <%@ page contentType = "text/html; charset=utf-8"%>
 <html>
 <head><title>폼 생성</title></head>
@@ -143,7 +143,7 @@ ex. form.jsp
 위 폼에 데이터를 입력하고 [전송] 버튼을 클릭하면 웹 브라우저는 폼에 입력한 데이터를 viewParameter.jsp에 전송한다. 
 
 ex. viewParameter.jsp
-```
+``` jsp
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ page import="java.util.Enumeration" %>
 <%@ page import="java.util.Map" %>
@@ -200,7 +200,7 @@ String[] values = request.getParameterValues("pet");
 
 이에 해당하는 부분은 아래와 같다. 앞서 form.jsp의 일부분을 가져왔다.
 
-```
+``` jsp
 좋아하는 동물:
 	<input type="checkbox" name="pet" value="dog">강아지
 	<input type="checkbox" name="pet" value="cat">고양이
@@ -306,7 +306,7 @@ ex. 웹 브라우저가 `UTF-8` 을 이용해서 파라미터 값을 인코딩 �
 POST 방식은 입력 폼을 보여주는 응답 화면이 사용하는 캐릭터 셋을 사용한다. 만약에 응답 결과에 사용한 캐릭터 셋이 UTF-8이라면 UTF-8을 이용해서 파라미터 값을 인코딩한다. 
 
 ex. form.jsp
-```
+``` jsp
 <%@ page contentType = "text/html; charset=utf-8"%> <%-- 응답결과를 생성할 때 사용할 캐릭터 셋을 UTF-8로 설정 --%>
 ...
 
@@ -328,7 +328,7 @@ JSP는 request 기본 객체의 setCharacterEncoding() 메서드를 사용해서
 
 ex. viewParameter.jsp 
 
-```
+``` jsp
 <%
 	request.setCharacterEncoding("utf-8");
 %>
@@ -350,7 +350,7 @@ GET 방식으로 파라미터를 전송하는 방법은 아래와 같이 3가지
 
 
 1) `<a>` 태그 사용
-```
+``` jsp
   <a href="viewParameter.jsp?name=홍길동&address=아차곡">링크</a>
 ```
 	
@@ -362,7 +362,7 @@ GET 방식으로 파라미터를 전송하는 방법은 아래와 같이 3가지
 
 ex. form.jsp 일부
 	
-```
+``` jsp
 <%@ page contentType = "text/html; charset=utf-8"%>
 ...
 <form action="/chap03/viewParameter.jsp" method="get">
@@ -384,7 +384,7 @@ ex. form.jsp 일부
 HTTP 프로토콜은 헤더 정보에 부가적인 정보를 담도록 하고 있다. 
 
 ex. 웹 브라우저는 웹 브라우저의 종류, 선호하는 언어에 대한 정보를 헤더에 담아서 전송한다. 크롬 브라우저의 헤더의 일부를 살펴보자.
-```
+``` jsp
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
 Referer: http://localhost:8080/chap03/form.jsp
@@ -403,7 +403,7 @@ request 기본 객체는 이러한 헤더 정보를 읽어 올 수 있는 기능
 | getDateHeader(String name) | long | 지정한 헤더 값을 시간 값으로 읽어온다. |
 
 ex. viewHeaderList.jsp - getHeaderNames(), getHeader() 메서드를 사용했다. 
-```
+``` jsp
 <%@ page contentType = "text/html; charset=utf-8" %>
 <%@ page import = "java.util.Enumeration" %>
 <html>
