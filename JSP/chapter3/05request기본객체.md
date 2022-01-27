@@ -307,10 +307,10 @@ POST 방식은 입력 폼을 보여주는 응답 화면이 사용하는 캐릭�
 
 ex. form.jsp
 ```
-<%@ page contentType = "text/html; charset=utf-8"%> # 응답결과를 생성할 때 사용할 캐릭터 셋을 UTF-8로 설정
+<%@ page contentType = "text/html; charset=utf-8"%> <%-- 응답결과를 생성할 때 사용할 캐릭터 셋을 UTF-8로 설정 --%>
 ...
 
-<form action="/chap03/viewParameter.jsp" method="post">ㅁ
+<form action="/chap03/viewParameter.jsp" method="post">
 이름: <input type="text" name="name" size="10"> <br>
 주소: <input type="text" name="address" size="30"> <br>
 ...
