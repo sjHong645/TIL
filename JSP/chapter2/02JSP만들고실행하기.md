@@ -8,7 +8,7 @@ JSP로 간단한 웹 프로그램을 만들어보겠다. 현재 시간을 출력
 5. 결과 확인
 
 폴더를 만들고 나서 time.jsp 파일을 작성하면 된다. 내용은 다음과 같다. 
-```
+``` jsp
 <%@ page contentType = "text/html; charset=UTF-8" %>
 <html>
 <head>
