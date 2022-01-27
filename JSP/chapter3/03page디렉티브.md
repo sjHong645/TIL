@@ -3,7 +3,7 @@ page 디렉티브는 JSP 페이지에 대한 정보를 입력하기 위해서 �
 page 디렉티브를 사용하면 JSP 페이지가 어떤 문서를 생성하는지, 어떤 Java 클래스를 사용하는지, 세션(session)에 참여하는지와 같은 JSP 페이지를 실행하는데 필요한 정보를 입력할 수 있다. 
 
 예시) 
-``` 
+``` jsp
 <%@ page contentType = "text/html; charset = utf-8" %>
 <%@ page import = "java.util.Data" %>
 ```
@@ -51,7 +51,7 @@ contentType의 속성 값 중에서 `; charset = 캐릭터 셋` 부분은 옵션
 
 기본값으로 ISO-8859-1을 사용하지만, 한국어를 표현하기 위해서는 UTF-8 이나 EUC-KR을 사용해야 한다.
 
-``` 
+``` jsp
 <%@ page contentType = "text/html; charset = UTF-8" %>
  
 또는 
@@ -65,7 +65,7 @@ p.58~59 ⇒ 예시 부분
 
 Java에서 import를 사용하듯이 JSP에서 유사하게 page 디렉티브의 import 속성을 사용할 수 있다. 
 
-```
+``` jsp
 <%@ page import = "java.util.Calendar" %>
 <%@ page import = "java.util.Date" %>
 
@@ -79,7 +79,7 @@ Java에서 import를 사용하듯이 JSP에서 유사하게 page 디렉티브의
 ```
 
 ex) 오늘 날짜 표시 - useImportCalendar.jsp
-``` 
+``` js[
 <%@ page contentType = "text/html; charset=utf-8" %>
 <%@ page import = "java.util.Calendar" %>
 <html>
@@ -112,7 +112,7 @@ chapter02/time.jsp 파일을 실행하고 나서 페이지 소스를 보면 다�
 
 그래서 기존의 time.jsp를 아래와 같이 변경했다.
 
-```
+``` jsp
 <%@ page contentType = "text/html; charset=UTF-8" %>
 <%@ page trimDirectiveWhitespaces = "true" %> <%-- 추가한 부분 --%>
 <html>
@@ -164,7 +164,7 @@ ex. JSP 파일은 UTF-8로 작성 & 응답 결과는 EUC-KR로 생성하고 싶�
 
 pageEncoding 속성은 utf-8로 지정하고 contentType 속성은 euc-kr로 지정하면 된다.
 
-```
+``` jsp
 <%@ page contentType="text/html; charset=euc-kr" %> <%-- contentType 속성 --%>
 <%@ page pageEncoding="utf-8" %> <%-- pageEncoding 속성 --%>
 
