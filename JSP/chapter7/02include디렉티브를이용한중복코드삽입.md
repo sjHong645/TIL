@@ -33,7 +33,7 @@ include 디렉티브를 사용하면 JSP 파일을 자바 파일로 변환하기
 	int number = 10;
 %>
 
-<%@ include file="/includee.jspf" %> # includee.jspf 라는 파일의 내용을 포함한다.
+<%@ include file="/includee.jspf" %> <%-- includee.jspf 라는 파일의 내용을 포함한다.--%>
 
 공통변수 DATAFOLDER = "<%= dataFolder %>"
 
@@ -64,7 +64,7 @@ include.jsp의 include 디렉티브가 처리된 상태의 코드
 	int number = 10;
 %>
 
-<%-- <%@ include file="/includee.jspf" %> # includee.jspf 라는 파일의 내용을 포함한다. --%>
+<%-- <%@ include file="/includee.jspf" %> // includee.jspf 라는 파일의 내용을 포함한다. --%>
 includer.jsp에서 지정한 번호: <%= number %>
 <p>
 <%
