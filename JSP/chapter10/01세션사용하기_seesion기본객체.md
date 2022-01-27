@@ -68,13 +68,13 @@ ex) sessionInfo.jsp : 현재 사용 중인 세션 정보를 보여주는 JSP 페
 <html>
 <head><title>세션정보</title></head>
 <body>
-세션ID: <%= session.getId() %> <br> # 세션 ID를 출력
+세션ID: <%= session.getId() %> <br> <%-- 세션 ID를 출력 --%>
 <%
-	time.setTime(session.getCreationTime()); # 세션이 생성된 시간 출력
+	time.setTime(session.getCreationTime()); // 세션이 생성된 시간 출력
 %>
 세션생성시간: <%= formatter.format(time) %> <br>
 <%
-	time.setTime(session.getLastAccessedTime()); # 세션의 마지막 접근 시간 출력
+	time.setTime(session.getLastAccessedTime()); // 세션의 마지막 접근 시간 출력
 %>
 최근접근시간: <%= formatter.format(time) %>
 
@@ -111,7 +111,7 @@ ex) setMemberInfo.jsp : 사용자 정보 중 하나인 회원 아이디와 이�
 ``` jsp 
 <%@ page contentType = "text/html; charset=utf-8" %>
 <%
-	# session의 속성에 정보를 저장했다.
+	// session의 속성에 정보를 저장했다.
 	
 	session.setAttribute("MEMBERID", "madvirus");
 	session.setAttribute("NAME", "최범균");
@@ -133,8 +133,8 @@ setMemberInfo.jsp를 사용하고 나면 session 기본 객체에 저장한 두 
 ``` jsp 
 <% 
   String name = (String)session.getAttribute("NAME"); 
-  # 이와 같이 작성하면 NAME이라는 이름을 가진 세션의 속성을 사용할 수 있다.
-  # 여기서는 "최범균" 이라는 값이 name에 저장된다.
+  // 이와 같이 작성하면 NAME이라는 이름을 가진 세션의 속성을 사용할 수 있다.
+  // 여기서는 "최범균" 이라는 값이 name에 저장된다.
 %>
 ```
 
@@ -199,7 +199,7 @@ ex) closeSession.jsp
 
   <session-config>
 	  <session-timeout> 50 </session-timeout>
-	  # 세션의 타임아웃 시간을 50분으로 설정했다.
+	  <!-- 세션의 타임아웃 시간을 50분으로 설정했다. -->
 	  
   <session-config>
 ...
@@ -213,7 +213,7 @@ ex) closeSession.jsp
 ``` jsp 
 <% 
    session.setMaxInactiveInterval(60 * 60); 
-   # 초 단위로 유효시간을 설정한다.
+   // 초 단위로 유효시간을 설정한다.
 %>
 ```
 
@@ -233,8 +233,8 @@ ex) request.getSession()을 이용해서 세션을 구하므로 page 디렉티�
 ``` jsp
 <%@ page session = "false" %>
 <%
-   HttpSession httpSession = request.getSession(); # session이 존재하면 해당 session을 return하고 
-   						   # 존재하지 않으면 새롭게 session을 생성해서 return한다.
+   HttpSession httpSession = request.getSession(); // session이 존재하면 해당 session을 return하고 
+   						   // 존재하지 않으면 새롭게 session을 생성해서 return한다.
    List list = (List)httpSession.getAttribute("list");
    list.add(productId);
 %>
@@ -263,8 +263,8 @@ public class MemberInfo {
 ``` jsp
 <% 
   MemberInfo memberInfo = new MemberInfo(id, name);
-  session.setAttribute("memberInfo", memberInfo); # 위에서 지정한 memberInfo라는 이름의 객체를 
-  						  # "memberInfo"라는 이름의 세션의 속성으로 저장했다
+  session.setAttribute("memberInfo", memberInfo); // 위에서 지정한 memberInfo라는 이름의 객체를 
+  						  // "memberInfo"라는 이름의 세션의 속성으로 저장했다
 %>
 ```
 
@@ -274,16 +274,6 @@ public class MemberInfo {
 <% 
   MemberInfo memberInfo = (MemberInfo) seesion.getAttribute("memberInfo");
   
-  # "memberInfo"라는 세션으로부터 속성값을 불러온다. 앞서 이 값은 MemberInfo 형으로 지정된 값이었다.
+  // "memberInfo"라는 세션으로부터 속성값을 불러온다. 앞서 이 값은 MemberInfo 형으로 지정된 값이었다.
 %>
 ```
-
-
-
-
-
-
-
-
-
-
