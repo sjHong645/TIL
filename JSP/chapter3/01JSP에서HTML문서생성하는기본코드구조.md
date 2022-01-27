@@ -4,7 +4,7 @@ JSP를 사용해서 파일 다운로드를 구현할 수 있고 XML과 같은 �
 
 HTML 문서를 생성하는 JSP 코드는 크게 `설정 부분`과 `응답 생성 부분`으로 구성된다. 아래 예시를 보자.
 
-``` 
+``` jsp
 <%@ page contentType = "text/html; charset = utf-8" %>
 <html>
 <head>
