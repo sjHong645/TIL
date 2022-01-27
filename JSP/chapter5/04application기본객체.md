@@ -10,7 +10,7 @@ application 기본 객체를 가지고 초기 설정 정보를 읽어올 수 있
 서블릿 규약은 웹 어플리케이션 전체에 걸쳐서 사용할 수 있는 `초기화 파라미터`를 정의하고 있다.  
 웹 어플리케이션에서 사용할 수 있는 초기화 파라미터는 WEB-INF/web.xml 파일에 `<context-param>` 태그를 사용해서 추가한다.
 
-``` 
+``` xml
 <context-param> 
   <description>파라미터 설명(필수 아님) </description>
   <param-name>파라미터 이름 </param-name>
@@ -76,16 +76,16 @@ application 기본 객체는 초기화 파라미터를 읽어올 수 있는 메�
 <ul>
 <%
     Enumeration<String> initParamEnum = application.getInitParameterNames(); 
-    # application.getInitParameterNames()를 통해서 파라미터의 목록을 initParamEnum에 저장한다.
+    // application.getInitParameterNames()를 통해서 파라미터의 목록을 initParamEnum에 저장한다.
     
-	while (initParamEnum.hasMoreElements()) { # initParamEnum의 모든 목록을 읽을 때까지 반복
+	while (initParamEnum.hasMoreElements()) { // initParamEnum의 모든 목록을 읽을 때까지 반복
 		String initParamName = initParamEnum.nextElement();
-		# 파라미터의 값을 하나씩 읽어서 initParamName에 저장
+		// 파라미터의 값을 하나씩 읽어서 initParamName에 저장
 %>
 <li><%= initParamName %> = 
     <%= application.getInitParameter(initParamName) %>
     
-    # initParamName의 문자열 값과 그 이름을 가진 파라미터의 초기화 값을 출력
+    <%-- initParamName의 문자열 값과 그 이름을 가진 파라미터의 초기화 값을 출력 --%>
 <%
 	}
 %>
@@ -206,15 +206,15 @@ JSP 페이지에서 웹 어플리케이션 폴더에 위치한 파일을 사용�
 	
 	String filePath = "C:\\apache-tomcat-8.5.73\\webapps\\chap05"+
 		"\\message\\notice.txt"; 
-		# 파일 경로를 filePath에 저장
+		// 파일 경로를 filePath에 저장
 		
 	try(InputStreamReader fr = new InputStreamReader(new FileInputStream(filePath), "UTF-8")) {
-	# 파일 경로 filePath에 있는 내용을 읽어서 fr에 저장 
+	// 파일 경로 filePath에 있는 내용을 읽어서 fr에 저장 
 	
-		while ( (len = fr.read(buff)) != -1) { # fr에 있는 내용을 배열 buff에 저장
+		while ( (len = fr.read(buff)) != -1) { // fr에 있는 내용을 배열 buff에 저장
 		
 			out.print(new String(buff, 0, len));
-			# 배열 buff에 있는 내용을 0~len-1 까지 출력
+			// 배열 buff에 있는 내용을 0~len-1 까지 출력
 		}
 	} catch(IOException ex) {
 		out.println("익셉션 발생: "+ex.getMessage());
@@ -263,10 +263,10 @@ ex. readFileUsingApplication.jsp
 <body>
 
 <%
-	String resourcePath = "/message/notice.txt"; # webapps 내의 경로 지정
+	String resourcePath = "/message/notice.txt"; // webapps 내의 경로 지정
 %>
 자원의 실제 경로:<br>
-<%= application.getRealPath(resourcePath) %> # 자원의 실제 경로를 구한다. 
+<%= application.getRealPath(resourcePath) %> <%-- 자원의 실제 경로를 구한다. --%>
 <br>
 ----------<br>
 <%= resourcePath %>의 내용<br> 
@@ -277,11 +277,11 @@ ex. readFileUsingApplication.jsp
 	
 	try(InputStreamReader br = new InputStreamReader(
 				application.getResourceAsStream(resourcePath), "UTF-8")) {
-	# 해당 경로에 있는 데이터를 읽어올 수 있는 스트림 br을 생성
+	// 해당 경로에 있는 데이터를 읽어올 수 있는 스트림 br을 생성
 				
-		while ( (len = br.read(buff)) != -1) { # br로 부터 읽어온 내용을 배열 buff에 저장
+		while ( (len = br.read(buff)) != -1) { // br로 부터 읽어온 내용을 배열 buff에 저장
 			out.print(new String(buff, 0, len));
-			# buff에 있는 내용을 0 ~ len-1 까지 
+			// buff에 있는 내용을 0 ~ len-1 까지 
 		}
 	} catch(IOException ex) {
 		out.println("익셉션 발생: "+ex.getMessage());
@@ -311,10 +311,10 @@ ex. readFileUsingURL.jsp
 	String resourcePath = "/message/notice.txt";
 	char[] buff = new char[128];
 	int len = -1;
-	URL url = application.getResource(resourcePath); # resourcePath에서 지정한 자원의 URL을 생성
+	URL url = application.getResource(resourcePath); // resourcePath에서 지정한 자원의 URL을 생성
 	
 	try (InputStreamReader br = new InputStreamReader(url.openStream(), "UTF-8")) {
-	# 지정한 URL 객체인 url에서 데이터를 읽어 스트림 br에 저장
+	// 지정한 URL 객체인 url에서 데이터를 읽어 스트림 br에 저장
 	
 		while ( (len = br.read(buff)) != -1) {
 			out.print(new String(buff, 0, len));
