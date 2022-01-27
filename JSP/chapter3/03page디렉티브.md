@@ -114,7 +114,7 @@ chapter02/time.jsp 파일을 실행하고 나서 페이지 소스를 보면 다�
 
 ```
 <%@ page contentType = "text/html; charset=UTF-8" %>
-<%@ page trimDirectiveWhitespaces = "true" %> # 추가한 부분
+<%@ page trimDirectiveWhitespaces = "true" %> <%-- 추가한 부분 --%>
 <html>
 <head>
 <title>현재 시간</title>
@@ -165,8 +165,8 @@ ex. JSP 파일은 UTF-8로 작성 & 응답 결과는 EUC-KR로 생성하고 싶�
 pageEncoding 속성은 utf-8로 지정하고 contentType 속성은 euc-kr로 지정하면 된다.
 
 ```
-<%@ page contentType="text/html; charset=euc-kr" %> # contentType 속성
-<%@ page pageEncoding="utf-8" %> # pageEncoding 속성
+<%@ page contentType="text/html; charset=euc-kr" %> <%-- contentType 속성 --%>
+<%@ page pageEncoding="utf-8" %> <%-- pageEncoding 속성 --%>
 
 ... 
 ```
