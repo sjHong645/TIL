@@ -80,12 +80,12 @@ ex. setApplication.jsp
 ``` jsp 
 <%@ page contentType = "text/html; charset=utf-8" %>
 <%
-	String name = request.getParameter("name"); # URL에서 전달하는 파라미터 name의 값을 name에 저장
-	String value = request.getParameter("value"); # URL에서 전달하는 파라미터 value의 값을 value에 저장
+	String name = request.getParameter("name"); // URL에서 전달하는 파라미터 name의 값을 name에 저장
+	String value = request.getParameter("value"); // URL에서 전달하는 파라미터 value의 값을 value에 저장
 	
 	if (name != null && value != null) {
 		application.setAttribute(name, value);
-    # name과 value가 설정되었다면 설정된 값을 application 기본 객체의 속성으로 설정한다.
+    // name과 value가 설정되었다면 설정된 값을 application 기본 객체의 속성으로 설정한다.
 	}
 %>
 
@@ -192,11 +192,11 @@ File tempDir = (File)application.getAttribute("application_temp");
 ex) 
 
 ``` java
-request.setAttribute("age", new Integer(20));  # age라는 변수를 Integer 타입 20으로 설정함.
+request.setAttribute("age", new Integer(20));  // age라는 변수를 Integer 타입 20으로 설정함.
 
-Integer ageAttr = (Integer) request.getAttribute("age"); # age의 속성값을 ageAttr에 저장
+Integer ageAttr = (Integer) request.getAttribute("age"); // age의 속성값을 ageAttr에 저장
 
-int ageValue = ageAttr.intValue(); # ageAttr의 값은 Integer 형이어서 int형 으로 바꿔서 값을 ageValue에 저장
+int ageValue = ageAttr.intValue(); // ageAttr의 값은 Integer 형이어서 int형 으로 바꿔서 값을 ageValue에 저장
 
 ```
 
