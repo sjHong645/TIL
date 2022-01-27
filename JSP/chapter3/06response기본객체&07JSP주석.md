@@ -43,12 +43,13 @@ HTTP는 특수한 응답 헤더를 통해 웹 브라우저가 응답 결과를 �
 | Expires | 응답 기간의 만료일을 지정한다. 만료일을 현재 시간보다 이전으로 설정함으로써 캐시에 보관되지 않도록 할 수 있다. |
 
 ex. 
-```
+``` jsp
 <%
   response.setHeader("Cache-Control", "no-cache");
   response.addHeader("Cache-Control", "no-store");
-  response.setHeader("Pragma", "No-
-  response.setDateHeader("Expires", 1L); # 1L은 1970년 1월 1일 0시 0분 0.001초를 의미한다.
+  response.setHeader("Pragma", "No-cache");
+  response.setDateHeader("Expires", 1L); // 1L은 1970년 1월 1일 0시 0분 0.001초를 의미한다.
+%>  
 ```
 
 #### 3. 리다이렉트를 이용한 페이지 이동
