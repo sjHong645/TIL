@@ -64,7 +64,7 @@ response 기본 객체는 다음 메서드를 이용해서 웹 브라우저가 �
 
 - response.sendRedirect(String location) ⇒ 주로 다음과 같은 형태로 사용된다.
 
-``` 
+``` jsp
 <%@ page import = "java.sql.&" %>
 ...
 <%
@@ -76,7 +76,7 @@ response 기본 객체는 다음 메서드를 이용해서 웹 브라우저가 �
 ```
 
 ex. login.jsp
-```
+``` jsp
 <%@ page contentType="text/html; charset=utf-8" %>
 <%
 	String id = request.getParameter("memberId");
@@ -129,7 +129,7 @@ ex. response.sendRedirect("http://javacan.tistory.com/entry/Event-Sourcing-PT");
 
 ex. URLEncoder.encode() 메소드를 사용해서 파라미터의 값으로 사용할 문자열을 UTF-8로 인코딩한다. - redirectEncodingTest.jsp
 
-```
+``` jsp
 <%@ page pageEncoding="utf-8" %>
 <%@ page import = "java.net.URLEncoder" %>
 <%
@@ -143,7 +143,7 @@ ex. URLEncoder.encode() 메소드를 사용해서 파라미터의 값으로 사�
 
 웹 서버에 전송할 파라미터 값은 알맞게 인코딩해야 하기 때문에
 
-```
+``` jsp
 response.sendRedirect("/chap03/index.jsp?name=자바"); 
 
 가 아니라
@@ -159,7 +159,7 @@ response.sendRedirect("/chap03/index.jsp?name=%EC%9E%90%EB%BO%94);
 
 - 스크립트릿과 선언부의 코드 블럭 ⇒ 해당 부분은 자바 코드이기 때문에 자바 형식의 주석을 쓰면 된다.
 
-```
+``` jsp
 <% 
   // 주석 내용~~~
   
@@ -168,7 +168,7 @@ response.sendRedirect("/chap03/index.jsp?name=%EC%9E%90%EB%BO%94);
 ```
 
 - JSP 코드 
-```
+``` jsp
 <%-- 원하는 주석 내용 --%>
 ```
 
