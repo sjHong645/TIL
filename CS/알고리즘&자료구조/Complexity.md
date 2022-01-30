@@ -86,6 +86,20 @@ T(n) = n^2 = O(n^2). 이와 같이 표현하는 것이 바로 빅-오 표기법�
 - O(n^2): 데이터의 수의 제곱에 해당하는 연산횟수를 요구하는 알고리즘. 따라서, 데이터의 양이 많을 경우에는 부적절한 알고리즘이라 할 수 있다. 도 마찬가지.
 - O(2^n): 지수형 빅-오. 알고리즘을 개발할 때 이러한 성능을 보인다면 개선해야 한다.
 
+#### 빅-오메가 표기법(Big-Omega Notation)
+
+![image](https://user-images.githubusercontent.com/64796257/151689320-fd2187a2-49d2-4f9b-9bcf-ac40f0350f4b.png)
+
+`빅-오` 정의에서 부등호의 방향이 바뀌었다고 생각하면 된다. 
+
+![image](https://user-images.githubusercontent.com/64796257/151689344-46c92289-d0cc-41c0-850f-ae1222f77ed7.png)
+
+#### 빅-쎄타 표기법(Big-Theta Notation)
+
+![image](https://user-images.githubusercontent.com/64796257/151689347-46b1700c-48aa-433a-9465-1448591ca1cb.png)
+
+함수 f(n)의 `빅-쎄타`는 함수 f(n)의 `빅-오`와 `빅-오메가`의 교집합의 원소다.
+
 
 
 
