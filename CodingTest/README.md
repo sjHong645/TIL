@@ -61,6 +61,12 @@ int any = example - 'a';
 
 ```
 
+- String ⇒ int 형
+
+``` java
+Integer.parseInt(원하는 문자열);
+```
+
 
 ## 4. 집합을 의미하는 Set 프레임워크
 ``` java
