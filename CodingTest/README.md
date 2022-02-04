@@ -14,6 +14,12 @@ import java.io.BufferedWriter;
 
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+
+public class ~~ {
+	BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+
+	BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+} 
 ```
 
 그리고 Scanner로만 읽을 꺼면 Scanner만 읽어야 하고 BufferedReader로 읽을 꺼면 BufferedReader로만 읽어야 한다.
