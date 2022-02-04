@@ -248,3 +248,17 @@ for ( ~ ) {
 ```
 
 ![image](https://user-images.githubusercontent.com/64796257/147908004-8017084d-5304-4052-9100-d56f491cac9d.png)
+
+## 14. 여러 개 숫자 중 최댓값 찾기 
+
+`Math.max()` 함수를 이용하면 된다.
+
+ex) 
+``` java
+Math.max(first, Math.max(second, third));
+```
+second와 third를 비교해서 최댓값을 return 한다. 
+
+그 최댓값과 first를 비교해서 또 다른 최댓값을 return한다.
+
+즉, first, second, third 이 3개의 숫자의 최댓값을 구한 것과 동일한 동작을 한다.
