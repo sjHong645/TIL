@@ -67,6 +67,19 @@ int any = example - 'a';
 Integer.parseInt(원하는 문자열);
 ```
 
+- 숫자 String ⇒ 숫자 int형 배열
+
+``` java
+import java.util.stream.Stream;
+
+String numbers = "10323"; 
+
+int[] arrNum = Stream.of(numbers.split("")).mapToInt(Integer::parseInt).toArray();
+
+// 출력 결과 arrNum = {1, 0, 3, 2, 3)
+
+```
+
 
 ## 4. 집합을 의미하는 Set 프레임워크
 ``` java
