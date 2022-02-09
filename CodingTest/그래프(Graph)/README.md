@@ -1,3 +1,8 @@
+목차
+- 인접리스트로 그래프 구현
+- 인접 행렬로 그래프 구현
+- 연결 요소 
+
 ## 인접리스트로 구현
 
 여기서 key값은 그래프의 `정점`을 의미하고  
@@ -386,6 +391,54 @@ class GraphMatrix {
 	    
 	
 }
+```
+
+## 연결 요소 확인 - DFS 
+
+- 인접행렬을 기반으로 그래프를 구현했을 때 연결 요소 확인
+
+``` java
+public int[] find_ccs() {
+	    	
+	    	boolean visited[] = new boolean[this.numberOfVertices()];
+	    	Arrays.fill(visited, false);
+	    	
+	    	int labels[] = new int[this.numberOfVertices()];
+	    	Arrays.fill(labels, 0);
+	    	
+	    	int label = 0;
+	    		    	
+	    	for(int i = 0; i < this.numberOfVertices(); i++) {
+	    		
+	    		if(visited[i] == false) {
+	    			find_css_by_dfs(visited, labels, i, ++label);
+	    		}
+	    	}
+	    	
+	    	/*
+	    	 for(int i = 0; i < this.numberOfVertices(); i++) {
+	    		System.out.println(i + " 번째 labels = " + labels[i]);
+	    	}*/
+	    	return labels;
+	    	
+	    }
+	    
+	    private void find_css_by_dfs(boolean[] visited, 
+	    							int[] labels , 
+	    							int idx, int label) {
+	    	
+	    	visited[idx] = true;
+	    	labels[idx] = label;
+	    	
+	    	// idx와 연결된 정점들
+	    	for(int i = 0; i < this.adjacency()[idx].length; i++) {
+	    		// System.out.println("find_css_by_dfs ==> i = " + i);
+	    		if(visited[i] == false && this.adjacency()[idx][i] == 1) {
+	    			find_css_by_dfs(visited, labels, i, label);
+	    		}
+	    	}
+	    	
+	    }
 ```
 
 
