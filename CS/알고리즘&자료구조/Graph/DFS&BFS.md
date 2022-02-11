@@ -86,6 +86,10 @@
 
 ![image](https://user-images.githubusercontent.com/64796257/150916319-7ca78581-b632-434a-b665-6b64a9662453.png)
 
+### DFS의 의사코드 
+![image](https://user-images.githubusercontent.com/64796257/153613747-28812bd8-6f28-464b-85b9-d7ff910dc752.png)
+
+
 ## BFS (Breadth First Search; BFS) - 너비 우선 탐색 
 `BFS`는 자신에게 연결된 모든 사람에게 연락을 취하는 방식이다. 그림을 보자.
 
@@ -135,6 +139,9 @@
 
 ![image](https://user-images.githubusercontent.com/64796257/150917315-2817de79-2dc7-4d31-8f4d-a56f6876fe42.png)
 ![image](https://user-images.githubusercontent.com/64796257/150917320-716da3d1-e8cd-4011-a448-2fec293d7a69.png)
+
+### BFS의 의사코드 
+![image](https://user-images.githubusercontent.com/64796257/153613778-81247b98-78e0-4318-af85-b3ecd3b0f759.png)
 
 
 
