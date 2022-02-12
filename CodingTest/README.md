@@ -119,16 +119,28 @@ st.nextToken() # 띄어쓰기 단위로 나눠서 읽어들인 st의 각 요소�
 
 - countTokens() : StringTokenizer로 구분해 놓은 Token들의 개수를 구한다.
 
-## 6. 스트림을 이용한 배열 내의 최댓값 찾기
+## 6. 배열 또는 List 내의 최댓값 찾기
 
+- 배열 ⇒ 스트림 이용하는 방법이 있음
 ``` java
 import java.util.Arrays 
 
 Arrays.stream(배열 이름).max(),getAsInt() 
 
-# `배열 이름`에 있는 값들의 최대값을 찾아서 그 값을 Int 형으로 변환한다.
+// `배열 이름`에 있는 값들의 최대값을 찾아서 그 값을 Int 형으로 변환한다.
+```
+
+- List 형 
+
+Collections.max() 메서드 이용하는 방법이 있음.
+
+``` java
+List<Integer> numbers = List.of(4, 0, 5, 2, 7, 1, 8, 6, 9, 3);
+
+int max =  Collections.max(numbers);
 
 ```
+
 
 ## 7. 소수점 자리수 지정 ⇒ DecimalFormat 클래스 사용 & 올림 ⇒ Math.ceil() 사용 & 원하는 자리수 출력
 
