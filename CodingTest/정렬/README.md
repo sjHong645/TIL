@@ -1,6 +1,8 @@
 ## Arrays.sort vs Collection.sort 
 
-### Arrays.sort ⇒ 배열을 정렬하는데 사용한다.
+### Arrays.sort ⇒ 배열을 정렬하는데 사용한다. 
+
+시간복잡도 O(nlogn). 최악의 경우 O(n^2). DualPivotQuicksort 방식에 의해 실행한다고 함.
 
 - 오름차순 : Arrays.sort(배열);
 - 내림차순 : Arrays.sort(배열, Collections.reverseOrder());
@@ -66,6 +68,8 @@ String streamSortDESC_Lambda = Stream.of(stringArr).sorted((o1,o2)->o2.compareTo
 
 
 ### Collections.sort ⇒ List를 정렬하는데 사용한다.
+
+시간복잡도 O(nlogn). 최악의 경우 O(n^2). Timsort 방식에 의해 실행한다고 함.
 
 - 오름차순 : Collections.sort(List 자료);
 - 내림차순 : Collections.sort(List 자료, Comparator.reverseOrder()); 
