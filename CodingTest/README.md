@@ -301,3 +301,38 @@ second와 third를 비교해서 최댓값을 return 한다.
 그 최댓값과 first를 비교해서 또 다른 최댓값을 return한다.
 
 즉, first, second, third 이 3개의 숫자의 최댓값을 구한 것과 동일한 동작을 한다.
+
+## 15. 배열의 인덱스 출력하기 
+
+[출처](https://technote-mezza.tistory.com/99)
+
+배열에서는 indexOf()를 지원하지 않고   
+
+ArrayList 자료구조에서만 지원하기 때문에 asList()를 통해 배열을 List 형태로 변환한 다음에 indexOf() 메소드를 사용하면 된다.
+
+``` java
+import java.util.Arrays;
+
+public class IndexOfTest {
+    public static void main(String[] args) {
+		String[] arr = {"a","b","c"};
+		System.out.println(Arrays.asList(arr).indexOf("b")); //1이 출력된다.
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
