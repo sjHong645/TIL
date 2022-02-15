@@ -320,7 +320,50 @@ public class IndexOfTest {
 }
 ```
 
+## 16. 한꺼번에 출력하기 - StringBuilder 이용 
 
+[출처](https://ecsimsw.tistory.com/entry/Java-StringBuilder-%EB%AA%A8%EC%95%84%EC%84%9C-%EC%B6%9C%EB%A0%A5-vs-%EB%A7%A4%EB%B2%88-%EC%B6%9C%EB%A0%A5)
+
+[출처](https://onlyfor-me-blog.tistory.com/317)
+
+System.out.print는 바로바로 출력하는 방법 중 하나이다. 하지만, 이 방법은 상황에 따라서 많은 시간을 소요하도록 한다.
+
+때문에 출력할 내용을 곧바로 출력하지 않고 모았다가 한 번에 출력하면 훨씬 시간을 단축시킬 수 있다.
+
+이를 위한 방법 중 하나가 `StringBuilder`이다.
+
+원래 자바에서는 String 객체를 변경하는 것은 불가능하다. 즉, 서로 다른 문자열끼리 합쳐지기 위해서는 여러가지 부가적인 과정들이 필요하다.
+
+StringBuilder는 String 객체와 달리 변경할 수 있는 문자열을 만들어주기 때문에  
+String 뿐만 아니라 출력하고자 하는 내용을 한꺼번에 출력하고 싶을 때 유용하게 사용할 수 있다.
+
+- 사용법
+
+``` java
+
+import java.lang.StringBuilder;
+
+public class Main
+{
+    public static void main(String[] args)
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        ArrayList<String> list = new ArrayList<>();
+        list.add("첫 번째, ");
+        list.add("두 번째, ");
+        list.add("세 번째, ");
+        list.add("네 번째, ");
+        list.add("다섯 번째");
+        for (int i = 0; i < list.size(); i++)
+        {
+            stringBuilder.append(list.get(i));
+        }
+        System.out.println(stringBuilder);
+    }
+
+}
+// >> 첫 번째, 두 번째, 세 번째, 네 번째, 다섯 번째
+```
 
 
 
