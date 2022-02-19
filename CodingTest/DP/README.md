@@ -4,7 +4,8 @@ DP문제를 해결하는 방법은 크게 두 가지가 있다. 각각의 문제
 
 - [파도반 수열](/CodingTest/DP/파도반수열.md)
 - [피보나치 함수](/CodingTest/DP/피보나치함수.md)
-
+- [계단 오르기](/CodingTest/DP/계단오르기.md)
+- [1로 만들기](/CodingTest/DP/1로만들기.md)
 
 ## Bottom-up 방식 
 
