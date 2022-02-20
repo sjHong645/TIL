@@ -11,7 +11,7 @@ DP문제를 해결하는 방법은 크게 두 가지가 있다. 각각의 문제
 
 - [RGB 거리](/CodingTest/DP/RGB거리.md)
 - [정수 삼각형](/CodingTest/DP/정수삼각형.md)
-
+- [쉬운 계단수](/CodingTest/DP/쉬운계단수.md)
 
 ## long 타입 
 
