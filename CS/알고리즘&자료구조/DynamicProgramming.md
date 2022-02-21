@@ -317,6 +317,8 @@ A: 10 * 100, B: 100 * 5, C: 5 * 50
 
 ### 최장 공통 부분 순서(Longest Common Sub-Sequence) 
 
+[관련 코드](/CodingTest/DP/LCS.md)
+
 #### 조건 및 규칙
 
 두 문자열 `X_m`과 `Y_n`이 있다. 여기서 `m,n`은 `X_m과 Y_n 문자열`의 각각의 `길이`를 의미한다.
