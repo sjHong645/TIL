@@ -23,3 +23,44 @@ long 타입 => `16 Bytes = 64 bits` 데이터를 표현하기 위해 사용됨
 
 즉, -9223372036854775808 ~ 9223372036854775807 범위의 숫자를 표현할 수 있는 타입이다.
 
+## int 배열 vs Integer 배열의 차이
+
+- int 배열 : 초기화하지 않은 부분의 값은 모두 0이 된다.
+
+- Integer 배열 : 초기화하지 않은 부분의 값은 null이 된다.
+
+``` java
+public class temp {
+
+	public static void main(String[] args) {
+		
+		int[] array1 = new int[11];
+		
+		Integer[] array2 = new Integer[11];
+		
+		for(int i = 0; i < array1.length; i++) {
+			
+			System.out.println("array1[" + i + "] = " + array1[i] + " array2[" + i + "] = " + array2[i]);
+		}
+
+	}
+
+}
+```
+
+- 출력 
+
+``` console
+array1[0] = 0 array2[0] = null
+array1[1] = 0 array2[1] = null
+array1[2] = 0 array2[2] = null
+array1[3] = 0 array2[3] = null
+array1[4] = 0 array2[4] = null
+array1[5] = 0 array2[5] = null
+array1[6] = 0 array2[6] = null
+array1[7] = 0 array2[7] = null
+array1[8] = 0 array2[8] = null
+array1[9] = 0 array2[9] = null
+array1[10] = 0 array2[10] = null
+
+```
