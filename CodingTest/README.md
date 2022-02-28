@@ -142,7 +142,9 @@ int max =  Collections.max(numbers);
 ```
 
 
-## 7. 소수점 자리수 지정 ⇒ DecimalFormat 클래스 사용 & 올림 ⇒ Math.ceil() 사용 & 원하는 자리수 출력
+## 7-1. 소수점 자리수 지정 ⇒ DecimalFormat 클래스 사용 
+## 7-2. 올림 ⇒ Math.ceil() 사용 
+## 7-3. 원하는 자리수 출력 ⇒ System.out.println() 설정
 
 - 소수점 자리수 지정
 
