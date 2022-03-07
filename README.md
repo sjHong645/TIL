@@ -5,6 +5,7 @@
 - JSP : [최범균의 JSP 2.3 웹 프로그래밍 : 기초부터 중급까지](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=70129886)
 - 스프링(Spring) : [초보 웹 개발자를 위한 스프링5 프로그래밍 입문](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=157472828)
 
+- 정보처리기사 : [2022 시나공 정보처리기사 필기](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=281396175)
 
 ### CS
 
@@ -26,6 +27,7 @@
 
 ### Spring
 
+### 정보처리기사
 
 
    
