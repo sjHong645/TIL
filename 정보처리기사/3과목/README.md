@@ -1,5 +1,7 @@
 3장은 문제 위주로 푼다.
 
+`21개`의 마크다운 파일 
+
 ## SQL 분류 
 
 1) DDL(Date Define Language, 데이터 정의어) 
