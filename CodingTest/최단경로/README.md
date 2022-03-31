@@ -2,6 +2,10 @@
 
 ## 다익스트라 알고리즘 
 
+![image](https://user-images.githubusercontent.com/64796257/161003182-81fbe0d7-e7a3-4ff2-adff-54e6e390b6ae.png)
+
+또는 
+
 ![image](https://user-images.githubusercontent.com/64796257/160998066-d805e808-d1ec-4be8-a09e-74ae36ed6f09.png)
 
 ## Bellman-Ford 알고리즘
