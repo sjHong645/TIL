@@ -25,7 +25,11 @@
 
 - JSP 파일 : C:\apache-tomcat-8.5.73\webapps 에 있음
 
-### Spring
+### Spring 
+
+[진행 중인 프로젝트](https://github.com/sponbob-pat/freelec-springboot2-webservice)
+
+[교재](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=218568947)
 
 ### 정보처리기사
 
