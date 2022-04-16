@@ -31,6 +31,10 @@
 
 [교재](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=218568947)
 
+### AWS 
+
+[교재](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=180114055)
+
 ### 정보처리기사
 
 
