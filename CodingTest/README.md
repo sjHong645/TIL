@@ -377,6 +377,29 @@ int형 자료는 4bytes 크기의 데이터를 표현하는데 4bytes = 32bits�
 
 10^9 ≤ 2³¹ - 1 ≤ 10^10
 
+## 18. String 비교 
+
+`String`은 기본 자료형이 아니라 `객체`이다. 
+
+그래서 `==`를 이용해서 두 `String`을 비교하려고 한다면 실제 두 값이 같은지 여부가 아니라 `두 값이 위치한 주소`가 같은지를 따진다.
+
+그렇기 때문에 문자열을 비교하기 위해서는 `.equals()` 메소드를 사용해야 한다.
+
+ex) 
+``` java
+str = "hello"; 
+
+str2 = "hello"; 
+
+if(str.equals(str2)) { 
+	
+  System.out.println("Match!);
+} 
+
+else System.out.println("Not");
+
+```
+
 
 
 
