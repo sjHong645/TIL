@@ -400,7 +400,10 @@ else System.out.println("Not");
 
 ```
 
+## 19. int형 vs Integer 형 
 
+큰 차이는 없지만 `int형`은 `null`로 초기화할 수 없고 `null`인지 아닌지를 check할 수 없다.  
+반면에 `Integer형`은 `null`로 초기화할 수 있고 check도 가능하다.
 
 
 
