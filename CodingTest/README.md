@@ -409,11 +409,20 @@ else System.out.println("Not");
 
 [출처](https://bcp0109.tistory.com/15)
 
-``` java
+예를 들어, 1, 2, 3, 4라는 4개의 자료가 있는 배열이 있다 하자. 그 중 2개를 뽑는 경우의 수를 구하고 싶다. 
 
+그렇다면 이렇게 생각할 수 있다. 
+
+1) 맨 앞에 있는 `1`을 포함한 `나머지 1개` 뽑기 (나머지 = 2, 3, 4)
+2) 그 다음에 있는 `2`를 포함한 `나머지 1개` 뽑기 (나머지 = 3, 4)
+3) 그 다음에 있는 `3`을 포함한 `나머지 1개` 뽑기 (나머지 = 4)
+4) 종료 
+
+ex) `4개의 자료`를 갖고 있는 arr배열에서 `2개를 뽑는` 조합의 경우의 수
+``` java
     public static void main(String[] args) {
     	  	
-    	int[] arr = {1, 2, 3, 4};
+    	int[] arr = {1, 2, 3, 4}; // 주어진 배열
     	boolean[] visited = new boolean[arr.length];
     	
     	int n = 4; int r = 2; 
@@ -424,15 +433,19 @@ else System.out.println("Not");
     
     
     static void combination(int[] arr, boolean[] visited, int start, int n, int r) {
+    	
+	// r == 0 이라는 건 더 이상 뽑을 수 있는 원소가 없다는 것.
+	// 그래서 여기서 멈추고 원하는 동작(ex. 출력)을 하면 된다.
         if(r == 0) {
-            print(arr, visited, n);
+            print(arr, visited, n); // 방문한 원소들을 출력 
             return;
         } 
-
-        for(int i=start; i<n; i++) {
-            visited[i] = true;
-            combination(arr, visited, i + 1, n, r - 1);
-            visited[i] = false;
+	
+	
+        for(int i = start; i < n; i++) {
+            visited[i] = true; // i번째 원소 방문
+            combination(arr, visited, i + 1, n, r - 1); // i+1 번째 이후의 원소들 중에서 나머지 뽑기
+            visited[i] = false; // i번째 원소 방문 종료
         }
     } 
     
