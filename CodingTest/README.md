@@ -405,7 +405,48 @@ else System.out.println("Not");
 큰 차이는 없지만 `int형`은 `null`로 초기화할 수 없고 `null`인지 아닌지를 check할 수 없다.  
 반면에 `Integer형`은 `null`로 초기화할 수 있고 check도 가능하다.
 
+### 20. 기본적인 조합 코드 
 
+[출처](https://bcp0109.tistory.com/15)
+
+``` java
+
+    public static void main(String[] args) {
+    	  	
+    	int[] arr = {1, 2, 3, 4};
+    	boolean[] visited = new boolean[arr.length];
+    	
+    	int n = 4; int r = 2; 
+    	
+    	combination(arr, visited, 0, n, r);
+    	
+    }
+    
+    
+    static void combination(int[] arr, boolean[] visited, int start, int n, int r) {
+        if(r == 0) {
+            print(arr, visited, n);
+            return;
+        } 
+
+        for(int i=start; i<n; i++) {
+            visited[i] = true;
+            combination(arr, visited, i + 1, n, r - 1);
+            visited[i] = false;
+        }
+    } 
+    
+    
+    static void print(int[] arr, boolean[] visited, int n) {
+        for (int i = 0; i < n; i++) {
+            if (visited[i]) {
+                System.out.print(arr[i] + " ");
+            }
+        }
+        System.out.println();
+    }
+    
+```
 
 
 
