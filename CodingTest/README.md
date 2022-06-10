@@ -143,7 +143,25 @@ int max =  Collections.max(numbers);
 
 
 ## 7-1. 소수점 자리수 지정 ⇒ DecimalFormat 클래스 사용 
-## 7-2. 올림 ⇒ Math.ceil() 사용 
+## 7-2. 올림 ⇒ Math.ceil() 사용
+
+double Math.ceil(double a) : 입력받은 `a`보다 크거나 같은 `정수` 중 `최소 정수`를 return 한다.
+
+ex) Math.ceil(2.4) : `2.4`보다 크거나 같은 정수들 중 최소 정수인 `3`을 return한다. 
+
+Math.ceil(-1.3) : `-1.3`보다 크거나 같은 정수들 중 최소 정수인 `-1`을 return한다.
+
+[출처](https://selfdevelope.tistory.com/643)
+``` java 
+
+System.out.println((double) 12000 / 5000); // 2.4 출력 
+
+int n = (int) Math.ceil((double) 12000 / 5000); // 2.4에서 소수점 1번째 자리에서 '올림'
+System.out.println(n); // 따라서, 3 출력 
+
+
+```
+
 ## 7-3. 원하는 자리수 출력 ⇒ System.out.println() 설정
 
 - 소수점 자리수 지정
@@ -405,7 +423,7 @@ else System.out.println("Not");
 큰 차이는 없지만 `int형`은 `null`로 초기화할 수 없고 `null`인지 아닌지를 check할 수 없다.  
 반면에 `Integer형`은 `null`로 초기화할 수 있고 check도 가능하다.
 
-### 20. 기본적인 조합 코드 
+## 20. 기본적인 조합 코드 
 
 [출처](https://bcp0109.tistory.com/15)
 
