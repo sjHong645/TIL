@@ -135,7 +135,6 @@ public void remove(int pos) {
 	length--;
 }
 ```
-
 - 기타 등등 
 ![image](https://user-images.githubusercontent.com/64796257/150086182-879b0c45-cd65-4d91-9d9d-932cb2914921.png)
 
@@ -166,6 +165,16 @@ public void replace(int pos, int item) { // 원하는 위치(pos)에 원하는 �
 ![image](https://user-images.githubusercontent.com/64796257/150087172-ff3ea9b4-c25b-4d6f-93f3-045d2f2fb2d2.png)
 ![image](https://user-images.githubusercontent.com/64796257/150087179-702ab23a-d00b-498c-85ad-85bef1992a8a.png)
 
+Java 에서 이러한 구조를 미리 구현해놓은 `ArrayList` 클래스가 있다.
+
+[관련 내용](https://coding-factory.tistory.com/551)
+
+장점 : 인덱스가 존재하기 때문에 특정 요소에 쉽고 빠르게 접근할 수 있다.
+
+단점 : 위에서 살펴본 바와 같이 List 중간에 `insert`와 `remove`를 하게 되면 해당 데이터 이후에 있는 값들을 모두 1칸씩 왔다갔다 해야 하기 때문에 성능에 악영향을 끼칠 수 있다. 
+
+때문에, 중간에서 데이터를 `insert`, `remove` 하는 동작이 빈번하다면 아래에서 다룰 `LinkedList`를 사용하는 것이 더 좋다.
+
 ## 연결 리스트(LinkedList)
 
 
@@ -186,48 +195,48 @@ public void replace(int pos, int item) { // 원하는 위치(pos)에 원하는 �
 - 기본 요소 : 노드 
 
 ``` java
+// 노드에 대한 정의
+class Node {
+
+    int data;
+    Node next;
+
+    public Node() {
+        this(0);
+    }
+
+    public Node(int data) {
+        this(data, null);
+    }
+
+    public Node(int data, Node next) {
+        this.data = data;
+        this.next = next;
+    }
+
+}
+// 연결리스트에 대한 정의
 public class SinglyLinkedList {
+    Node head; // 맨 앞에 있는 노드를 가리킬 변수
+    int cnt; // 리스트의 원소 개수
 
-	class Node {
+    public SinglyLinkedList() { // 생성자 
+        head = null; // head가 null을 가리키도록 하고
+        cnt = 0;     // 개수는 0개로 초기화한다.
+    }
 
-        int data;
-        Node next;
+    Node getHead() { return head; } // head가 가리키는 노드를 반환
 
-        public Node() {
-            this(0);
+    Node getNode(int pos) { // pos번째에 있는 Node를 반환해준다.
+        // pos=2라면 2번째에 있는 Node를 반환한다.
+        Node p = head;
+
+        for(int i = 0; i < pos; i++) {
+            if(p == null) break; // p가 가리키는 게 null 이 아닌이상 
+            p = p.next; // 계속해서 한 칸씩 다음 노드로 p를 이동한다.
         }
-
-        public Node(int data) {
-            this(data, null);
-        }
-
-        public Node(int data, Node next) {
-            this.data = data;
-            this.next = next;
-        }
-	
-    	}
-	
-	Node head; // 맨 앞에 있는 노드를 가리킬 변수
-	int cnt; // 리스트의 원소 개수
-	
-	public SinglyLinkedList() { // 생성자 
-		head = null; // head가 null을 가리키도록 하고
-		cnt = 0;     // 개수는 0개로 초기화한다.
-	}
-	
-	Node getHead() { return head; } // head가 가리키는 노드를 반환
-	
-	Node getNode(int pos) { // pos번째에 있는 Node를 반환해준다.
-				// pos=2라면 2번째에 있는 Node를 반환한다.
-		Node p = head;
-		
-		for(int i = 0; i < pos; i++) {
-			if(p == null) break; // p가 가리키는 게 null 이 아닌이상 
-			p = p.next; // 계속해서 한 칸씩 다음 노드로 p를 이동한다.
-		}
-		return p;
-	}
+        return p;
+    }
 }
 ```
 
@@ -327,6 +336,14 @@ public int get(int pos) {
 	return node.data;
 }	
 ```
+
+장점 : 중간에 데이터를 추가하거나 삭제하는 것이 용이하다. 
+
+단점 : 인덱스가 없기 때문에 특정 요소에 접근하기 위해서는 `순차 탐색`을 해야 한다.
+
+Java 에서 이러한 구조를 미리 구현해놓은 `LinkedList` 클래스가 있다.
+
+[관련 내용](https://coding-factory.tistory.com/552)
 
 ### 이중 연결 리스트(Doubly LinkedList)
 
