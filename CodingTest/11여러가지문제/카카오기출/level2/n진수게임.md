@@ -9,8 +9,15 @@ m = 게임에 참가하는 인원
 p = 내 순서 
 ```
 
-내가 `m명`이 참가하는 `n진수 게임`에서 `p번째`에 숫자를 외칠 것이다. 내가 말해야 할 숫자를 `t개` 구해놓을 예정이다. 
+1) 정수를 `0`부터 차례대로 n진수로 변환 
+2) 변환한 n진수를 1자리씩 탐색하는데 내가 `말해야 할 순서`가 된다면 `말해야 할 숫자`를 StringBuilder에 저장
+3) 숫자 t개가 될 때까지 실행
 
+ex) 
+
+![image](https://user-images.githubusercontent.com/64796257/174746529-37656020-1854-4c6c-b5e8-7e26b2a7cf3b.png)
+
+위에서 `네모`로 표시한 값들을 하나씩 `StringBuilder`에 저장해서 길이가 t가 되면 출력한다.
 
 
 ### 진법 변환 
@@ -61,7 +68,6 @@ Character.toUpperCase('t'); // 소문자 t가 대문자 T로 바뀐다.
 ```
 
 
-
 ## 정답 코드 
 
 ``` java
@@ -73,51 +79,30 @@ class Solution {
     // m = 게임에 참가하는 인원 
     // p = 내 순서 
     public String solution(int n, int t, int m, int p) {
-        String answer = "";
-        
-        // 내가 구할 개수가 16개인데 인원이 3명이라면... 총 48개의 숫자가 필요하다. 
-        // 즉, 최소 t * m 이상은 있어야 한다. 
-        
-        int k = 1; // 자릿수
-        int sum = n; // 1의 자리는 n진수 만큼 있다.
-        while(true) { 
-            
-            if(t * m <= sum) break;
-            
-            k++;
-            sum += k * (int)Math.pow(n, k-1) * (n-1);
-        }
-        
-        // 이를 통해 n진수 숫자를 k자리까지만 구해주면 된다. 
-        // ex) 16진수 숫자를 2자리까지만 구해준다. 
-        // ex) 2진수 숫자를 3자리까지만 구해주면 된다. 
         
         // 인원이 12명인데 내가 해야할 순서가 5번째 = 5번째, 17번째, 32번째 ...        
         // 인원이 m명인데 내가 해야 할 순서가 p번째 = p, p + m, p + 2m, p + 3m ....
         // 바꿔 말하면 (순서) % m == p 인 경우
-        
-        // 진법 변환 
-        // https://cornarong.tistory.com/48
-        // Integer.toString(원하는 숫자, 진수);
-        
-        // k = 최대 자리수 
-        // 그렇다면, 10진수에서는 n^k - 1 까지의 값을 변환해주면 된다.
-        
+                
         String number; 
-        int order = 1; // 순서 
-        StringBuilder sb = new StringBuilder(); 
         
-        for(int i = 0; i < (int)Math.pow(n, k); i++) { 
+        StringBuilder sb = new StringBuilder(); // 내가 말할 숫자들
+        
+        int order = 1; // 숫자들을 n진수로 변환해서 쭉 나열했을 때 각각의 자리를 가리키는 인덱스 
+        int i = 0; // 주어진 숫자
+        while(true) { 
             
-            number = Integer.toString(i, n); // i값을 n진수로 변환한 값
-            // System.out.println("변환한 숫자 = " + number);
+            // i값을 n진수로 변환
+            number = Integer.toString(i, n); 
             
-            // for(char digit : number) { 
+            // 변환한 숫자 길이만큼 반복문을 실행
             for(int j = 0; j < number.length(); j++) { 
                 
+                // 내가 말할 숫자들을 모두 구했다면 break
                 if(sb.toString().length() == t) break;
                 
-                // if(order % m == p) sb.append(digit);
+                // n진수로 나열한 숫자들의 각 자리를 가리키는 인덱스(order)가 
+                // 내가 말해야 할 순서라면 그 숫자를 sb에 추가한다. 
                 if(order % m == p) {
                     
                     if(Character.isDigit(number.charAt(j))) sb.append(number.charAt(j));
@@ -127,8 +112,9 @@ class Solution {
                     
                 }
                 
-                // m = 2, p = 2인 상황에서 위에 있는 if문을 만족하는 건 불가능하다. 
+                // m = 2, p = 2인 상황과 같이 m과 p가 같다면 위에 있는 if문을 만족하는 건 불가능하다. 
                 // 2로 나누는데 나머지가 2가 될 수 없기 때문이다. 
+                
                 // 그래서, 별도의 조건을 설정했다.
                 else if(m == p && (order % m == 0)) { 
                     
@@ -139,11 +125,14 @@ class Solution {
                     
                 }
                 
+                // 1자리씩 넘어갈 때 마다 인덱스 order를 1씩 증가
                 order++;
-                
             }
             
-            if(sb.toString().length() == t) break;   
+            if(sb.toString().length() == t) break;
+            
+            i++;
+            
         }
         return sb.toString();
     }
