@@ -368,7 +368,7 @@ public class LinkedQueue {
 }
 ```
 
-front와 rear가 더미 노드를 가지면서 큐가 시작된다. 이때 더미 노드는 데이터가 0이고 next가 지정되지 않은 노드이다.
+front와 rear가 더미 노드를 가지면서 큐가 시작된다. 이때 `더미 노드`는 `데이터가 0`이고 `next가 지정되지 않은` 노드이다.
 
 ![image](https://user-images.githubusercontent.com/64796257/149950105-f8f46a6a-3aeb-4306-b32c-87dcfa626d12.png)
 
@@ -404,10 +404,9 @@ public int dequeue() {
         front.next = front.next.next; // 이제 front는 삭제할 노드가 아닌 삭제할 노드 다음에 있는 노드를 가리켜야 한다.
                                       
         destroy = null; // 삭제할 노드는 null로 바꿨다.
-        /* clear let GC do it's work */
         size--; // size를 1 감속
 
-        if (isEmpty()) { // 모든 작업읆 마치고나서 만약 큐가 비어있다면 rear와 front가 같은 더미 노드를 가리키도록 했다
+        if (isEmpty()) { // 모든 작업을 마치고나서 만약 큐가 비어있다면 rear와 front가 같은 더미 노드를 가리키도록 했다
             front = rear;
         }
 
@@ -485,10 +484,9 @@ public int deleteRear() {
         	}        	
         }
         
-        rear = beforeRear; // rear가 가리키는 노드를 
-        				         // beforeRear가 가리키는 것과 똑같이한다.
+        rear = beforeRear; // rear가 가리키는 노드를 beforeRear가 가리키는 것과 똑같이한다.
         destroy = null; // 삭제할 노드는 null로 바꿨다.
-        size--; // size를 1 감속
+        size--; // size를 1 감소
 
         if (isEmpty()) { // 모든 작업을 마치고나서 만약 큐가 비어있다면 rear와 front가 같은 더미 노드를 가리키도록 했다
             front = rear;
@@ -501,7 +499,7 @@ public int deleteRear() {
 
 ![image](https://user-images.githubusercontent.com/64796257/149959784-a3747fe4-5498-4ccb-9185-4d5a1bcbf6a0.png)
 
-
+[추가 내용](/CodingTest/스택&큐(Stack&Queue)/README.md)
 
 
 
