@@ -105,11 +105,11 @@ ex) ![image](https://user-images.githubusercontent.com/64796257/150242783-daa4b7
 
 ![image](https://user-images.githubusercontent.com/64796257/150243372-723ac983-8e5e-4325-9fd5-1e19966406bc.png)
 
-2) 이진 트리의 높이를 h라고 했을 때 
+2) 이진 트리의 `높이`를 `h`라고 했을 때 
 
 ![image](https://user-images.githubusercontent.com/64796257/150243394-30fb9691-04cd-4268-b07d-22812417814a.png)
 
-3) 이진 트리에 n개의 노드가 있을 때 
+3) 이진 트리의 `노드`가 `n`개 있을 때 
 
 ![image](https://user-images.githubusercontent.com/64796257/150243413-5f9388e7-1e6f-43f8-884c-5da7f65ee310.png)
 
@@ -206,6 +206,8 @@ public class BinaryTree {
 
 이진 트리에서 순회는 크게 4가지 방식이 있다. 전위 순회, 중위 순회, 후위 순회, 레벨 순회. 각각에 대해서 살펴보겠다. 
 
+루트 노드를 `앞`에서 순회하면 `전위 순회`, 루트 노드를 `중간`에서 순회하면 `중위 순회`, 루트 노드를 `뒤`에서 순회하면 `후위 순회`
+
 - 전위 순회 : 루트 출력 ⇒ 왼쪽 서브 트리 ⇒ 오른쪽 서브 트리 
 
 ![image](https://user-images.githubusercontent.com/64796257/150246704-ca047b76-d463-4770-9712-70aa5d66b937.png)
@@ -238,9 +240,9 @@ private void preOrder(BinaryNode node) {
 	
 	private void inOrder(BinaryNode node) {
 		if(node != null) {
-			preOrder(node.getLeft());               // 왼쪽 서브 트리
+			inOrder(node.getLeft());               // 왼쪽 서브 트리
 			System.out.print(node.getData() + " "); // 루트 출력
-			preOrder(node.getRight());              // 오른쪽 서브 트리 
+			inOrder(node.getRight());              // 오른쪽 서브 트리 
 		}
 	}
 ```
@@ -257,8 +259,8 @@ private void preOrder(BinaryNode node) {
 	
 	private void postOrder(BinaryNode node) { 
 		if(node != null) {
-			preOrder(node.getLeft());               // 왼쪽 서브 트리
-			preOrder(node.getRight());              // 오른쪽 서브 트리
+			postOrder(node.getLeft());               // 왼쪽 서브 트리
+			postOrder(node.getRight());              // 오른쪽 서브 트리
 			System.out.print(node.getData() + " "); // 루트 출력
 		}
 	}
