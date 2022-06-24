@@ -108,10 +108,10 @@ class BinarySearchNode{
 public class BinarySearchTree extends BinaryTree{
 	
 	private BinarySearchNode root; // BinaryTree에 있는 root는 BinaryNode 형이다. 
-                                 // 그래서 원하는 자료형의 root 변수를 따로 설정했다.
-                                 // 그 외의 메소드는 BinaryTree에서 가져왔다.
+        	                       // 그래서 원하는 자료형의 root 변수를 따로 설정했다.
+                	               // 그 외의 메소드는 BinaryTree에서 가져왔다.
 	
-  public int search(int key) { // main 함수에서 사용할 search 함수
+  	public int search(int key) { // main 함수에서 사용할 search 함수
 		BinarySearchNode node = search(this.root, key); // 루트에서부터 시작해서 원하는 key값을 가진 노드의 value를 알고 싶다.
 		if(node == null) throw new NoSuchElementException("Error : out-of-key");
 		return node.getValue();
@@ -119,13 +119,13 @@ public class BinarySearchTree extends BinaryTree{
   
 	private BinarySearchNode search(BinarySearchNode node, int key) {
   
-    // 내가 원하는 key값을 가진 노드를 찾았다면 해당 node를 반환
+    		// 내가 원하는 key값을 가진 노드를 찾았다면 해당 node를 반환
 		if(node == null || key == node.getKey()) { return node; } 
 		
-    // 내가 원하는 key값이 현재 노드보다 작다면 node의 왼쪽에서 search 시작
+    		// 내가 원하는 key값이 현재 노드보다 작다면 node의 왼쪽에서 search 시작
 		else if(key < node.getKey()) return search(node.getLeft(), key); 
 				
-    // 내가 원하는 key값이 현재 노드보다 크다면 node의 오른쪽에서 search 시작
+    		// 내가 원하는 key값이 현재 노드보다 크다면 node의 오른쪽에서 search 시작
 		else return search(node.getRight(), key);
 	}
 
@@ -139,39 +139,40 @@ public class BinarySearchTree extends BinaryTree{
 ``` java
 public class BinarySearchTree extends BinaryTree{
 	
-		public void insert(int key, int value) {
+	public void insert(int key, int value) {
 		if(empty()) this.root = new BinarySearchNode(key, value); // 트리가 비어있다면 루트 노드에 새 노드를 삽입해야 한다.
-		
+	
 		else insert(this.root, key, value); // 비어있지 않다면 삽입 동작 시작
 	}
 	
 	private void insert(BinarySearchNode node, int key, int value) {
 		if(key == node.getKey()) node.setValue(value); // 내가 원하는 노드의 key값을 가진 노드가 이미 존재한다면 
-                                                   // 해당 노드에 value만 새로 설정해주면 된다.
+                       		                               // 해당 노드에 value만 새로 설정해주면 된다.
 		
 		else if(key < node.getKey()) { // 내가 삽입하고자 하는 노드의 key값이 
-                                   // 현재 노드의 key값보다 작은 경우의 동작
+                              		       // 현재 노드의 key값보다 작은 경우의 동작
                                    
-      // 현재 노드의 왼쪽 서브 트리가 없다면
-      // 내가 삽입하고자 하는 key값과 value를 가진 노드를 현재 노드의 왼쪽에 삽입해주면 된다.
+      			// 현재 노드의 왼쪽 서브 트리가 없다면
+      			// 내가 삽입하고자 하는 key값과 value를 가진 노드를 현재 노드의 왼쪽에 삽입해주면 된다.
 			if(node.getLeft() == null) { 
 				node.setLeft(new BinarySearchNode (key, value));
 			}
       
-      // 그렇지 않다면 현재 노드의 왼쪽 노드에서 insert 작업을 수행하면 된다.
+      			// 그렇지 않다면 현재 노드의 왼쪽 노드에서 insert 작업을 수행하면 된다.
 			else insert(node.getLeft(), key, value);
-		}
 		
+		}
+	
 		else { // 내가 삽입하고자 하는 노드의 key값이 
-           // 현재 노드의 key값보다 큰 경우의 동작
+        	       // 현재 노드의 key값보다 큰 경우의 동작
      
-      // 현재 노드의 오른쪽 서브 트리가 없다면
-      // 내가 삽입하고자 하는 key값과 value를 가진 노드를 현재 노드의 오른쪽에 삽입해주면 된다.
+      			// 현재 노드의 오른쪽 서브 트리가 없다면
+      			// 내가 삽입하고자 하는 key값과 value를 가진 노드를 현재 노드의 오른쪽에 삽입해주면 된다.
 			if(node.getRight() == null) {
 				node.setRight(new BinarySearchNode (key, value));
 			}
 			
-      // 그렇지 않다면 현재 노드의 오른쪽 노드에서 insert 작업을 수행하면 된다.
+      			// 그렇지 않다면 현재 노드의 오른쪽 노드에서 insert 작업을 수행하면 된다.
 			else insert(node.getRight(), key, value);
 		}
 		
@@ -191,58 +192,63 @@ public class BinarySearchTree extends BinaryTree{
 
 전체 구현 코드 
 ``` java
+public BinarySearchNode leftmost(BinarySearchNode node) {
+	while(node.getLeft() != null) node = node.getLeft();
+		
+	return node;
+}
+
 public void remove(int key) {
-		BinarySearchNode node = remove(this.root, null, key); // 삭제할 노드를 여기에 가져온다.
-		if(node == null) throw new NoSuchElementException("Error : out-of-key");
-		node = null; // 여기서 삭제할 노드를 삭제한다.
-	}
+	BinarySearchNode node = remove(this.root, null, key); // 삭제할 노드를 여기에 가져온다.
+	if(node == null) throw new NoSuchElementException("Error : out-of-key");
+	node = null; // 여기서 삭제할 노드를 삭제한다.
+}
 	
-	private BinarySearchNode remove(BinarySearchNode node, BinarySearchNode parent, int key) {
-		if(node == null) return null; // 삭제할 노드가 null 이면 null을 return
+private BinarySearchNode remove(BinarySearchNode node, BinarySearchNode parent, int key) {
+	if(node == null) return null; // 삭제할 노드가 null 이면 null을 return
     
-    // 삭제할 노드의 key값이 현재 노드보다 작다면 현재 노드의 왼쪽 서브트리에서 삭제 동작을 실행한다.
-		if(key < node.getKey()) return remove(node.getLeft(), node, key); 
+    	// 삭제할 노드의 key값이 현재 노드보다 작다면 현재 노드의 왼쪽 서브트리에서 삭제 동작을 실행한다.
+	if(key < node.getKey()) return remove(node.getLeft(), node, key); 
     
-    // 삭제할 노드의 key값이 현재 노드보다 크다면 현재 노드의 오른쪽 서브트리에서 삭제 동작을 실행한다.
-		else if(key > node.getKey()) return remove(node.getRight(), node, key);	
+    	// 삭제할 노드의 key값이 현재 노드보다 크다면 현재 노드의 오른쪽 서브트리에서 삭제 동작을 실행한다.
+	else if(key > node.getKey()) return remove(node.getRight(), node, key);	
     
-    // 삭제할 노드의 key값이 현재 노드일 때 상황에 따라서 3가지로 나뉜다.
-		else {		
-			// case 3 - 자식 노드가 2개 있을 때
-			if(node.hasTwoChildren()) {
-				BinarySearchNode succ = leftmost(node.getRight());
-				node.setKey(succ.getKey());
-				node.setValue(succ.getValue());
+    	// 삭제할 노드의 key값이 현재 노드일 때 상황에 따라서 3가지로 나뉜다.
+	else {		
+		// case 3 - 자식 노드가 2개 있을 때
+		if(node.hasTwoChildren()) {
+			BinarySearchNode succ = leftmost(node.getRight());
+			node.setKey(succ.getKey());
+			node.setValue(succ.getValue());
 				
-				succ = this.remove(node.getRight(), node, succ.getKey());
-				return succ;
-			}
-			// case 2 - 자식 노드가 1개 있을 때
-			else if(node.hasOneChildren()) {
-				BinarySearchNode child = (node.getLeft() != null) ? 
-										node.getLeft() : node.getRight();
-				if(node == this.root) this.root = child;
-				
-				else {
-					if(parent.getLeft() == node) parent.setLeft(child);
-					else parent.setRight(child);
-				}
-				
-				return node;
-			}
-			// case 1 - 자식 노드가 없을 때
+			succ = this.remove(node.getRight(), node, succ.getKey());
+			return succ;
+		}
+		// case 2 - 자식 노드가 1개 있을 때
+		else if(node.hasOneChildren()) {
+			BinarySearchNode child = (node.getLeft() != null) ? node.getLeft() : node.getRight();
+			if(node == this.root) this.root = child;
+			
 			else {
-				if(node == this.root) this.root = null;
-				
-				else {
-					if(parent.getLeft() == node) parent.setLeft(null);
-					else parent.setRight(null);
-				}
-				
-				return node;
+				if(parent.getLeft() == node) parent.setLeft(child);
+				else parent.setRight(child);
 			}
+				
+			return node;
+		}
+		// case 1 - 자식 노드가 없을 때
+		else {
+			if(node == this.root) this.root = null;
+				
+			else {
+				if(parent.getLeft() == node) parent.setLeft(null);
+				else parent.setRight(null);
+			}
+				
+			return node;
 		}
 	}
+}
 ```
 
 case 1) 자식 노드가 없을 때
@@ -252,10 +258,10 @@ else {
 	if(node == this.root) this.root = null;
 				
 	else {
-    // 현재 node가 부모 노드의 왼쪽 노드라서 부모 노드의 왼쪽 노드는 null이 되도록 했다.
+    		// 현재 node가 부모 노드의 왼쪽 노드라서 부모 노드의 왼쪽 노드는 null이 되도록 했다.
 		if(parent.getLeft() == node) parent.setLeft(null); 
     
-    // 현재 node가 부모 노드의 오른쪽 노드라서 부모 노드의 오른쪽 노드는 null이 되도록 했다.
+    		// 현재 node가 부모 노드의 오른쪽 노드라서 부모 노드의 오른쪽 노드는 null이 되도록 했다.
 		else parent.setRight(null);
 	}
   // 삭제할 노드 반환
@@ -272,23 +278,23 @@ case 2) 자식 노드가 1개 있을 때
 
 ``` java
 else if(node.hasOneChildren()) {
-  // 삭제하려는 노드의 자식 노드가 1개 있기 때문에 왼쪽 또는 오른쪽에 있을 거다.
-  // 그렇게 왼쪽 또는 오른쪽에 있는 서브 트리 노드를 child가 가리키도록 했다.
+  	// 삭제하려는 노드의 자식 노드가 1개 있기 때문에 왼쪽 또는 오른쪽에 있을 거다.
+  	// 그렇게 왼쪽 또는 오른쪽에 있는 서브 트리 노드를 child가 가리키도록 했다.
   
-  // 이 child 노드가 node를 삭제하고 나서 기존의 node 자리를 대체할 노드이다. 
+  	// 이 child 노드가 node를 삭제하고 나서 기존의 node 자리를 대체할 노드이다. 
 	BinarySearchNode child = (node.getLeft() != null) ? node.getLeft() : node.getRight();
   
-  // 삭제할 노드가 root 노드였다면 위에서 구한 child를 root 노드로 대체한다.
+  	// 삭제할 노드가 root 노드였다면 위에서 구한 child를 root 노드로 대체한다.
 	if(node == this.root) this.root = child;
 	
-  // 그렇지 않은 경우
+  	// 그렇지 않은 경우
 	else {
-    // 삭제하려고하는 node가 parent 노드의 왼쪽 자식 노드였다면
-    // parent 노드의 왼쪽 자식 노드를 child 노드로 설정한다.
+    		// 삭제하려고하는 node가 parent 노드의 왼쪽 자식 노드였다면
+    		// parent 노드의 왼쪽 자식 노드를 child 노드로 설정한다.
 		if(parent.getLeft() == node) parent.setLeft(child);
     
-    // 삭제하려고하는 node가 parent 노드의 오른쪽 자식 노드였다면
-    // parent 노드의 오른쪽 자식 노드를 child 노드로 설정한다.
+    		// 삭제하려고하는 node가 parent 노드의 오른쪽 자식 노드였다면
+    		// parent 노드의 오른쪽 자식 노드를 child 노드로 설정한다.
 		else parent.setRight(child);
 	}
 		
@@ -298,9 +304,9 @@ else if(node.hasOneChildren()) {
 
 ![image](https://user-images.githubusercontent.com/64796257/150284111-f2501880-523d-4e51-b6d3-9d864dcd3734.png)
 
-26 node를 삭제하려고 한다.
+`26 node`를 삭제하려고 한다.
 
-“26 node의 부모 노드(parent)”가 “26 node의 서브트리의 루트 노드(child)”를 가리키게 하면 된다.
+`26 node의 부모 노드(parent)`가 `26 node의 서브트리의 루트 노드(child)`를 가리키게 하면 된다.
 
 여기서는 26 node가 왼쪽 자식 노드(node.getLeft())를 가지고 있었기 때문에 
 
@@ -314,28 +320,28 @@ case 3) 자식 노드가 2개 있을 때
 // 이진 트리의 특성상 계속해서 왼쪽 노드로 이동해서
 // 끝까지 가면 그 트리에서 가장 작은 key를 가진 노드를 구할 수 있다.
 // 그 성질을 이용한 메서드가 leftmost이다.
-	public BinarySearchNode leftmost(BinarySearchNode node) {
-		while(node.getLeft() != null) node = node.getLeft();
+public BinarySearchNode leftmost(BinarySearchNode node) {
+	while(node.getLeft() != null) node = node.getLeft();
 		
-		return node;
-	}
-  
-			if(node.hasTwoChildren()) {
-      // 대체할 노드를 succ이 가리키도록 했다.
-      // 이때 대체할 노드는 오른쪽 서브트리에서 제일 작은 key를 가진 노드이다.
-				BinarySearchNode succ = leftmost(node.getRight()); 
+	return node;
+}
+  ...
+if(node.hasTwoChildren()) {
+	// 대체할 노드를 succ이 가리키도록 했다.
+	// 이때 대체할 노드는 오른쪽 서브트리에서 제일 작은 key를 가진 노드이다.
+	BinarySearchNode succ = leftmost(node.getRight()); 
         
         // succ이 가리키는 노드의 key값과 value값이 삭제할 노드인 node의 key와 value값이 되도록 한다.
-				node.setKey(succ.getKey());
-				node.setValue(succ.getValue());
+	node.setKey(succ.getKey());
+	node.setValue(succ.getValue());
 				
         // 대체가 끝난후 대체한 노드를 가리킨 succ 노드를 삭제한다.
         // 오른쪽 서브트리에 있었으니까 node.getRight()에서 시작한다. 
         // 그러면 부모노드는 자연스레 node가 되고 찾으려고 하는 key는 succ의 key이니까 succ.getKey()로 표현하면 된다.
-				succ = this.remove(node.getRight(), node, succ.getKey());
+	succ = this.remove(node.getRight(), node, succ.getKey());
         
-				return succ;
-			}
+	return succ;
+}
 ```
 ![image](https://user-images.githubusercontent.com/64796257/150285386-e4f2937f-43f0-4566-bd16-3cfd6337d532.png)
 
@@ -356,8 +362,6 @@ case 3) 자식 노드가 2개 있을 때
 ![image](https://user-images.githubusercontent.com/64796257/150286638-05258fce-071a-44b0-a5fa-bd58fefb0e43.png)
 
 ![image](https://user-images.githubusercontent.com/64796257/150286656-dbc8b6fc-a0fb-4af4-8446-9521f0ecbfc6.png)
-
-![image](https://user-images.githubusercontent.com/64796257/150286746-009062fd-efe1-4d48-ab43-addfe1ffa583.png)
 
 
 
