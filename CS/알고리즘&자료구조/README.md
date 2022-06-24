@@ -13,7 +13,7 @@
 ## [탐색](./Search)
 #### [트리](./Search/Tree)
 ##### [AVL](./Search/Tree/AVL.md)
-##### [BST](./Search/Tree.BST.md)
+##### [BST](./Search/Tree/BST.md)
 ##### [RedBlackTree](./Search/Tree/RedBlackTree.md)
 ##### [트리개념, 용어, 순회](./Search/Tree/Tree.md)
 
