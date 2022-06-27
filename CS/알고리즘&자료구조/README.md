@@ -12,10 +12,10 @@
 
 ## [탐색](./Search)
 #### [트리](./Search/Tree)
-##### [AVL](./Search/Tree/AVL.md)
-##### [BST](./Search/Tree/BST.md)
-##### [RedBlackTree](./Search/Tree/RedBlackTree.md)
 ##### [트리개념, 용어, 순회](./Search/Tree/Tree.md)
+##### [BST](./Search/Tree/BST.md)
+##### [AVL](./Search/Tree/AVL.md)
+##### [RedBlackTree](./Search/Tree/RedBlackTree.md)
 
 #### [기본적인 탐색 내용](./Search/기본적인탐색내용.md)
 #### [테이블 & 해쉬](./Search/Hash.md)
