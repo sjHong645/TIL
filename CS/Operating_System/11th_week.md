@@ -44,91 +44,98 @@ remainder section: critical section을 제외한 나머지 부분
 
 이러한 critical section을 보호하기 위한 3가지 조건이 있다. (가정) 모든 프로세스들은 멈추지 않고 계속 진행한다.
 
-1. Mutual Exclusion(상호 배타성) : P_i라는 프로세스가 critical section을 수행하고 있다면, 다른 프로세스에 있는 critical section은 수행하지 않는다.
+1. `Mutual Exclusion(상호 배타성)` : `P_i 프로세스`가 `critical section을 수행`하는 동안 `다른 프로세스`들은 `critical section`은 `수행하지 않`는다.
 
-2. Progress : 여러 프로세스들이 아무도 critical section을 동작하지 않을 때    
-       어떤 프로세스가 critical section에 들어가려고 한다면, 해당 프로세스는 critical section에 들어갈 수 있어야 한다.
+2. `Progress` : 여러 프로세스들이 아무도 critical section을 `동작하지 않을 때`    
+       `어떤 프로세스`가 `critical section`에 들어가려고 한다면, 해당 프로세스는 critical section에 `들어갈 수 있어야` 한다.
 
-3. Bounded Waiting : 대기하는 시간이 어느 정도 정해져 있어야 한다. 대기 시간이 무한정으로 길어지면 안된다.
+3. `Bounded Waiting` : `대기시간`이 `유한`해야 한다. 대기 시간이 무한정으로 길어지면 안된다.
 
-예제. turn의 값은 0으로 초기화.  
-   turn이 0일 때 P0에서 critical section이 실행된다고 하자. turn이 1일 때 P1에서 critical section이 실행된다고 하자.(critical section = c.s)
+ex) `turn`의 값은 `0`으로 초기화.  
+   `turn = 0`일 때 `P0`에서 `critical section`이 실행된다고 하자.  
+   `turn = 1`일 때 `P1`에서 `critical section`이 실행된다고 하자.(critical section = c.s)
 
 ![image](https://user-images.githubusercontent.com/64796257/147862149-256b677c-7e1b-4b41-9ac1-d3f51dde42b4.png)
 
 대략적으로 살펴보면,
-처음에는 turn = 0이라서 P0에서 c.s을 실행하고나서 turn이 1로 바뀌게 되면서 P1 프로세스의 c.s가 실행되도록 한다.
-
-그렇게 P1에서 c.s를 다 수행하고 나면 turn이 0으로 바뀌면서 다시 P0의 c.s가 수행된다.
+1) `turn = 0`이기 때문에 `P0`에서 `c.s`을 실행한다. 
+2) `P0의 c.s`이 다 끝나면 `turn = 1`이 되면서 `P1의 c.s`이 실행될 수 있다.
+3) `P1에서 c.s`를 다 `수행`하고 나면 `turn = 0`으로 바뀌면서 다시 `P0의 c.s`를 수행할 수 있다.
 
 위와 같은 동작을 의도해서 만든 건데 이 동작은 과연 3가지 조건을 만족할까??
-1) Mutual Exclusion : 어느 한 쪽이 critical section에 들어갔다는 건 turn값이 0또는 1로 지정되었다는 것이기 때문에 다른 한 쪽에서는 들어가지 못한다. 따라서, ‘만족’
+1) `Mutual Exclusion` : 어느 한 쪽이 critical section에 들어갔다는 건 `turn값`이 `0또는 1`이라는 의미. 따라서, 다른 한 쪽에서는 들어가지 못한다. 따라서, `만족`	
 
-2) Bounded Waiting : 계속해서 두 프로세스가 번갈아가면서 실행되기 때문에 어느 한 쪽의 프로세스가 무한히 기다리는 일은 없다.
+2) `Bounded Waiting` : 계속해서 두 프로세스가 `번갈아가면서 실행`되기 때문에 어느 한 쪽의 프로세스가 무한히 기다리는 일은 없다.
 
-3) Progress : P1 프로세스를 보면, P0에서 c.s를 수행하고 나서 turn값이 1로 바뀌고 나서야 P1의 c.s가 수행된다.  
-	      즉, P1의 의지와 상관없이 P1의 c.s를 수행할 수 있는 상황이 되더라도   
+3) `Progress` : `P1`을 보면, `P0에서 c.s`를 수행하고 나서 `turn = 1`로 바뀌고 나서야 `P1의 c.s`가 `수행`된다.  
+	      즉, `P1의 의지`와 `상관없이` P1의 c.s를 수행할 수 있는 상황이 되더라도   
 	      P0에서 turn값을 바꾸지 않아서 P1의 c.s를 수행하지 못하는 상황이 발생할 수 있다. 따라서, progress는 만족하지 못한다.
 
 이걸 어느 정도 해결하기 위해서 아래와 같이 코드를 작성했다.  
-flag라는 boolean 배열을 만들어서 flag[0] = flag[1] = False를 초기값으로 가지도록 했다.
-
-만약에 flag[0] = true이면 P0는 c.s를 수행할 수 있고 flag[1] = true이면 P1이 c.s를 수행할 수 있다.
 
 ![image](https://user-images.githubusercontent.com/64796257/147862190-6913c48a-b7cf-4b64-8906-b87b4732efa4.png)
 
-Flag[0]이 True라면 P0는 c.s에 들어갈 수 있는데 이와 동시에 flag[1]이 True라면 못 들어가게 했다.  
+`flag`라는 `boolean 배열`을 만들어서 flag[0] = flag[1] = False를 초기값으로 가지도록 했다.
+
+1) `flag[0] = true`라면 `P0`는 `c.s를 수행`할 수 있고 
+2) `flag[1] = true`라면 `P1`이 `c.s를 수행`할 수 있다.
+
+`Flag[0] = True`라면 P0는 c.s에 `들어갈 수` 있는데 이와 동시에 `flag[1] = True`라면 `못 들어가`게 했다.  
 P0 에서 c.s에 접근할 때 P1에서는 c.s에 접근하면 안되기 때문에 while(flag[1])이라는 조건문을 걸었다.
 
 이 프로세스는 3가지 조건을 만족할지 살펴보자.
-1) Mutual Exclusion : 두 프로세스에서 동시에 c.s에 들어갈 일은 없다.  
-3)과 같이 동시에 안들어가는 상황은 생길 수 있지만 동시에 들어갈 일은 없다.  
-왜냐하면 flag[0]과 flag[1]이 둘 다 false여도… 각 프로세스의 1번 문장은 무조건 지나고 나서 while문의 조건문을 만나기 때문에 3)의 상황이 아닌 이상 flag[0]과 flag[1]은 무조건 다른 값을 가지게 된다.  
-⇒ 따라서, 1번 조건은 만족한다.
+1) `Mutual Exclusion` : 두 프로세스에서 동시에 c.s에 들어갈 일은 없다.  
+왜냐하면 `flag[0] = flag[1] = false`여도… `각 프로세스의 1번 문장`은 무조건 지나고 나서 while문의 조건문을 만나기 때문에  
+3)의 상황이 아닌 이상 `flag[0] ≠ flag[1]`이 성립한다.
+⇒ 따라서, 1번 조건은 `만족`한다.
 
-2) Bounded waiting : flag[0]과 flag[1]이 둘 다 false인 상황에서 P0가 먼저 자신의 1번 문장을 실행했다고 하자. 그러면 flag[0] == TRUE , flag[1] == False이므로 P0의 c.s을 수행한다.  
-그렇게 P0의 c.s을 수행하고 나서 flag[0]은 false가 되고 나머지 부분을 수행하던 와중에 P1에서 자신의 1번 문장을 실행하게 되었다.  
-그러면 flag[1] == TRUE가 되면서 flag[0] == FALSE인 상황이 되기 때문에 P1의 critical section을 수행할 수 있게 된다. 이러한 상황이 번갈아 일어나기 때문에 무한정으로 기다리는 상황은 발생하지 않는다. 
-⇒ 따라서, 2번 조건은 만족한다.
+2) `Bounded waiting` : `flag[0] = flag[1] = false`인 상황에서 `P0`가 `먼저 자신의 1번 문장`을 실행했다고 하자.  
+① `flag[0] == TRUE` & `flag[1] == False`이므로 `P0의 c.s`을 `수행`한다.  
+② `flag[0] == False`가 되고 나머지 부분을 수행하던 와중에 `P1`는 `자신의 1번 문장`을 `실행`한다.  
+③ `flag[0] == False` & `flag[1] == True`이기 때문에 `P1`의 `critical section`을 `수행`할 수 있다.
 
-3) Progress : P0와 P1이 실행하는데 두 프로세스가 각각의 1번 문장을 실행하고 나서 
-While문을 만나면… flag[0] 과 flag[1] 둘 다 True이기 때문에 while문 안에 있는 두 프로세스 모두 c.s을 수행하지 못한다. 이를 맞잡고 있다고 표현하고 `데드락`이라 한다.
+이러한 상황이 `번갈아` 일어나기 때문에 무한정으로 기다리는 상황은 발생하지 않는다.  
+⇒ 따라서, 2번 조건은 `만족`한다.
+
+3) `Progress` : P0와 P1이 실행하는데 두 프로세스가 각각의 1번 문장을 실행했다.
+
+① `while문`을 만나면 `flag[0] = flag[1] = True`이기 때문에 `두 프로세스`는 `c.s`을 `수행하지 못`한다. 이를 맞잡고 있다고 표현하고 `데드락`이라 한다.
 
 cf) 데드락(DeadLock) : 두 개 이상의 프로세스가 동시에 서로 다른 프로세스가 끝나기를 기다리는데 이러한 기다림이 무한히 발생하는 상황
 
-그렇다면 어떻게 해결해야할까?? 이를 해결하는 대표적인 방법이 있는데 바로 `Peterson’s Solution`이 있다.
+어떻게 해결해야할까?? 이를 `해결`하는 대표적인 방법이 `Peterson’s Solution`이다.
 
-turn = 0으로 초기화, flag[0] = flag[1] = False로 초기화. 
+초기화 상황 : turn = 0, flag[0] = flag[1] = False 
 
-flag[0] = true 이고 turn = 0이면 ⇒ P0의 c.s를 수행 / flag[1] = true 이고 turn = 1이면 ⇒ P1의 c.s를 수행
+`flag[0] = true` 이고 `turn = 0`이면 ⇒ P0의 c.s를 수행  
+`flag[1] = true` 이고 `turn = 1`이면 ⇒ P1의 c.s를 수행
 
 ![image](https://user-images.githubusercontent.com/64796257/147862254-6fe6869c-68a5-49fc-85bc-5e432b18be56.png)
 
 turn = 0이면 0번 프로세스가 들어갈 차례 / turn = 1이면 1번 프로세스가 들어갈 차례
 
-flag[0]과 flag[1]의 의미는 각각의 프로세스가 c.s에 들어갈 의지를 나타낸다고 비유하면 이해가 쉽다.
+flag[0]과 flag[1]의 의미는 각각의 프로세스가 `c.s에 들어갈 의지`를 나타낸다고 비유하면 이해가 쉽다.
 
-먼저 P0의 코드를 실행한다고 하면, flag[0] = true이다. 즉, 0번 프로세스는 c.s에 들어갈 의지가 있다.  
-그 상황에서 먼저 turn = 1을 수행함으로써 1번 프로세스가 들어갈 수 있도록 차례를 주었다.
+① `P0`를 `먼저` 실행한다고 하면, `flag[0] = true`이다. 즉, 0번 프로세스는 c.s에 들어갈 의지가 있다.  
+② `turn = 1`이 되면서 `1번 프로세스`가 들어갈 수 있도록 차례를 주었다.  
+③ 하지만, `flag[1] = false` & `turn = 1`이기 때문에 `P0의 c.s`를 수행한다. ⇒ 수행 후 `flag[0] = false`가 되었다.
 
-현재 상황에서는 flag[1] = false이고 turn = 1이기 때문에 P0의 c.s를 수행하게 된다. 그렇게 다 끝나고 나서 flag[0] = false로 바뀌게 되었다.
+④ `P1`가 `실행`되었다. `flag[1] = true`가 되었다. 즉, 1번 프로세스는 c.s에 들어갈 의지가 있다.  
+⑤ `turn = 0`이 되면서 `0번 프로세스`가 들어갈 수 있도록 차례를 주었다.  
+⑥ 하지만, `flag[0] = false` & `turn = 0`이기 때문에 `P1의 c.s`를 수행하게 된다. ⇒ 수행 후 `flag[1] = false`가 되었다.  
 
-그렇게 한 다음에 P1가 실행되었다. flag[1] = true가 되었다. 즉, 1번 프로세스는 c.s에 들어갈 의지가 있다.  
-그 상황에서 turn = 0을 수행함으로써 0번 프로세스가 들어갈 수 있도록 차례를 주었다.
+이러한 상황이 각각의 프로세스에서 번갈아가면서 일어난다.
 
-현재 상황에서는 flag[0] = false이고 turn = 0이기 때문에 P1의 c.s를 수행하게 된다.  
-그렇게 다 끝나고 나서 flag[1] = false로 바뀐다. 이러한 상황이 각각의 프로세스에서 번갈아가면서 일어난다.
+따라서, bounded waiting, mutual exclusion의 조건은 `Peterson's solution`에서도 여전히 만족한다.
 
-따라서, bounded waiting, mutual exclusion의 조건은 만족한다고 할 수 있다.
+그렇다면, `progress`는? P0, P1 둘 다 1번 문장을 `동시에 실행`했다고 하자. 그러면 `flag[0] = flag[1] = true`가 된다.
+이제 2번 문장을 실행하게 되는데 두 프로세스 중에서 `P0의 2번 문장`을 `먼저 수행`했다고 하자. 그러면 `turn = 1`이었다가 `P1의 2번 문장`을 실행하면서 `turn = 0`이 된다.
 
-그렇다면, progress는? P0, P1 둘 다 1번 문장을 동시에 실행했다고 하자. 그러면 flag[0] = flag[1] = true인 상황이다.  
-이제 2번 문장을 실행하게 되는데 두 프로세스 중에서 P0의 2번 문장을 먼저 수행했다고 하자. 그러면 turn의 값이 1이었다가 P1의 2번 문장을 실행하면서 0이 된다.
+실행결과 `turn = 0`이기 때문에 `P0의 c.s`을 수행한다. 반대로 P1의 2번 문장을 먼저 수행했다고 하면 P1의 c.s을 수행하게 된다. 
 
-따라서, 두 프로세스 중에서 turn값이 현재 0이기 때문에 P0의 c.s을 수행하게 된다. 이는 P1의 2번 문장을 먼저 수행했다고 하면 P1의 c.s을 수행하게 된다. 
+따라서, 한 쪽이 실행하지 않으면 다른 한 쪽이 실행할 수 있는 상황이 만들어졌으므로 `progress 조건`도 `만족`한다.
 
-따라서, 한 쪽이 실행하지 않으면 다른 한 쪽이 실행할 수 있는 상황이 만들어졌으므로 progress 조건도 만족하게 된다.  
-
-이와 같은 소프트웨어 기반의 해결책은 하드웨어 차원의 지원이 있지 않으면 제대로 동작하기 힘들다.  
+이와 같은 `SW기반의 해결책`은 HW차원의 지원이 있지 않으면 제대로 동작하기 힘들다.  
 지금부터는 동기화를 위한 하드웨어 차원에서 어떤 기능을 제공하는지 살펴볼 것이다.
 
 #### 하드웨어 차원에서의 기능
@@ -137,15 +144,19 @@ flag[0]과 flag[1]의 의미는 각각의 프로세스가 c.s에 들어갈 의�
 
 ![image](https://user-images.githubusercontent.com/64796257/147862360-5638b7da-bf10-4319-85cb-41910e0950e4.png)
 
-turn = 1; 이라는 코드를 instruction 단위로 쪼개서 보면 앞에서 counter++가 수행되듯이 여러 줄의 instruction이 수행된다.
+```
+turn = 1; 
+```
+
+위 코드를 `instruction 단위`로 쪼개서 보면 앞에서 counter++가 수행되듯이 `여러 줄의 instruction`이 수행된다.
 
 ex. ![image](https://user-images.githubusercontent.com/64796257/147862379-1af29870-2cc7-4bd3-80a7-494961be5c40.png)
 
 counter++는 한 줄에서 실행되는 것처럼 보이지만 이와 같이 3줄의 instruction이 동작하는 것이다.
 
-즉, 다른 프로세스에서의 동작에 따라 각각의 instruction이 따로따로 수행될 수 있는 것이다.
+즉, 다른 프로세스에서의 동작에 따라 `각각의 instruction`이 `따로따로 수행`될 수 있다.
 
-그래서 하드웨어(CPU)에서 저 3줄이 한꺼번에 실행될 수 있도록 기능을 제공한다 = Atomic 하게 instruction을 제공한다고 한다.  
+그래서 하드웨어(CPU)에서 저 3줄이 `한꺼번`에 `실행`될 수 있도록 기능을 제공한다 = Atomic 하게 instruction을 제공한다고 한다.  
 이를 기반으로 c.s 해결책을 짤 수 있다.
 
 2. 하드웨어 명령어 
@@ -154,31 +165,33 @@ counter++는 한 줄에서 실행되는 것처럼 보이지만 이와 같이 3�
 
 ![image](https://user-images.githubusercontent.com/64796257/147862388-57f45dfe-d1a7-4027-aeda-799bfa7fb4e2.png)
 
-boolean 자료형을 가리킬 수 있는 target이라는 포인터 변수를 매개변수로 받는다. 
-그렇게 rv의 값은 target이 가리키고 있는 값이고 내부적으로 targer이 가리키는 값을 TRUE로 바꾼다. 
+- 코드 설명
+boolean 자료형을 가리킬 수 있는 `target`이라는 포인터 변수를 매개변수로 받는다. 
+`rv값`은 `기존에 target이 가리킨 값`을 `저장`하고 `target이 가리키는 값`은 새롭게 `TRUE`로 바꾼다. 
 
-그렇게 하고 나서 처음에 target이 가리키는 값을 return한다. 
+그렇게 하고 나서 `기존에 target이 가리키는 값(rv)`을 return한다. 
 
-test_and_set() 명령어를 통해서 mutual exclusion을 구현할 수 있다.
+test_and_set() 명령어를 통해서 `mutual exclusion`을 구현할 수 있다.
 
-ex. 공유하는 boolean 값으로 lock이 있고 False로 초기화했다고 하자.
+ex. 공유하는 boolean 자료형 `lock`이 있고 `False`로 초기화했다고 하자.
 
 ![image](https://user-images.githubusercontent.com/64796257/147862410-17c5ecae-6476-4e4f-a38b-e9a3a67eb2d6.png)
 
 이와 같이 코드를 P0와 P1에서 만들었다고 하자.  
-P0에서 이 코드를 수행해서 test_and_set(&lock)의 return 값은 기존에 lock이 가지고 있던 값인 false를 반환한다. 
+① `P0`에서 코드를 수행해서 `test_and_set(&lock)`의 `return 값`으로 `기존에 lock` 값인 `false`를 반환한다.  
+② 하지만, 함수 내부에서 `lock = true`가 되었다.  
+③ `P0`에서 c.s를 수행하는 동안 `P1`에서 `c.s`을 실행하려고 while문에 도달했다.
+④ 하지만, `lock = true`이기 때문에 `P1`의 `test_and_case`의 `return값 = true`여서 while문 앞에서 `대기`한다.
 
-하지만, 함수 내부적으로는 lock의 값이 true로 바뀌면서 P1에서 c.s을 실행하려고 할 때 lock이 가지는 값은 true가 되면서  
-P1에서의 test_and_case의 return값은 true가 되서 while문 앞에서 대기하게 된다.
-
-이러한 방식으로 mutual exclusion이 구현된다는 것을 알 수 있다.
+즉, P0가 수행되는 동안 P1는 수행되지 못하는 `mutual exclusion`이 구현된다.
 
 - compare_and_swap()
 
 ![image](https://user-images.githubusercontent.com/64796257/147862443-0aeb35d1-d91a-431c-b63b-ba3dcfc54159.png)
 
-매개 변수로 가지는 value가 가리키는 값을 temp에 저장했다. value가 가리키는 값이 expected 값과 동일하면 value가 가리키는 값을 new_value로 바꾼다.  
-그렇게 바꾸고 나면 함수의 return 값은 이전에 value가 가리키던 값을 반환한다.
+매개 변수로 가지는 value가 가리키는 값을 temp에 저장  
+`value가 가리키는 값`이 `expected 값`과 `동일`하면 `value가 가리키는 값`을 `new_value`로 바꾼다.  
+그렇게 바꾸고 나면 함수의 `return 값`은 `기존에 value`가 가리키던 값을 반환한다.
 
 compare_and_swap(CAS)을 통해서도 mutual exclusion을 구현할 수 있다. 
 
@@ -187,20 +200,18 @@ ex. int lock = 0; 으로 초기화함
 ![image](https://user-images.githubusercontent.com/64796257/147862452-bc3ed944-2d21-4c8a-af8f-e44343c01f06.png)
 
 이와 같은 코드를 P0, P1에서 만들었다고 하자.  
-P0에서 이 코드를 수행해서 P0의 CAS의 1번째 매개변수는 lock을 가리키도록 했다. 지금, P0의 *value = 0이다. 그 값을 temp에 저장했다.
+① `P0`에서 이 코드를 수행해서 P0의 CAS의 1번째 매개변수는 lock 변수의 주소값을 전달했다. 
+② 만약에 `지금 lock이 가리키는 값`이 `2번째 매개변수의 값`과 같다면 lock이 가리키는 값을 3번째 매개변수의 값으로 바꾼다.  
+③ 현재, `P0`에서는 그 조건을 `만족`한다. (`*lock = 0` ,`expected = 0`)  
+④ 따라서, P0의 CAS를 수행하면서 `lock = 1`이 되었지만, `함수의 return값`은 `기존 lock값`인 `0`이 return 된다.  
+④ 그래서 `P0`는 `c.s를 수행`한다. 이와 동시에 P1에서 c.s를 수행하기 위해서 while문을 지나간다.
 
-만약에 지금 value가 가리키는 값이 2번째 매개변수의 값과 같다면 value가 가리키는 값을 3번째 매개변수의 값으로 바꾼다.
+⑤ 현재 `lock = 1`이므로 `P1의 CAS의 return값`은 `1`이다. 따라서, while문에서 `대기`한다.  
 
-두 값을 비교하면 P0에서는 그 조건을 만족한다. (*value = 0 , expected = 0)  
-따라서, 내부적으로는 lock의 값이 1이 되었지만, 함수의 return값은 이전의 lock값인 0이 return 된다.  
-그래서 P0는 c.s를 수행하게 된다. 이와 동시에 P1에서 c.s를 수행하기 위해서 while문을 지나간다.
-
-P1에서 현재 lock의 값은 1이므로 CAS의 return값은 1이 될 것이다. 따라서, while문에서 대기하게 된다.  
-
-⇒ 이를 통해서 P0에서는 c.s를 실행하지만, P1에서는 c.s를 실행하지 못하는 상호 배제를 구현하게 된다.  
+⇒ `P0`에서는 `c.s를 실행`하지만, `P1`에서는 `c.s를 실행하지 못`하는 `상호 배제`가 구현되었다.
     bounded waiting도 이와 같은 방식으로 구현할 수 있다고 한다. - 이건 나중에.
 
-이와 같이 mutual exclusion은 HW의 지원을 통해서 쉽게 구현할 수 있지만,  
+이와 같이 `mutual exclusion`은 HW의 지원을 통해서 쉽게 구현할 수 있지만,  
 그 밖에 progress, bounded waiting은 SW적으로 구현해서 문제를 해결해야 한다.
 
 지금까지는 하드웨어를 기반으로 한 해결책에 대해 살펴봤는데, 방금 말했듯이 하드웨어를 기반으로 해서는 bounded waiting, progress 문제를 해결하기가 어렵다.
