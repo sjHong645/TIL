@@ -9,3 +9,5 @@ Leve1 2는 항상 `예상치 못한 예외 상황`이 있을 수 있다는 걸
 ### [조합](/CodingTest/11여러가지문제/카카오기출/level2/메뉴리뉴얼.md)
 
 ### [n진수 구하기](/CodingTest/11여러가지문제/카카오기출/level2/n진수게임.md)
+
+### [Collections.frequency(), Collections.binarySearch(), ArrayList.indexOf(), ArrayList.lastIndexOf()](/CodingTest/11여러가지문제/카카오기출/level2/순위검색.md)
