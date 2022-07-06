@@ -220,37 +220,42 @@ ex. int lock = 0; 으로 초기화함
 
 #### Bounded waiting, Progress를 해결하는 2가지 방법
 
-1. Mutex Lock(Spin-Lock) : 이 방법은 acquire(), release() 함수를 통해서 구현하는데 어떤 방식인지 살펴보자.
+#### 1. Mutex Lock(Spin-Lock) : 이 방법은 acquire(), release() 함수를 통해서 구현하는데 어떤 방식인지 살펴보자.
 
 ![image](https://user-images.githubusercontent.com/64796257/147862554-e73a351d-1b30-4de7-a40c-cfa7692c1dab.png)
 
-Mutex Lock은 available이라는 boolean 변수를 통해서 lock의 여부를 표시한다. 
-lock이 허용되면(= available 값이 true이면) acquire()의 호출은 성공하면서 내부적으로 availabe 값을 다시 false로 바꾼다. 
+`Mutex Lock`은 `available`이라는 boolean 변수를 통해서 `lock의 여부`를 표시한다.  
 
-⇒ 이렇게 available을 false로 만들면서 lock을 걸었기 때문에 다른 프로세스에서 c.s를 실행하는 걸 막을 수 있다
+`lock이 허용`되면(= available 값이 true이면) `acquire()을 호출`하면서 내부적으로 `availabe` 값을 `다시 false`로 바꾼다. 
 
-release() 함수는 c.s이 다 수행되고 나서 실행되는데 이때 available의 값을 true로 바꿔준다.
+⇒ 이렇게 `available을 false`로 만들면서 `lock을 걸었기` 때문에 다른 프로세스에서 `c.s를 실행`하는 걸 `막을 수` 있다
 
-이 방식의 단점은 available의 값이 어떤 값이 되는지 계속해서 확인하면서 대기하는 busy wait를 실행한다는 것이다.
+`release()` 함수는 `c.s`이 다 수행되고 나서 실행되는데 이때 `available의 값`을 `true`로 바꿔준다.
 
-그래서 c.s이 길지 않고 context-switching에 의해서 소모되는 시간이 실제로 프로세스가 실행되는 시간보다 훨씬 클 때 사용하는 것이 적합하다.
+하지만, available의 값이 어떤 값이 되는지 계속해서 확인하면서 대기하는 `busy wait`를 실행한다 `단점`이 있다.
 
-cf) 여기서 길지 않은 시간 = 짧은 시간이라는 건 어떤 기준일까??   
+그래서 
+1) `c.s`이 `짧`고  
+2) `context-switching`에 의해서 `소모되는 시간` > `프로세스가 실행되는 시간`  
+를 만족할 떄 사용하는게 좋다.
+
+cf) 길지 않은 시간 = 짧은 시간을 판단하는 기준  
+
 lock을 기다리는 스레드는 2번의 context-switching이 필요하다.  
-1) 스레드를 대기 상태로 옮길 때 2) lock이 사용 가능할 때 대기 중인 스레드를 복원할 때
+① 스레드를 대기 상태로 옮길 때  
+② lock이 사용 가능할 때 대기 중인 스레드를 복원할 때  
+일반적으로 `lock이 유지되는 시간` < `context-switching`하는 시간 => mutex lock을 사용한다.
 
-일반적으로 `lock이 유지되는 시간`이 `context-switching`하는 시간보다 짧다면 mutex lock을 사용한다.
+#### 2. Semaphore(세마포) : Mutex locks 보다 더 정교한 동기화할 수 있는 방법. 여러 개의 프로세스를 동기화할 수 있는 방법  
 
-2. Semaphore(세마포) : Mutex locks 보다 더 정교한 동기화할 수 있는 방법. 여러 개의 프로세스를 동기화할 수 있는 방법  
-
-S라는 정수 값과 wait(), signal()이라는 두 가지 연산을 통해서 동기화 작업을 수행한다. wait와 signal을 정의하면 아래와 같다.
+`S`라는 정수 값과 `wait()`, `signal()`이라는 두 가지 연산을 통해서 동기화 작업을 수행한다. wait와 signal을 정의하면 아래와 같다.
 
 ![image](https://user-images.githubusercontent.com/64796257/147862602-5fbb2a95-ca73-4e2b-a27a-740b2acb88aa.png)
 
-- wait를 호출할 때 S가 0보다 작거나 같으면 대기. 만약에 S가 양수라면 1을 감소시키면서 지나가게 한다.
-- signal을 호출하면 S가 1 증가하게 했다.
+- `wait`를 호출할 때 `S <= 0` : 대기 / `S > 0` : `S를 1 감소`시키고 지나가게 한다.
+- `signal`을 호출하면 `S가 1 증가`하게 했다.
 
-세마포는 코게 2가지로 나눌 수 있다.
+세마포는 크게 2가지로 나눌 수 있다.
 
 ① Counting 세마포 
 
@@ -262,23 +267,23 @@ S = 3을 초기값으로 가진다고 하자. 그리고 3개 이상의 프로세
 
 모든 프로세스가 위와 같이 수행된다고 하자.
 
-0번 프로세스 ⇒ S의 값은 원래 3이었는데 wait의 조건인 s<=0을 만족하지 않으므로 wait을 빠져나와 c.s를 실행한다. 그래서 S값은 2가 된다.  
-1번 프로세스 ⇒ S의 값 2에서 wait 조건을 만족하지 않아서 c.s를 실행한다. 그러면서 S의 값은 1이 된다.  
-2번 프로세스 ⇒ S의 값 1에서 wait 조건을 만족하지 않아서 c.s를 실행한다. 그러면서 S의 값이 0이 된다.
+`0번` 프로세스 ⇒ `S = 3`이다. wait 조건(`s<=0`) 을 만족하지 않아 wait을 지나 `c.s를 실행`한다. 그래서 `S = 2`가 된다.  
+`1번` 프로세스 ⇒ `S = 2`이다. wait 조건을 만족하지 않아서 wait을 지나 `c.s를 실행`한다. 그래서 `S = 1`이 된다.  
+`2번` 프로세스 ⇒ `S = 1`이다. wait 조건을 만족하지 않아서 wait을 지나 `c.s를 실행`한다. 그래서 `S = 0`이 된다.
 
-3번 프로세스 ⇒ S의 값이 0이기 때문에 wait의 while문 조건을 만족하므로 busy wait을 하게 된다. 
+`3번` 프로세스 ⇒ `S = 0`이다. wait의 조건을 만족하므로 `busy wait`을 하게 된다. 
 
-따라서, 현재 수행중인 프로세스는 3개가 된다는 것을 알 수 있다.
+따라서, 현재 수행중인 프로세스는 `3개`가 된다.
 
-이때 0번 프로세스의 c.s의 동작이 모두 끝나서 signal()을 지났다. 그러면 원래 S값에서 1을 더해서 S = 1이 된다.  
-S = 1이 되었으니까 기다리고 있던 3번 프로세스가 실행되면서 c.s을 실행한다.
+이때, `0번 프로세스`의 `c.s의 동작`이 모두 `끝`나서 `signal()`을 지났다. 그래서 `S = 0`에서 1을 더해 `S = 1`이 된다.  
+S = 1이 되었으니까 기다리고 있던 `3번 프로세스`가 `실행`되면서 `c.s`을 실행한다.
 
-⇒ 이를 통해서 S의 값은 c.s를 실행할 수 있는 개수를 나타낸다는 것을 알 수 있다.  
-⇒ 이와 같이 숫자를 세면서 c.s에 진입할 수 있도록 하는 방법을 counting 세마포라 한다.
+⇒ 이를 통해서 `S의 값` 은 `c.s를 실행할 수 있는 개수`를 나타낸다는 것을 알 수 있다.  
+⇒ 이와 같이 `숫자를 세면서` c.s에 진입할 수 있도록 하는 방법을 `counting 세마포`라 한다.
 
 - No-BusyWaiting 일 때 ⇒ 이 방식을 주로 `세마포(Semaphore)`라고 한다.
 
-No-BusyWaiting이기 때문에 wait()와 signal()을 다른 방식으로 정의했다.
+No-BusyWaiting이기 때문에 `wait()`와 `signal()`을 다른 방식으로 정의했다.
 
 ![image](https://user-images.githubusercontent.com/64796257/147862703-65442bd4-88b2-4cdb-8f93-24eedaa36e91.png)
 
@@ -290,21 +295,21 @@ signal을 보면 S가 가리키는 value의 값을 1 증가시키고 그 값이 
 
 프로세스가 위와 같이 진행되고 S = 2라고 하자.
 
-0번 프로세스는 S = 2 라서 wait을 실행할 때 S가 1 감소하고 나면 S = 1이 된다.  
-그렇게 하고 나서 조건문을 보니, 조건문을 만족하지 않으므로 c.s를 실행하게 된다.
+`0번 프로세스`는 `S = 2`라서 wait을 실행할 때 S가 1 감소하고 나면 `S = 1`이 된다.  
+wait()의 조건문을 `만족하지 않으므로` c.s를 실행한다.
 
-1번 프로세스는 S = 1 이라서 wait을 실행할 때 S가 1 감소하면서 S = 0이 된다.  
-그렇게 하고 나서 조건문을 보니, 조건문을 만족하지 않으므로 c.s를 실행하게 된다.
+`1번 프로세스`는 `S = 1`이라서 wait을 실행할 때 S가 1 감소하고 나면 `S = 0`이 된다.  
+wait()의 조건문을 `만족하지 않으므로` c.s를 실행한다.
 
-2번 프로세스는 S = 0 이라서 wait을 실행할 때 S가 1 감소하면서 S = -1이 된다.  
-그렇게 하고 나서 조건문을 보니, 조건문을 만족한다. 그래서 해당 S의 값은 리스트에 저장되면서 block() 된다.
+`2번 프로세스`는 `S = 0`이라서 wait을 실행할 때 S가 1 감소하고 나면 `S = -1`이 된다.  
+wait()의 조건문을 `만족`한다. 그래서 `현재 S의 값(= 0)`은 리스트에 저장되면서 block() 된다.
 
-그러던 와중에 1번 프로세스의 c.s 작업이 끝나 signal을 지나면서 S의 값은 다시 0이 되었다.  
-signal의 조건문을 보면 S의 값이 0보다 작거나 같을 때 리스트에 있는 S값을 불러오면서 wakeup() 해준다고 한다.
+그러던 와중에 `1번 프로세스`의 `c.s 작업`이 `끝`나 signal을 지나면서 `S = 0`이 되었다.  
+signal()의 조건문을 만족하니까 S값을 불러오면서 wakeup() 해준다.
 
 그렇게 실행하지 못했던 2번 프로세스의 c.s를 실행할 수 있게 된다.
 
-⇒ 이를 통해서 S의 값은 동시에 실행할 수 있는 프로세스의 개수를 의미한다. 그래서 c.s에 진입하는데 오래 걸리는 경우에는 semaphore를 사용한다.
+⇒ `S의 값` = `동시에 실행할 수 있는 프로세스의 개수`를 의미한다. 그래서 `c.s에 진입`하는데 `오래 걸리는 경우`에는 semaphore를 사용한다.
 
 ② Binary 세마포 ⇒ 동시에 실행할 수 있는 프로세스의 개수가 1개인 동기화 기법.  
 
@@ -317,9 +322,9 @@ signal의 조건문을 보면 S의 값이 0보다 작거나 같을 때 리스트
 
 1. DeadLock : 앞에서 얘기해서 여기서 추가로 얘기하지는 않겠다.
 
-2. Starvation : 동기화 과정을 처리하는 과정에서 c.s에 진입하지 못하는 프로세스가 있을 수 있다. 이러한 상황을 starvation이라 한다.
+2. Starvation : 동기화 과정을 처리하는 과정에서 c.s에 진입하지 못하는 프로세스가 있을 수 있다. 이러한 상황을 `starvation`이라 한다.
 
-⇒ 이를 해결하기 위해서는 priority-based 스케쥴링과 같이 aging과 같은 전략을 통해서 해결해줘야 한다.
+⇒ 이를 해결하기 위해서는 priority-based 스케쥴링과 같이 aging과 같은 전략을 통해서 해결해야 한다.
 
 3. Priority Inversion : 높은 우선순위를 가진 프로세스가 낮은 우선순위를 가진 프로세스가 작업하고 있는 공유자원 때문에 실행하지 못하는 문제 
 
@@ -336,131 +341,150 @@ A가 공유자원 S를 사용하고 있다보니 B는 해당 공유자원에 접
 - 고전적인 동기화 문제들 
 
 1. Bounded-Buffer problem
-소비자와 생산자는 다음과 같은 자료구조를 공유한다. 
+`소비자`와 `생산자`는 다음과 같은 자료구조를 공유한다. 
 
-buffer는 1차원 배열로 구현되며 Boolean Buffer[n];으로 선언한다. Buffer[0 ~ n-1] = not used;로 초기화 한다.  
-(해당 공간을 사용하면 used, 아니면 not used)
+```
+boolean[] buffer = new boolean[n]; // 모든 값 not used로 초기화
+// 해당 공간을 사용하면 used, 아니면 not used
+```
 
 생산자 operation : Buffer 배열 중 not used인 index를 찾아서 used로 바꾼다.  
 소비자 operation : Buffer 배열 중 used인 index를 찾아서 not used로 바꾼다.  
-semaphore full = 0; semaphore empty = n; semaphore mutex = 1; 
+``` 
+semaphore full = 0; 
+semaphore empty = n;
+semaphore mutex = 1; 
+```
 
-empty : 버퍼 내에 저장할 공간이 있음을 표시 ⇒ 생산자의 진입을 관리한다.  
-full : 버퍼 내에 소비할 아이템이 있음을 표시 ⇒ 소비자의 진입을 관리한다.  
+empty : 버퍼 내에 저장할 공간 개수 ⇒ 생산자의 진입을 관리한다.  
+full : 버퍼 내에 소비할 아이템이 개수 ⇒ 소비자의 진입을 관리한다.  
 mutex : 버퍼에 대한 접근을 관리 ⇒ 생산자, 소비자가 empty, full 세마포에 진입한 경우 buffer의 상태값을 변경하기 위한 세마포  
-		 ⇒ 만약에 생산자, 소비자가 둘 다 진입하려고 한다면 하나만 접근하도록 관리
+		 ⇒ 만약에 생산자, 소비자가 둘 다 진입하려고 한다면 하나만 접근하도록 관리  
+mutex = 1 -> buffer에 접근할 수 있는 상황  
+mutex = 0 -> buffer에 접근할 수 없는 상황
+		 
+![image](https://user-images.githubusercontent.com/64796257/147862703-65442bd4-88b2-4cdb-8f93-24eedaa36e91.png)
 
 ![image](https://user-images.githubusercontent.com/64796257/147862831-4dcf3467-5231-4255-9b94-08e956349579.png)
 
 먼저 생산자 프로세스를 실행한다고 하자.  
-buffer에 넣을 아이템을 생산했는데 wait(empty)를 통해서 buffer가 비어있는지 확인한다. 
+buffer에 넣을 아이템을 생산했는데 `wait(empty)`를 통해서 `buffer가 비어있는지` 확인한다. 
 
-현재 empty값은 n. 즉, 비어있는 버퍼의 개수가 0개보다 크니까 아이템을 집어넣을 수 있다.   
-이제 buffer에 아이템을 집어넣을 것이기 때문에 empty의 값은 1만큼 감소한 n-1이 되겠다.
+현재 `empty = n`. 즉, buffer의 원소 개수인 `0개`보다 크니까 `buffer 배열`에 아이템을 `삽입`할 수 있다.
+`buffer`에 아이템을 `삽입`하면서 `empty = n-1`이 된다.
 
-wait(mutex)를 지나는데 mutex의 값은 1로 초기화되어 있다. 즉, 현재 buffer를 건드릴 수 있다는 뜻이다.  
-그렇게 wait(mutex)를 지나면서 mutex를 0으로 바꾼다. (현재 생산자에서 buffer에 손대고 있다는 걸 표시)
+`wait(mutex)`를 지나는데 `mutex = 1`로 초기화되어 있다. 즉, 현재 `buffer`에 `접근가능`한 상황.  
+그렇게 wait(mutex)를 지나면서 `mutex = 0`으로 바뀐다. (현재 생산자에서 buffer에 손대고 있다는 걸 표시)
 
-그렇게 생산했던 아이템을 buffer에 추가시키고 나서 signal(mutex)를 지나 mutex를 다시 1로 바꿔준다. 이제 다른 프로세스가 buffer에 접근할 수 있게 되었다.
+그렇게 생산했던 아이템을 buffer에 추가하고 `signal(mutex)`를 지나면서 `mutex = 1`로 변경된다.  
+이제 `다른 프로세스`들이 buffer에 `접근`할 수 있다.
 
-그 다음에 signal(full)을 지나면서 full을 1 증가시킨다. 즉, buffer의 공간 중 1개의 공간에 데이터가 들어있다는 것을 표시하면서 하나의 동작을 마무리한다.
+`signal(full)`을 지나면서 full을 1 증가시킨다.  
+즉, `buffer 배열`에 `데이터가 1개 늘어났다`는 걸 표현하면서 하나의 동작을 마무리한다.
 
-이러한 상태에서 소비자 process를 실행한다고 하자.  
-wait(full)을 지나는데, full = 1이다. 즉, 1개의 buffer 공간에 데이터가 있다는 뜻.  
+이러한 상태에서 `소비자 process`를 실행한다고 하자.  
+`wait(full)`을 지나는데 `full = 1`이다. 즉, buffer 배열에 `1개의 데이터`가 있다는 뜻.  
 
-그러면, 소비자 입장에서는 이용할 데이터가 존재한다는 것을 의미하기 때문에 wait(full)을 지날 수 있게 된다.  
-그러면서 full은 기존의 값에서 1 감소한 0이 된다. 왜냐하면, 데이터를 하나 이용할 거라서 기존에 있는 데이터는 1개 사라지기 때문이다.
+그러면, 소비자 입장에서는 이용할 수 있는 데이터가 존재하기 때문에 `wait(full)`을 지날 수 있다.  
+그래서, `full = 0`이 된다. 왜냐하면, 데이터를 하나 이용할 거라서 기존에 있는 데이터는 1개 사라지기 때문이다.
 
-이제 wait(mutex)를 지난다. 현재 mutex의 값은 1이다.  
-즉, buffer에 접근하고 있는 프로세스가 없는 상황이니까 mutex의 값을 0으로 바꾸면서 wait(mutex) 코드를 지나간다.
+이제 `wait(mutex)`를 지난다. 현재 `mutex = 1`이다.  
+즉, buffer에서 동작하고 있는 프로세스가 없는 상황이니까 `mutex = 0`으로 바꾸면서 `wait(mutex)` 코드를 지나간다.
 
 그렇게 buffer에 있는 데이터를 제거하면서 해당 데이터를 가져온다.
 
 이제 buffer에 대한 접근이 끝났다. 그래서 signal(mutex)를 통해 mutex = 1로 바꿔주었다.
 
-그러고 나서 signal(empty)을 지나는데.. 이때 empty의 값을 1 증가시킨다.  
-왜냐하면, buffer의 공간 중 하나를 제거하면서 빈 공간이 하나 늘었기 때문이다. 그러면 empty는 n이 될 것이다.
+그러고 나서 signal(empty)을 지나는데.. 이때 `empty 값`을 `1 증가`시킨다.  
+왜냐하면, buffer의 공간 중 하나를 제거하면서 빈 공간이 하나 늘었기 때문이다. 그러면 `empty = n`이 된다.
 
-이러한 과정을 계속 반복하면서 동기화 문제를 해결할 수 있게 되었다. 
+이러한 과정을 계속 반복하면서 동기화 문제를 해결할 수 있다. 
 
-2. Reader-Writers problem : 여러 Reader와 Writer가 하나의 공유 데이터를 읽거나 쓰기 위해서 접근할 때 발생하는 문제.
+2. Reader-Writers problem : 여러 Reader와 Writer가 `하나의 공유 데이터`를 읽거나 쓰기 위해서 접근할 때 발생하는 문제.
 
 - Reader : 공유 데이터를 읽는다. 이때, 여러 Reader가 동시에 데이터를 읽을 수 있다.
 - Writer : 공유 데이터를 쓴다. 이때, Writer가 데이터를 수정할 때 reader 혹은 다른 writer가 작업을 하면 안된다.
 
 ![image](https://user-images.githubusercontent.com/64796257/147862866-88f93bad-dd05-4240-9627-6c287429a906.png)
 
-Reader Writer를 문제를 해결하기 위해서 여러 가지 시도들이 있었다. 각각의 시도에 대해 살펴보자. 
+Reader & Writer를 문제를 해결하기 위해서 여러 가지 시도들이 있었다. 각각의 시도에 대해 살펴보자. 
 
-첫 번째 해결책은 다른 reader들이 데이터를 모두 읽을 때까지 writer가 동작하지 못하도록 설정했다.  
-⇒ 그러다보니 writer에 대한 starvation이 발생한다.
+`첫 번째 해결책`은 다른 reader들이 데이터를 모두 읽을 때까지 writer가 동작하지 못하도록 설정했다.  
+⇒ 그러다보니 `writer`에 대한 `starvation`이 발생한다.
 
 첫 번째 해결책의 내용을 살펴보겠다.
-
+``` java
 int Readcount; // 버퍼에 현재 몇 개의 Reader가 접근 중인지 표시  
 Semaphore Wrt; // Writers 사이의 동기화 관리  
 Semaphore Mutex; // Readcount와 wrt로 접근할 때 원자적으로 수행됨을 보장하기 위한 세마포어
 
-초기값 ==> mutex = 1, wrt = 1, readcount = 0
+int mutex = 1, wrt = 1, readcount = 0;
+```
 
 ![image](https://user-images.githubusercontent.com/64796257/147862959-99b72f89-a900-4e5b-a2e3-2f6fbee96969.png)
 
-wait(mutex) ~ signal(mutex) : 이 사이에 있는 일련의 코드들이 atomic 하게 실행될 수 있도록 일종의 block을 만드는 방법이라고 생각하면 되겠다.
+wait(mutex) ~ signal(mutex) : 이 사이에 있는 일련의 코드들이 atomic 하게 실행될 수 있도록 `block을 만드는 방법`이라고 생각하면 되겠다.
 
 ![image](https://user-images.githubusercontent.com/64796257/147862979-4f9960b3-d6d1-4410-9bc8-46a79144d677.png)
 
-현재 buffer에 접근해서 write를 할 수 있는지 파악하는 wait(wrt);를 지나야 writing을 수행할 수 있다.
+현재 buffer에 접근해서 `write`를 할 수 있는지 파악하는 `wait(wrt)`를 지나야 writing을 수행할 수 있다.
 
-초기값의 wrt는 1이기 때문에 wait(wrt); 를 실행하면 wrt를 1 감소시키면서 writing 작업을 실행한다.
+초기값 `wrt = 1`이기 때문에 `wait(wrt)`를 실행하면 `wrt를 1 감소`시키면서 writing 작업을 실행한다.
 
-그렇게 작업을 끝내고 나서 signal(wrt)를 통해 wrt를 1 증가시킨다.
+그렇게 작업을 끝내고 나서 `signal(wrt)`를 통해 `wrt를 1 증가`시킨다.
 
 ![image](https://user-images.githubusercontent.com/64796257/147862982-6c8b8938-b09d-4a79-9624-5816126e33ec.png)
 
-wait(mutex);를 실행하는데... 현재 mutex = 1이다. mutex를 1 감소시키면서 밑에 있는 작업을 수행한다.  
+`wait(mutex)`를 `실행`한다. 현재 `mutex = 1`이다. mutex를 1 감소시키면서 밑에 있는 작업을 수행한다.  
 
-readcount의 값을 1 증가시킨다. 그런데 readcount의 초기값은 0이어서 값이 1로 변경되었다.
+`readcount의 값을 1 증가`시킨다. 그런데 초기 `readcount = 0`이어서 값이 `readcount = 1로 변경`되었다.
 
 이때, if문의 조건에 걸리게 된다.   
-만약에 기존의 wrt 값이 0이라면 현재 writer가 buffer에서 동작을 수행하고 있다는 것이다. 
+`wrt = 0`이라면 현재 `writer`가 `buffer에서 동작을 수행`하고 있다는 걸 의미한다.
 
-여기서는 wrt 값이 1인 상태에서 조건문을 실행했다고 하자.  
-그러면 busy wait를 하지 않으면서 wrt값을 1 감소시키고 나서 다음 동작들을 수행하게 된다.  
+앞서 writing 작업을 다 마치고 나서 `wrt = 1`이 되었다. 
+때문에 `wait()`의 `busy wait`를 하지 않고 `wrt값을 1 감소`시키고 나서 다음 동작들을 수행하게 된다.  
 
-여기서 wrt값이 0이 되면서 다른 writer 프로세스가 작업을 하지 못하도록 배제했다.  
+여기서 `wrt = 0`이 되면서 다른 writer 프로세스가 작업을 하지 못하도록 했다.  
+
 그렇게 wait(mutex) ~ signal(mutex)를 통해 atomic 하게 명령문들을 수행하고 나서 reading이 진행된다. 
 
-다 읽고 나면 readcount값을 1 감소시키면서 아래의 동작을 수행한다.  
-readcount가 0이되면 이제 writer 프로세스가 write 동작을 할 수 있도록 signal(wrt)를 호출한다.
+다 읽고 나면 `readcount값을 1 감소`시키면서 아래의 동작을 수행한다.  
+`readcount = 0`이되면 이제 writer 프로세스가 write 동작을 할 수 있도록 `signal(wrt)`를 호출한다.
 
-그런데 여기서 문제가 되는게 readcount가 0이 안 될 수 있다는 점이다.  
-writer가 동작하기 위해서는 reader가 모든 데이터를 다 읽어야지만 동작할 수 있다는 것.
+문제점 : `readcount = 0`이 `안 될 수` 있다. writer가 동작하기 위해서는 `reader`가 `모든 데이터를 다 읽어야만` 동작할 수 있다.
 
 이 때문에 writer에 대한 starvation 이 나타날 수 있다. 그래서 2번째 해결책을 모색했다.
 
-두 번째 해결책은 writer가 객체에 접근하려고 기다리고 있다면 새로운 reader들은 읽기를 시작하지 못한다.  
+`두 번째 해결책`은 writer가 객체에 접근하려고 기다리고 있다면 새로운 reader들은 읽기를 시작하지 못한다.  
 그래서 reader에 대한 starvation이 발생한다는 문제점이 있다. 
 
 두 번째 해결책의 내용을 살펴보겠다.
 
 ![image](https://user-images.githubusercontent.com/64796257/147863043-4290cb13-17a3-4872-a120-fcfdbe45c811.png)
 
-초기값 rmutext, wmutex, wrt, read = 1 // readcount, writecount = 0
+```
+rmutext, wmutex, wrt, read = 1
+
+readcount, writecount = 0
+```
 
 - writer 부분 
 
 ![image](https://user-images.githubusercontent.com/64796257/147863045-afe0bd51-008a-4155-a23b-e2a879fa06d6.png)
 
-이제 writer를 할 거니까 writecount를 1씩 증가시키고  
-write은 하나의 프로세스만 동작할 수 있기 때문에 writecount가 1일 때 원하는 동작을 수행하도록 조건을 걸었다.  
-즉, 데이터를 write하려고 할 때 read의 값을 1 감소시킴으로써 reader 프로세스의 접근을 막는다.
+이제 writer를 할 거니까 `writecount`를 `1씩 증가`시키고  
+`write은 하나의 프로세스`만 `동작`할 수 있기 때문에 `writecount == 1`일 때 원하는 동작을 수행하도록 조건을 걸었다.  
 
-그렇게 하고 나서 writing 동작을 수행한 다음에 writing 동작을 다 하고나서 writecount을 1 감소시킨다.  
+데이터를 write하려고 할 때 `read의 값을 1 감소`시킴으로써 `reader 프로세스`의 `접근을 막`는다.
 
-그렇게 writecount가 0. 즉, 더 이상 write를 위해 접근하는 프로세스가 없다면 그제서야 read의 값을 1 증가해주면서 reader 프로세스의 접근을 허용해준다.
+그렇게 하고 나서 writing 동작을 수행한 다음에 writing 동작을 다 하고나서 `writecount을 1 감소`시킨다.  
+
+그렇게 writecount가 0. 즉, 더 이상 `write를 위해 접근`하는 `프로세스`가 `없다`면  
+`signal(read)`를 통해 `read의 값을 1 증가`해주면서 reader 프로세스의 접근을 허용해준다.
 
 ⇒ 이렇다보니, writer 프로세스가 동작을 하는 과정에서 writecount가 0으로 내려가지 않는다면...  
-reader 프로세스들은 하염없이 writer가 끝날 때까지 기다려야 하는 starvation 상태가 발생하는 문제점이 생긴다.
+`reader 프로세스들`은 하염없이 `writer가 끝날 때까지` 기다려야 하는 starvation 상태가 발생하는 문제점이 생긴다.
 
 - reader 부분 
 
@@ -470,20 +494,20 @@ reader 프로세스들은 하염없이 writer가 끝날 때까지 기다려야 �
 
 만약에 buffer에 writer 프로세스의 접근은 없고 reader만 동작하고 있다면 이 부분은 그닥 의미가 없을 것이다.
 
-하지만, writer 쪽에서 wait(read);를 수행함으로써 read의 값을 1 감소시켜 놓은 상태에서 reader 프로세스를 동작하려고 한다면
+하지만, `writer 쪽`에서 `wait(read)`를 수행함으로써 `read의 값을 1 감소`시켜 놓은 상태에서 `reader 프로세스`가 `동작`한다면
 
-맨 처음에 있는 wait(read); 부분에서 read의 값이 0보다 커질 때까지 대기하게 될 것이다. 
+맨 처음에 있는 `wait(read);` 부분에서 `read의 값이 0보다 커질 때까지` 대기하게 될 것이다. 
 
-이렇게 writer에서 reader 프로세스의 접근을 관리하기 위한 코드이다. ⇒ 그래서 reader 프로세스의 starvation 문제가 발생하게 된다.
+이렇게 writer에서 reader 프로세스의 접근을 관리하기 위한 코드이다. ⇒ 그래서 reader 프로세스의 starvation 문제가 발생한다.
 
 세 번째. 앞에서 제기된 모든 문제점을 해결한 해결책
 
 ![image](https://user-images.githubusercontent.com/64796257/147863108-25d21ebb-8cea-4937-a68a-bcd9ced446d2.png)
-
+```
 rc, wc, rwc, wwc = 0 // wrt, read = 0 // mutex = 1
-
-- writer 부분 
-
+```
+- writer 부분   
+![image](https://user-images.githubusercontent.com/64796257/147862959-99b72f89-a900-4e5b-a2e3-2f6fbee96969.png)  
 ![image](https://user-images.githubusercontent.com/64796257/147863116-c01358d9-9c97-41e7-b336-e957e05dbe97.png)
 
 조건문을 먼저 보면...
@@ -492,21 +516,21 @@ wc > 0 : 현재 작업중인 writer 프로세스가 있다
 rwc > 0 : 현재 대기중인 reader 프로세스가 있다  
 wwc > 0 : 현재 대기중인 writer 프로세스가 있다  
 
-⇒ 작업 중인 프로세스가 있거나 대기 중인 프로세스가 있다면 writing 작업을 하고자 할 때 대기하도록 했다.  
-wwc를 1 증가시키고 writing을 기다리기 위해서 wait(wrt)를 실행시킨다.
+⇒ `작업 중인 프로세스`가 있거나 `대기 중인 프로세스`가 있다면 writing 작업을 하고자 할 때 대기하도록 했다.  
+`wwc를 1 증가`시키고 writing을 기다리기 위해서 wait(wrt)를 실행시킨다.
 
-그렇다면 if문을 만족하지 않았다고 하자. 그러면 writing을 할 프로세스이기 때문에 wc를 1 증가시킬 것이다.  
-그렇게 writing을 수행하고 나서 wc는 1 감소시킨다. 
+`처음에 만난 if문`을 만족하지 않았다고 하자. 그러면 `writing을 할 프로세스`이기 때문에 `wc를 1 증가`시킬 것이다.  
+그렇게 writing을 수행하고 나서 `wc는 1 감소`된다.  
 
-writing 동작이 끝났으니까 rwc > 0 즉, read를 기다리고 있는 프로세스가 존재한다면  
-대기하고 있는 reader 프로세스가 read 동작을 수행할 수 있도록 하기 위해서 대기 프로세스 개수만큼 signal(read);를 수행한다.
+writing 동작이 끝났으니까 `rwc > 0`, read를 기다리고 있는 프로세스가 존재한다면  
+`대기중인 reader 프로세스`가 `read 동작`을 수행할 수 있도록 `대기 프로세스 개수`만큼 `signal(read)`를 수행한다.
 
-또는 rwc = 0인데 wwc > 0이다. 즉, read를 기다리는 프로세스는 없지만, writing을 기다리던 프로세스가 있다면  
-대기하고 있던 writer 프로세스가 write 동작을 수행할 수 있도록 signal(wrt);를 수행해준다.
+또는 rwc = 0인데 wwc > 0이다. read를 기다리는 프로세스는 없지만, writing을 기다리던 프로세스가 있다면  
+`대기중인 writer 프로세스`가 `write 동작`을 수행할 수 있도록 `signal(wrt)`를 수행해준다.
 
 이러면 이전의 writing process가 wait(wrt)에서 멈춰있던 동작이 순서대로 수행될 것이다.
 
-그리고 reader 프로세스에서 signal(wrt);를 통해 wait(wrt)에서 멈춰있던 write 동작을 수행하도록 할 수도 있다.
+`reader 프로세스`에서 `signal(wrt)`를 통해 `Writer 프로세스`의 `wait(wrt)`에서 멈춰있던 `write 동작을 수행`하도록 할 수도 있다.
 
 그러면 이전 write 프로세스의 wwc를 1 감소시키면서 순서대로 writing 동작을 수행하게 될 것이다.
 
@@ -522,8 +546,8 @@ wc > 0 : write 작업을 하고 있는 프로세스가 있다.
 이제 read 작업을 할 거니까 rc를 1 증가시키고 reading 작업을 수행한다.  
 그렇게 reading 작업을 다 하고나면 rc를 1 감소시키고 if문을 만난다. 
 
-rc == 0 && wwc > 0 : 작업하고 있는 reader 프로세스가 없고 writing을 하기 위해 대기하는 프로세스가 존재할 때  
-			signal(wrt)를 통해 대기하고 있는 writing 프로세스가 write 동작을 할 수 있도록 wrt를 1 증가시켰다. 
+rc == 0 && wwc > 0 : `작업중인 reader 프로세스`가 `없`고 `writing을 하기 위해 대기`하는 `프로세스`가 `존재`할 때  
+			signal(wrt)를 통해 `대기중이던 writing 프로세스`가 `write 동작`을 할 수 있도록 wrt를 1 증가시켰다. 
 
 만약에 wwc > 0을 만족하지 않는다면... 그냥 reader 프로세스 하나가 완료된 것이다.
 
@@ -545,12 +569,12 @@ chopstick[5]의 값을 모두 1로 초기화. ⇒ 각각의 젓가락에 대한 
 
 ![image](https://user-images.githubusercontent.com/64796257/147863203-9ecbc284-a783-4016-87bb-7a3287724752.png)
 
-i번째 젓가락을 집으면 i+1 번째 젓가락을 집는 동작을 wait(chopstick[i]), wait(chopstick[(i+1) % 5])를 통해서 구현한다.
+`i번째 젓가락을 집었다면` `i+1 번째 젓가락을 집는 동작`을 wait(chopstick[i]), wait(chopstick[(i+1) % 5])를 통해서 구현한다.
 
-여기서 % 5의 의미는 5명이 하나의 식탁에 둘러앉은 상황이기 때문에 6번째는 1번째와 똑같고 7번째는 2번째와 똑같다.  
-이는 그 숫자를 5로 나눴을 때 나머지 값이 되겠다.
+여기서 `%5`의 의미는 5명이 하나의 식탁에 둘러앉은 상황이기 때문에 `6번째 = 1번째`, `7번째 = 2번째`가 성립된다.  
+이는 그 숫자를 5로 나눴을 때 나머지 값이다. 
 
-그리고 여기서 변하는 값은 i값이 아닌 chopstick[i]값이라는 것을 헷갈리지 말자. 
+그리고 여기서 변하는 값은 i값이 아닌 `chopstick[i]`값이라는 것을 헷갈리지 말자. 
 
 그렇게 i번째와 i+1번째 젓가락을 집고 나서 두 개의 signal을 통해 다시 젓가락을 내려놓는다.
 
@@ -565,22 +589,23 @@ State[5] : 각 철학자들의 상태를 기록(THINKING, HUNGRY, EATING)
 mutex : 젓가락을 집거나 놓는 수행을 c.s로 관리하기 위한 세마포(초기값은 1)  
 
 Self[5] : 각각의 철학자 들이 젓가락 2개를 잡기를 기다리는 세마포  
-⇒ 모든 원소는 0으로 초기값을 가진다. self[i] = 철학자 i가 HUNGRY 상태여도 다른 젓가락 하나를 사용할 수 없다면 자기 스스로를 waiting 하기 위한 세마포
+⇒ 모든 원소는 0으로 초기값을 가진다.  
+self[i] = 철학자 i가 HUNGRY 상태여도 다른 젓가락 하나를 사용할 수 없다면 자기 스스로를 waiting 하기 위한 세마포
 
 ![image](https://user-images.githubusercontent.com/64796257/147863256-2a055beb-0886-438c-8440-9ae2f2d4b052.png)
 
-think를 하고 있다가 i번째 철학자가 젓가락을 들어서(take_chopsticks)
+think를 하고 있다가 i번째 철학자가 젓가락을 들어서(`take_chopsticks`)
 
-eat를 하고 나서 젓가락을 내려놓는다(put_chopsticks).
+eat를 하고 나서 젓가락을 내려놓는다(`put_chopsticks`)
 
 여기서 take_chopsticks와 put_chopsticks는 어떻게 구현되는지 살펴보자.
 
 ![image](https://user-images.githubusercontent.com/64796257/147863259-5507e832-5544-4372-a4d9-655e56de8ee6.png)
 
-젓가락을 드는 작업을 하는 take_chopsticks
+젓가락을 드는 작업을 하는 `take_chopsticks`
 
-Mutex를 통해 진입한다. 젓가락을 들었다는 건 현재 철학자는 배고픈 상태. 그래서 state[i]에 HUNGRY라는 값을 넣었다.  
-그러고 나서 test(i)를 실행하는데 이는 양쪽의 철학자의 상태를 검사한 후 자신의 먹을 차례를 기다린다. 
+Mutex를 통해 진입한다. 젓가락을 들었다는 건 현재 철학자는 배고픈 상태. 그래서 `state[i] = HUNGRY`라고 했다.  
+그러고 나서 `test(i)`를 실행해서 `양쪽의 철학자의 상태`를 `검사`한 후 자신의 먹을 차례를 기다린다. 
 
 그렇게 양쪽 철학자가 모두 EATING 상태가 아닌지 확인하고 나서 나머지 코드들을 실행한다. 이제 i번째 철학자는 음식을 먹을 예정이기 때문에 self[i]의 값을 1 감소시켰다.
 
@@ -588,9 +613,9 @@ Mutex를 통해 진입한다. 젓가락을 들었다는 건 현재 철학자는 
 
 take_chopsticks와 같이 Mutex를 통해 진입한다.
 
-젓가락을 내려놓았다는 건 먹는 상태는 다 끝난 상태. 그래서 state[i]에 THINKING이라는 값을 넣었다.
+젓가락을 내려놓았다는 건 먹는 상태는 다 끝난 상태. 그래서 `state[i] = THINKING`이 된다.
 
-test(LEFT), test(RIGHT)를 통해 양쪽 철학자의 상태를 검사한 다음에 먹을 차례를 기다리는 철학자에게 signal을 보낸다.
+`test(LEFT), test(RIGHT)`를 통해 양쪽 철학자의 상태를 검사한 `다음에 먹을 차례를 기다리는 철학자`에게 `signal`을 보낸다.
 
 ![image](https://user-images.githubusercontent.com/64796257/147863266-2484f34b-0d65-4b0d-a873-f1a0431ae8b6.png)
 
@@ -599,7 +624,7 @@ i번째 철학자가 HUNGRY이면서 // 왼쪽에 있는 철학자의 상태가 
 
 i번째 철학자를 기준으로 왼쪽, 오른쪽에 젓가락을 모두 이용할 수 있는 상황이 된다. 
 
-그래서 해당 조건을 만족하면 i번째 철학자의 상태 state[i]를 EATING으로 만든다.
+그래서 해당 조건을 만족하면 i번째 철학자의 상태 `state[i] = EATING`으로 설정한다.
 
 그렇게 하고 나서 음식을 먹었기 때문에 self[i]의 값을 다시 1 증가시킨다.
 
