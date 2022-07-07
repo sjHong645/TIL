@@ -33,56 +33,135 @@ class Node {
 // 맨 위는 언어, 그 다음 층은 직군, 그 다음 층은 경력, 그 다음 층은 음식, 그 다음 층은 점수 
 
 // 문제의 조건을 보니까, 직군, 경력, 음식 모두 2개밖에 없다. = 이진트리로 만들기 딱 좋다. 
-// 루트는 cpp, java, python 3개로 만들고.
+// 루트는 cpp, java, python 3개로 만들고
+
+// 직군 - left : backend, right : frontend
+// 경력 - left : junior, right : senior
+// 소울푸드 - left : chicken, right : pizza
+// 점수 - 입력받는 자료형은 String이다.
+
+// 범위가 정해져있으니까 각각의 case들을 배열로 표현할 수 있지 않을까.
+
+import java.util.List; 
+import java.util.ArrayList; 
+
+import java.util.StringTokenizer;
 
 class Solution {
+    
+    /*static List<Integer>[] cpplist;
+    static List<Integer>[] javalist;
+    static List<Integer>[] pylist; */
+    static List<Integer[] list; 
+    
+    static StringTokenizer st; 
+    
     public int[] solution(String[] info, String[] query) {
-        int[] answer = new int[query.length];
+        int[] answer = {};
         
-        Node[] graph = new Node[3]; // 0번은 cpp, 1번은 java, 2번은 python 
+        // 정보 저장
+        /*cpplist = new ArrayList[8];
+        javalist = new ArrayList[8];
+        pylist = new ArrayList[8]; */
         
-        graph[0] = new Node("cpp");
-        graph[1] = new Node("java");
-        graph[2] = new Node("python");
+        list = new ArrayList[24]; // 0 ~ 7 : cpp, 8 ~ 15 : java, 16 ~ 23 : python
         
-        // 직군 - left : backend, right : frontend
-        // 경력 - left : junior, right : senior
-        // 소울푸드 - left : chicken, right : pizza
-        // 점수 - 입력받는 자료형은 String이다.
         
-        StringTokenizer st; 
-        String lang, group, exp, food, score; 
         
+        for(int i = 0; i < 24; i++) {
+            
+            /*cpplist[i] = new ArrayList<>();
+            javalist[i] = new ArrayList<>();
+            pylist[i] = new ArrayList<>(); */
+            list = new ArrayList<>();
+            
+        }
+        
+        String lang;
         for(int i = 0; i < info.length; i++) { 
             
             st = new StringTokenizer(info[i]);
             
             lang = st.nextToken();
-            if(lang.equals("cpp")) {
-                
-                group = st.nextToken(); exp = st.nextToken(); 
-                food = st.nextToken(); score = st.nextToken(); 
-                
-                setTree(graph[0], group, exp, food, score);
-            }
+            /* if(lang.equals("cpp")) { setData(cpplist, st.nextToken(), st.nextToken(), st.nextToken(), st.nextToken());}
             
-            else if(lang.equals("java")) {}
+            else if(lang.equals("java")) { setData(javalist, st.nextToken(), st.nextToken(), st.nextToken(), st.nextToken());}
             
-            else if(lang.equals("python")) {}
+            else if(lang.equals("python")) { setData(pylist, st.nextToken(), st.nextToken(), st.nextToken(), st.nextToken());} */
+            
+            
             
         }
         
+        // 쿼리 
+        String group, exp, food, score;
+        
+        boolean[] visited = new boolean[8]; // true - 방문해야 할 인덱스
+        
+        for(int i = 0; i < query.length; i++) { 
+            
+            st = new StringTokenizer(query[i]); 
+            lang = st.nextToken(); st.nextToken(); // 언어 - cpp, java, python 
+            group = st.nextToken(); st.nextToken(); // 직군
+            exp = st.nextToken(); st.nextToken(); // 경력
+            food = st.nextToken(); // 음식
+            
+            score = st.nextToken(); // 점수
+            
+            
+        }
         
         
         return answer;
     }
     
-    static void setTree(Node lang, String group, String exp, String food, String score) { 
+    static void qur(List<Integer>[] list, String group, String exp, String food, String score) { 
         
-        if(group.equals("backend")) lang.setLeft(group);
         
-        else lang.setRight(group); 
         
+    }
+    
+    static void setData(List<Integer>[] list, String group, String exp, String food, String score) { 
+        
+        if(group.equals("backend") && exp.equals("junior") && food.equals("chicken")) {
+            
+            list[0].add(Integer.parseInt(score)); 
+        }
+        
+        else if(group.equals("backend") && exp.equals("junior") && food.equals("pizza")) {
+            
+            list[1].add(Integer.parseInt(score)); 
+        }
+        
+        else if(group.equals("backend") && exp.equals("senior") && food.equals("chicken")) {
+            
+            list[2].add(Integer.parseInt(score)); 
+        }
+        
+        else if(group.equals("backend") && exp.equals("senior") && food.equals("pizza")) {
+            
+            list[3].add(Integer.parseInt(score)); 
+        }
+        
+        else if(group.equals("frontend") && exp.equals("junior") && food.equals("chicken")) {
+            
+            list[4].add(Integer.parseInt(score)); 
+        }
+        
+        else if(group.equals("frontend") && exp.equals("junior") && food.equals("pizza")) {
+            
+            list[5].add(Integer.parseInt(score)); 
+        }
+        
+        else if(group.equals("frontend") && exp.equals("senior") && food.equals("chicken")) {
+            
+            list[6].add(Integer.parseInt(score)); 
+        }
+        
+        else if(group.equals("frontend") && exp.equals("senior") && food.equals("pizza")) {
+            
+            list[7].add(Integer.parseInt(score)); 
+        }
         
         
         
