@@ -208,7 +208,7 @@ ex)
 			
 			int pivot = Partition(arr, left, right); // 배열 arr를 둘로 나누는 pivot 
 			QuickSort(arr, left, pivot-1); // pivot의 왼쪽 영역 정렬
-			QuickSort(arr, pivot, right); // pivot의 오른쪽 영역 정렬
+			QuickSort(arr, pivot + 1, right); // pivot의 오른쪽 영역 정렬
 			
 		}
 		
@@ -217,22 +217,25 @@ ex)
 	int Partition(int[] arr, int left, int right) { 
 		
 		int pivot = arr[left];
-		int low = left; 
+		int low = left + 1; // pivot이 left이니까 left + 1을 가장 왼쪽에 있는 값으로 설정 
 		int high = right; 
 		
-		while(low <= right) { 
+		while(low <= high) { 
 			
-			while(pivot > arr[low]) low++;
+			// low와 high의 범위가 배열의 범위를 넘어가지 않도록 하는 조건을 추가해줌
+			// 그리고 배열 내에 같은 숫자가 오더라도 정렬을 할 수 있도록 조건을 
+			while(low < arr.length && pivot >= arr[low] && low <= right) low++;
 			
-			while(pivot < arr[high]) high--;
+			while(high >= 0 && pivot <= arr[high] && high >= (left + 1)) high--;
 			
+			// 아직 교차되지 않았다면 서로 교환한다. 
 			if(low <= high) Swap(arr, low, high);
 			
 		}
-    
-    swap(arr, left, high); // 피벗과 high 위치에 있는 값을 서로 교환한다.
 		
-		return high;
+		Swap(arr, left, high); // left와 high가 교차되면 각 위치에 있는 데이터를 교환
+				
+		return high; // 이동한 피벗의 위치 정보 return 
 		
 	}
 	
