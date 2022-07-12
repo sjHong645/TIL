@@ -163,21 +163,21 @@ class RadixSort {
 	  }
 	  
 	  for(pos = 0; pos < maxLen; pos++) {
-		  for(di = 0; di < num; di++) {
+		for(di = 0; di < num; di++) {
 			  
-			  radix = (arr[di] / divfac) % 10;
+			radix = (arr[di] / divfac) % 10;
 			  
-			  buckets[radix].enqueue(arr[di]);
-		  }
+			buckets[radix].enqueue(arr[di]);
+		}
 	  
 	  
-	  for(bi = 0, di = 0; bi < 10; bi++) {
+		for(bi = 0, di = 0; bi < 10; bi++) {
 		  while(!buckets[bi].isEmpty()) {
 			  arr[di++] = buckets[bi].dequeue();
 		  }
-	  }
-	  
-	  divfac *= 10;
+		}
+
+	  	divfac *= 10;
 	  }
 	} 
   
@@ -237,8 +237,8 @@ class RadixSort {
 #### 3단계 : 입력한 배열과 동일한 크기의 출력 배열 B를 만들고 입력 배열의 역순으로 출력배열에 원소들을 채워준다.
 ![image](https://user-images.githubusercontent.com/64796257/150627593-4b630722-0366-438f-96de-83063cb3f5ee.png)
 
-맨 뒤에 있는 `1`을 보자. `CA[1] == 5`이다. 그래서 `1`은 `B[5]`에 대입하고 `CA[1]`의 값을 `1 빼준다`.
-그 앞에 있는 `2`를 보자. `CA[2] == 6`이다. 그래서 `2`는 `B[6]`에 대입하고 `CA[2]`의 값을 `1 빼준다`.
+맨 뒤에 있는 `1`을 보자. `CA[1] == 5`이다. 그래서 `1`은 `B[5]`에 대입하고 `CA[1]`의 값을 `1 빼준다`.  
+그 앞에 있는 `2`를 보자. `CA[2] == 6`이다. 그래서 `2`는 `B[6]`에 대입하고 `CA[2]`의 값을 `1 빼준다`.  
 그 앞에 있는 `5`를 보자. `CA[5] == 11`이다. 그래서 `5`는 `B[11]`에 대입하고 `CA[5]`의 값을 `1 빼준다`.
 
 ### 구현
@@ -263,14 +263,10 @@ class CountingSort {
 		int[] CA = new int[Amax + 1]; 
 		
 		// 과정 1
-		for (int i = 0; i < A.length; i++) {
-			CA[A[i]]++;
-		}
+		for (int i = 0; i < A.length; i++) { CA[A[i]]++; }
 		
 		// 과정 2 
-		for(int i = 0; i < CA.length - 1; i++) {
-			CA[i+1] = CA[i+1] + CA[i];
-		}
+		for(int i = 0; i < CA.length - 1; i++) { CA[i+1] += CA[i]; }
 		
 		// 과정 3 
 		for(int i = A.length - 1; i >= 0; i--) {
