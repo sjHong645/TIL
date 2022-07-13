@@ -40,6 +40,34 @@ boolean BSearch(int A[], int len, int target) {
 }
 ```
 
+또는 해당 [출처](/CodingTest/11여러가지문제/카카오기출/level2/메소드/CollectionsBinarySearch.md)를 이용해서 코드를 짜면
+
+A라는 배열에 `target`이 있다면 해당 위치를 반환.  
+`target`이 없다면 target이 있어야 할 위치를 반환. 이때 `위치 값`을 `음수`로 바꾸고 -1을 더한다.
+``` java
+int BSearch(int A[], int len, int target) {
+		
+	int first = 0; 
+	int last = len - 1;
+	int mid;
+		
+	while(first <= last) {			
+		mid = (first + last) / 2;
+      		if(target == A[mid]) return mid;
+			
+		else if(target < A[mid]) last = mid - 1;
+			
+		else first = mid + 1;
+		
+		}
+	}
+		
+	return -(first + 1);
+
+}
+```
+
+
 ### 재귀 알고리즘 활용 
 
 원리는 똑같다. 표현을 다르게 한 것 뿐이다. 
