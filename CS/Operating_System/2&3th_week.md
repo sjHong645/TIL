@@ -158,7 +158,7 @@ cf) Peripheral device (주변 기기) : 시스템 버스에 연결되어 있지 
 
 cf) SSD(Solid-State Drive) : 반도체를 이용해서 정보를 저장하는 장치. 속도가 빠른 SSD가 등장하면서 NorthBridge에 연결하기 시작했다.
 
-■ OS와 연관된 컴퓨터 시스템의 개념
+### OS와 연관된 컴퓨터 시스템의 개념
 
 운영체제와 사용자는 컴퓨터 시스템의 하드웨어 및 소프트웨어 자원을 공유한다. 그래서 올바르게 설계된 OS는 잘못된 프로그램으로 인해 다른 프로그램 또는 OS 자체가 잘못 실행될 수 없도록 보장해야 한다.
 
@@ -177,11 +177,11 @@ cf) SSD(Solid-State Drive) : 반도체를 이용해서 정보를 저장하는 �
 
 ![image](https://user-images.githubusercontent.com/64796257/147425696-efe35f7e-9f56-4f16-b758-c5b3329c5b88.png)
 
-해당 instruction 들은 시스템이나 하드웨어를 직접 동작하는 instruction이다. 
+해당 instruction 들은 `시스템이나 하드웨어`를 `직접 동작`시키는 instruction이다. 
 
-만약에 user mode에서 위 instruction 들을 사용한다면, 사용하려 했다는 사실을 OS에게 알려주고 OS는 해당 요청을 종료(kill) 시킨다.
+만약에 `user mode`에서 위 instruction 들을 사용한다면, 사용하려 했다는 사실을 OS에게 `알림` ⇒ OS는 해당 요청을 `종료(kill)`시킴
 
-이처럼 user mode가 kernel mode에서 실행할 수 있는 instruction 종류는 차이가 있다. 
+이처럼 `user mode`와 `kernel mode`에서 실행할 수 있는 instruction 종류는 차이가 있다. 
 
 위 명령어들을 사용하기 위해서는 CPU 상태가 kernel mode여야 하는데 kernel mode에서 동작할 수 있는 유일한 소프트웨어가 바로 OS이다.
 
@@ -197,7 +197,7 @@ cf) SSD(Solid-State Drive) : 반도체를 이용해서 정보를 저장하는 �
 
 해당 app은 privileged 명령어에 접근할 권한이 없기 때문에 이 사실을 CPU가 OS에게 알리기 위해서 `user mode`를 `kernel mode`로 바꾸고 나서 OS에게 해당 사실을 알려준다.
 
-■ CPU의 이벤트 처리 기법 = `Interrupt` : CPU가 동작하는 동안 CPU에게 전달되는 전기 신호 
+### CPU의 이벤트 처리 기법 = `Interrupt` : CPU가 동작하는 동안 CPU에게 전달되는 전기 신호 
 
 1) HW Interrupt : `비동기적 이벤트`를 처리하기 위한 기법 (비동기적 이벤트 : 현재 작업과는 무관하게 외부에서 발생하는 이벤트)
 
@@ -230,7 +230,7 @@ ex. 연산을 하는 와중에 0으로 나누는 오류가 발생했다. ⇒ 이
 
 ![image](https://user-images.githubusercontent.com/64796257/147426768-39cb747e-a4a5-4be8-afe6-3a3526ad9a11.png)
 
-■ I/O Device 기본 개념
+### I/O Device 기본 개념
 
 - Bus : CPU, RAM, I/O 장치 간 데이터가 전송되는 통로. 전달하는 데이터의 종류에 따라 3가지 버스로 구성된다(Data, Address, Control)
 
@@ -245,7 +245,7 @@ ex. `학생 명단(data)`을 `100번지(Address)`에 저장하고 이를 `디바
 
 - Controller : `고수준의 I/O 요청`을 `저수준의 장치 명령어`로 `해석`하는 디지털 회로. 이는 장치와 직접 상호작용한다.
 
-■ I/O 처리 기법
+### I/O 처리 기법
 
 1. Interrupt : I/O를 요청하고 해당 장치의 종료를 확인하는 방법
 
