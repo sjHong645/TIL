@@ -90,21 +90,21 @@ ex. 여기서 문제는 `decision problem`이라는 것을 잊지 말자.
 TSP(Traveling Salesman Problem) : 가중치가 있는 완전 그래프에서 최단 경로의 해밀턴 사이클을 찾는 문제  
 (완전 그래프 : 모든 정점 사이에 간선이 있는 그래프)
 
-이걸 가지고 문제를 만들어보면 
-⇒ 입력 : 양의 가중치를 가지는 un-directed graph G = (V, E)와 양의 실수 K  
+이걸 가지고 문제를 만들어보면  
+⇒ 입력 : 양의 가중치를 가지는 un-directed graph G = (V, E)와 양의 실수 K   
    질문 : 그래프 G에 가중치의 합이 K 이하인 해밀턴 cycle이 존재하는가?
 
-이러한 사실을 바탕으로 `해밀턴 cycle 문제의 instance`를 `TSP 알고리즘으로 해결`하기 위해서  
+`해밀턴 cycle 문제의 instance`를 `TSP 알고리즘으로 해결`하기 위해서  
 `해밀턴 cycle의 instance`를 `TSP의 instance`로 `poly-time 내에 바꿀 수 있는지` 따져보려 한다.
 
-`해밀턴 cycle 문제`의 질문인 `해밀턴 cycle이 존재하는가?` 라는 문제는  
-`TSP 문제`의 `길이가 |V| 이하인 해밀턴 cycle이 존재하는가?` 라는 질문의 답과 일치한다. 아래와 같이 바꿀 수 있다.
+그러면, `해밀턴 cycle 문제`의 질문인 `해밀턴 cycle이 존재하는가?` 라는 문제는  
+`TSP 문제`의 `길이가 |V| 이하인 해밀턴 cycle이 존재하는가?` 라는 질문으로 아래와 같이 바꿀 수 있다.
 
 ![image](https://user-images.githubusercontent.com/64796257/150669939-f0aa3978-8e0d-4355-86cc-d9b403980b75.png)
 
 `해밀턴 cycle의 instance`였던 왼쪽 그림을 `O(n²)`의 시간을 소요해서 오른쪽 그림으로 바꿨다.
 
-결국, `TSP를 쉽게 푸는 알고리즘`이 있다면 이 변환으로 `해밀턴 cycle`을 보다 쉽게 해결할 수 있게 된다.
+여기서 `TSP를 쉽게 푸는 알고리즘`이 있다면 이 변환으로 `해밀턴 cycle`을 보다 쉽게 해결할 수 있게 된다.
 
 ### NP-Complete 
 - NP-Hard 
