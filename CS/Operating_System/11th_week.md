@@ -180,7 +180,7 @@ ex. 공유하는 boolean 자료형 `lock`이 있고 `False`로 초기화했다�
 이와 같이 코드를 P0와 P1에서 만들었다고 하자.  
 ① `P0`에서 코드를 수행해서 `test_and_set(&lock)`의 `return 값`으로 `기존에 lock` 값인 `false`를 반환한다.  
 ② 하지만, 함수 내부에서 `lock = true`가 되었다.  
-③ `P0`에서 c.s를 수행하는 동안 `P1`에서 `c.s`을 실행하려고 while문에 도달했다.
+③ `P0`에서 c.s를 수행하는 동안 `P1`에서 `c.s`을 실행하려고 while문에 도달했다.  
 ④ 하지만, `lock = true`이기 때문에 `P1`의 `test_and_case`의 `return값 = true`여서 while문 앞에서 `대기`한다.
 
 즉, P0가 수행되는 동안 P1는 수행되지 못하는 `mutual exclusion`이 구현된다.
@@ -200,7 +200,7 @@ ex. int lock = 0; 으로 초기화함
 ![image](https://user-images.githubusercontent.com/64796257/147862452-bc3ed944-2d21-4c8a-af8f-e44343c01f06.png)
 
 이와 같은 코드를 P0, P1에서 만들었다고 하자.  
-① `P0`에서 이 코드를 수행해서 P0의 CAS의 1번째 매개변수는 lock 변수의 주소값을 전달했다. 
+① `P0`에서 이 코드를 수행해서 P0의 CAS의 1번째 매개변수는 lock 변수의 주소값을 전달했다.  
 ② 만약에 `지금 lock이 가리키는 값`이 `2번째 매개변수의 값`과 같다면 lock이 가리키는 값을 3번째 매개변수의 값으로 바꾼다.  
 ③ 현재, `P0`에서는 그 조건을 `만족`한다. (`*lock = 0` ,`expected = 0`)  
 ④ 따라서, P0의 CAS를 수행하면서 `lock = 1`이 되었지만, `함수의 return값`은 `기존 lock값`인 `0`이 return 된다.  
