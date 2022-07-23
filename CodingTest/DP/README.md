@@ -1,3 +1,5 @@
+[관련 내용](/CS/알고리즘&자료구조/DynamicProgramming.md)
+
 ## 정답을 본 문제 
 
 [포도주 시식](/CodingTest/DP/포도주시식.md), [LIS](/CodingTest/DP/LIS.md)
