@@ -45,7 +45,7 @@
 
 각 모서리의 `동그라미의 값`은 `s`에서 시작해서 `해당 모서리`로 향하는 `최소 cost`를 의미한다.
 
-`()` 안에는 `t`까지 향하는 `guide`로 저장해놓은 `추정치`를 의미한다.
+`()값` = `동그라미 값` + `해당 모서리에서 시작해서 t에 도착하기 위한 추정값`
 
 `s 노드` 자체를 보면 `s에서 시작`해서 `s로 도착`하는 `cost는 0`이다.(D[x]의 값) 그래서 `동그라미 안`에 `0`이 들어있다.
 
@@ -137,9 +137,10 @@ ex. `1번 노드`를 `v`가 가리킨다고 하면 `D[u] + w(u,v) = 0 + 17 ` < `
 
 동작 방식에 차이가 있는데 이에 대해 살펴보자. 
 
-![image](https://user-images.githubusercontent.com/64796257/151092230-2013cb2d-e4d3-4cdd-9071-189166495ac5.png)
+![image](https://user-images.githubusercontent.com/64796257/151092230-2013cb2d-e4d3-4cdd-9071-189166495ac5.png) 
 
-![image](https://user-images.githubusercontent.com/64796257/151092564-657e214b-4fa2-454f-924a-5fdaaf42af03.png)
+![image](https://user-images.githubusercontent.com/64796257/151092564-657e214b-4fa2-454f-924a-5fdaaf42af03.png) 
+![image](https://user-images.githubusercontent.com/64796257/181383432-717e1e37-0bc8-4d52-a1c4-28dae48439a3.png)
 
 이제 `1번 노드`와 `이웃한 노드들`을 가지고 만들 수 있는 `경로`에 대해 값들을 갱신한다. 
 
