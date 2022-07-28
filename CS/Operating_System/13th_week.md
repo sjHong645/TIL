@@ -77,6 +77,8 @@ ex) `1TB`의 `물리메모리`를 표현한다고 하자.
 
 그래서 두 번 접근하는 문제를 해결하기 위해서 TLB라는 개념을 이용할 것 이다.
 
+### TLB
+
 ![image](https://user-images.githubusercontent.com/64796257/147846534-bfe1d2d4-6809-4887-b208-c81250c23afd.png)
 
 `논리 메모리`에서 `물리 메모리에 접근할 프레임 번호`를 알아내려고 할 때 내가 원하는 논리 메모리에 대한 데이터가 TLB에 존재하지 않는다면
@@ -93,7 +95,7 @@ ex) `1TB`의 `물리메모리`를 표현한다고 하자.
 만약에 TLB가 해당 데이터를 가지고 있지 않는다면(`TLB Miss`) TLB가 아닌 `페이지 테이블`에서 데이터를 찾아서  
 그 데이터를 활용하고 해당 데이터를 TLB에 업데이트 해주면 된다.
 
-앞서 말했듯이 TLB는 cache와 비슷하게 `시간/ 공간 지역성`에 따라서 TLB에 데이터를 저장한다.
+앞서 말했듯이 TLB는 cache와 비슷하게 `시간/공간 지역성`에 따라서 TLB에 데이터를 저장한다.
 
 그렇다면, 이러한 TLB는 어떤 device로 구현할 수 있을까?? main memory 보다는 빠르고 register 보다는 싼 `associative memory`를 이용하면 된다.
 
@@ -130,8 +132,6 @@ miss를 하면 곧바로 메인 메모리에 접근하는 것이 아니라 페�
 앞서 페이지 테이블의 크기는 4MB가 된다고 했다. 이는 메모리에 담기에는 너무나도 큰 용량이고 낭비가 심하게 된다. 왜 그런지 살펴보자.
 
 ![image](https://user-images.githubusercontent.com/64796257/147846675-1029cadb-cff2-47c2-896f-59a7852297b3.png)
-
-낭비가 심하게 되는 이유는 `Logical Address Space`의 전체 용량 `4GB` 중에서 사용하는 `process의 크기 = 12KB`에 불과하다. 
 
 ![image](https://user-images.githubusercontent.com/64796257/147846684-4b2899ad-65d3-4eb9-a590-93de68ce9d79.png)
 
