@@ -481,7 +481,36 @@ ex) `4개의 자료`를 갖고 있는 arr배열에서 `2개를 뽑는` 조합의
     
 ```
 
+## 21. 기본적인 순열 코드 
+[출처](https://bcp0109.tistory.com/14)
 
+![image](https://user-images.githubusercontent.com/64796257/181877461-7e56b3de-4e2a-4c8f-a6ac-70932c1a7fd6.png)
+
+``` java
+// 순서를 지키면서 n 개중에서 r 개를 뽑는 경우
+// 사용 예시: perm(arr, output, visited, 0, n, 3);
+
+// arr = r개를 뽑기 위한 n개의 값
+// output = 뽑힌 r개의 값
+static void perm(int[] arr, int[] output, boolean[] visited, int depth, int n, int r) {
+
+    if (depth == r) {
+        // 원하는 동작
+        return;
+    }
+ 
+    for (int i=0; i<n; i++) {
+        if (visited[i] != true) {
+            visited[i] = true;
+            output[depth] = arr[i];
+	    
+            perm(arr, output, visited, depth + 1, n, r);       
+	    
+            visited[i] = false;
+        }
+    }
+}
+```
 
 
 
