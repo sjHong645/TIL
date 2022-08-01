@@ -258,7 +258,7 @@ public void insert(int pos, int data) {
 	// pos = 2라고 했을 때
 	// 삽입을 하고 나면 기존에 2번째에 있던 노드가 
 	// 새로 삽입한 노드 앞에 위치해야 한다.
-	Node prev = this.getNode(pos);
+	Node prev = this.getNode(pos-1);
 	
 	if(prev != null) {
 		Node p = new Node(data); // 원하는 데이터를 갖는 노드를 생성해서 p가 가리키도록 했다.
@@ -269,7 +269,7 @@ public void insert(int pos, int data) {
 }
 ```
 
-![image](https://user-images.githubusercontent.com/64796257/150100253-b5b8a1f8-098d-4215-95fc-a16281aee7e3.png)
+![image](https://user-images.githubusercontent.com/64796257/182050702-b4f87fd1-cebd-4d95-8acd-3f787c4bdd5c.png)
 
 - remove 
 
