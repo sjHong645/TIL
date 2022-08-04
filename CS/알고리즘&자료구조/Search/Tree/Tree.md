@@ -234,7 +234,7 @@ private void preOrder(BinaryNode node) {
 ``` java
 	public void inOrder() {  // main 함수에서 사용할 함수 
 		System.out.print("inOrder: ");
-		preOrder(this.root);
+		inOrder(this.root);
 		System.out.println();
 	}
 	
@@ -253,7 +253,7 @@ private void preOrder(BinaryNode node) {
  ``` java
  	public void postOrder() { // main에서 사용할 함수 
 		System.out.print("postOrder: ");
-		preOrder(this.root);
+		postOrder(this.root);
 		System.out.println();
 	}
 	
