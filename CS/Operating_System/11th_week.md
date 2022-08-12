@@ -7,10 +7,10 @@
 
 ![image](https://user-images.githubusercontent.com/64796257/147861977-7f1f0b70-4766-47f7-80d7-b25179b3cc0a.png)
 
-producer 내용: counter가 buffer_size랑 똑같아질 때  
-즉, 버퍼가 꽉 차게 되면 여러 작업을 하고 나서 counter의 값을 1씩 증가시킨다. 왜냐하면, 버퍼에 자료가 하나 늘어났기 때문이다.
+producer 내용: counter가 buffer_size랑 똑같아질 때 (= `버퍼가 꽉 차면`) 아무 작업도 하지 않는다.   
+버퍼가 `꽉 차지 않았다`면 여러 작업을 하고 나서 counter의 값을 1씩 증가시킨다. 왜냐하면, 버퍼에 자료가 하나 늘어났기 때문이다.
 
-consumer 내용: counter가 0이 된다면 동작을 하지 않아야 한다. 왜냐하면 꺼내 쓸 데이터가 없기 때문이다.  
+consumer 내용: counter가 0이 된다면 아무 작업도 하지 않는다. 꺼내 쓸 데이터가 없기 때문이다.  
 만약에 counter가 0이 아니라면 데이터가 있다는 거고 그걸 다 쓰고나면 counter의 값을 1씩 감소시키면 된다.
 
 여기서 counter ++, counter --는 CPU에서는 아래와 같이 처리한다.
@@ -27,7 +27,7 @@ consumer 내용: counter가 0이 된다면 동작을 하지 않아야 한다. �
 
 이때, counter++, counter-- 와 같이 공유하고 있는 자원을 변경하는 부분을 `critical section`이라 한다.  
 ⇒ 이 부분 때문에 동기화 문제가 발생하는데  
-이를 해결하기 위해서 어느 한쪽에서 critical section이 동작하는 동안 다른 쪽에 있는 critical section이 동작하지 못하도록 보호해야 한다.
+이를 해결하기 위해서 어느 `한쪽에서 critical section`이 `동작`하는 동안 `다른 쪽 critical section`이 `동작하지 못하도록` 보호해야 한다.
 
 ⇒ 이를 구현하기 위해서 entry section, exit section이라는 개념을 사용한다.
 
@@ -77,8 +77,8 @@ ex) `turn`의 값은 `0`으로 초기화.
 
 `flag`라는 `boolean 배열`을 만들어서 flag[0] = flag[1] = False를 초기값으로 가지도록 했다.
 
-1) `flag[0] = true`라면 `P0`는 `c.s를 수행`할 수 있고 
-2) `flag[1] = true`라면 `P1`이 `c.s를 수행`할 수 있다.
+1) `flag[0] = true`라면 `P1`은 `c.s를 수행`할 수 `없고` 
+2) `flag[1] = true`라면 `P0`는 `c.s를 수행`할 수 `없다`.
 
 `Flag[0] = True`라면 P0는 c.s에 `들어갈 수` 있는데 이와 동시에 `flag[1] = True`라면 `못 들어가`게 했다.  
 P0 에서 c.s에 접근할 때 P1에서는 c.s에 접근하면 안되기 때문에 while(flag[1])이라는 조건문을 걸었다.
@@ -165,7 +165,7 @@ counter++는 한 줄에서 실행되는 것처럼 보이지만 이와 같이 3�
 
 ![image](https://user-images.githubusercontent.com/64796257/147862388-57f45dfe-d1a7-4027-aeda-799bfa7fb4e2.png)
 
-- 코드 설명
+- 코드 설명  
 boolean 자료형을 가리킬 수 있는 `target`이라는 포인터 변수를 매개변수로 받는다. 
 `rv값`은 `기존에 target이 가리킨 값`을 `저장`하고 `target이 가리키는 값`은 새롭게 `TRUE`로 바꾼다. 
 
@@ -208,7 +208,7 @@ ex. int lock = 0; 으로 초기화함
 
 ⑤ 현재 `lock = 1`이므로 `P1의 CAS의 return값`은 `1`이다. 따라서, while문에서 `대기`한다.  
 
-⇒ `P0`에서는 `c.s를 실행`하지만, `P1`에서는 `c.s를 실행하지 못`하는 `상호 배제`가 구현되었다.
+⇒ `P0`에서는 `c.s를 실행`하지만, `P1`에서는 `c.s를 실행하지 못`하는 `상호 배제`가 구현되었다.  
     bounded waiting도 이와 같은 방식으로 구현할 수 있다고 한다. - 이건 나중에.
 
 이와 같이 `mutual exclusion`은 HW의 지원을 통해서 쉽게 구현할 수 있지만,  
