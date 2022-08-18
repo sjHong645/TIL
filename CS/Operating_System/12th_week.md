@@ -75,7 +75,7 @@ MMU를 아래와 같이 추가한다.
 
 ![image](https://user-images.githubusercontent.com/64796257/147843842-ce132b24-685d-4af1-ae04-e6325d781b6b.png)
 
-프로세스가 접근할 수 있는 범위를 넘어가게 되면 addrssing error가 일어났다고 알려준다.
+프로세스가 접근할 수 있는 범위를 넘어가게 되면 addressing error가 일어났다고 알려준다.
 
 ### Memory Management 
 
@@ -118,7 +118,7 @@ MMU를 아래와 같이 추가한다.
 ![image](https://user-images.githubusercontent.com/64796257/147843918-00dc2a7a-129b-4edd-b907-10aa51e15be0.png)
 
 1과 3 부분이 채워진 상황에서 크기가 10인 프로세스를 넣으려고 한다.  
-그러면 contiguous 방식에서는 3번에 채워진 프로세스를 2번의 일부로 자리를 옮기면 원래는 사용할 수 없었는 10의 공간을 사용할 수 있게 된다.
+그러면 contiguous 방식에서는 3번에 채워진 프로세스를 2번의 일부로 자리를 옮기면 원래는 사용할 수 없었던 10의 공간을 사용할 수 있게 된다.
 
 하지만, 이 방법은 CPU가 동작하는데 있어서 메모리에 접근하는 데 소요되는 시간은 상당히 크다.
 
