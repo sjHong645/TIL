@@ -14,6 +14,6 @@
 
 ### [DNS_detailed](/CS/Network/DNS_detailed.md) : DNS에 관해서 배운 내용 정리
 
-### [HTTP_detailed](/CS/Network/HTTP_deatailed.md) : HTTP 관련해서 배운 내용 정리
+### [HTTP_detailed](/CS/Network/HTTP_detailed.md) : HTTP 관련해서 배운 내용 정리
 
 ### [About_Internet](/CS/Network/About_Internet.md) : 인터넷이랑 네트워크의 큰 그림 정리
