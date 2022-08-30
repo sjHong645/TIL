@@ -136,6 +136,9 @@ a = 0, b = 1, c = 2, d = 3, e = 4와 같이 알파벳들을 숫자로 바꿔서 
 
 ![image](https://user-images.githubusercontent.com/64796257/150738415-12fffac9-d0fe-49f0-b1d9-fc541087d8b6.png)
 
+- m = 패턴 길이
+- a_i = 문자열 A의 i번째 값 ~ i+m번째 값 까지의 합
+
 ![image](https://user-images.githubusercontent.com/64796257/150738428-3b7f2c91-d7ec-450d-b116-8ea3e83493cb.png)
 
 이 방식을 일반화 하면 다음과 같다.
@@ -244,7 +247,7 @@ A를 `왼쪽`에서 `오른쪽`으로 순차적으로 반복하면서 아래와 
 ![image](https://user-images.githubusercontent.com/64796257/150744105-3cb1dfff-c6f8-4d1c-b17b-f112d1720a8e.png)
 ![image](https://user-images.githubusercontent.com/64796257/150744111-86a5817a-1681-4fae-aefb-1c431daff29c.png)
 
-`시간복잡도`는 아래와 같이 구하면 된다. 
+`시간복잡도`는 아래와 같이 구하면 된다.  
 ![image](https://user-images.githubusercontent.com/64796257/150744256-21308611-4c3d-4e73-9237-d93aa3935f06.png)
 
 시간복잡도는 `while문의 반복 횟수`에 따라 달라진다.  
