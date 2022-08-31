@@ -111,12 +111,11 @@ TSP(Traveling Salesman Problem) : 가중치가 있는 완전 그래프에서 최
 : 문제 A에 대한 `NP-Hard`는 다음과 같이 정의한다.  
   `NP 문제`가 `문제 A로 poly-time reduction`이 되는 모든 문제를 `문제 A에 대한 NP-Hard`라고 한다.
 
-수식으로 표현하면 ![image](https://user-images.githubusercontent.com/64796257/150670025-5f517728-0028-4e30-84a8-626c4fbec88d.png)
- 일 때 `A는 NP-Hard`이다. 
+수식으로 표현하면 ![image](https://user-images.githubusercontent.com/64796257/150670025-5f517728-0028-4e30-84a8-626c4fbec88d.png) 
  
 수식을 있는 그대로 해석하면 `NP 문제인 L`을 `poly-time` 내에 `A`로 `reduction`할 수 있을 때 `문제 L`을 `A에 대한 NP-Hard 문제`라 한다.
 
-- NP Complete 
+- NP-Complete 
 : 문제 A에 대해서 `해당 문제가 A가 NP`이고 `NP-Hard`일 때 문제 A를 `NP-Complete`라고 한다.
 
 관계성을 그림으로 표현하면 아래와 같다.
@@ -194,9 +193,7 @@ TSP가 성립한다고 했다.
 
 ### NP = P
 
-NP = P라고 하자.
-그러면 `문제 A`가 `NP`이면서 `모든 NP 문제` ![image](https://user-images.githubusercontent.com/64796257/150670656-b5b9d9dc-254c-46f2-8356-268df911491c.png)
-A가 성립한다고 할 때 `문제 A는 NP-Complete`가 성립한다.
+`문제 A가 NP-Complete`라는 것의 의미는 A가 `NP`이면서 `모든 NP 문제` ![image](https://user-images.githubusercontent.com/64796257/150670656-b5b9d9dc-254c-46f2-8356-268df911491c.png) A가 성립한다는 걸 뜻한다.
 
 앞서 NP = P라고 했으니까 아래와 같이 쓸 수 있다. 
 
