@@ -5,7 +5,7 @@
 - JSP : [최범균의 JSP 2.3 웹 프로그래밍 : 기초부터 중급까지](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=70129886)
 - 스프링(Spring) : [스프링 부트와 AWS로 혼자 구현하는 웹 서비스](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=218568947)
 
-- 정보처리기사 : ~~[2022 시나공 정보처리기사 필기](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=281396175)~~ ~~[2022 시나공 정보처리기사 실기](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=289139285)~~
+- 정보처리기사 : ~~[2022 시나공 정보처리기사 필기](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=281396175)~~ ~~[2022 시나공 정보처리기사 실기](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=289139285)~~ ⇒ **합격**
 
 ### CS
 
@@ -34,8 +34,5 @@
 ### AWS 
 
 [교재](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=180114055)
-
-### 정보처리기사
-
 
    
