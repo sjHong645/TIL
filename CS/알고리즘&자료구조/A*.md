@@ -130,7 +130,8 @@ ex. `1번 노드`를 `v`가 가리킨다고 하면 `D[u] + w(u,v) = 0 + 17 ` < `
 
 #### 용어 정의 
 
-![image](https://user-images.githubusercontent.com/64796257/151091901-b0360307-3c15-4949-a209-4ee4976327b7.png)
+![image](https://user-images.githubusercontent.com/64796257/151091901-b0360307-3c15-4949-a209-4ee4976327b7.png) ![image](https://user-images.githubusercontent.com/64796257/188039985-d145fc04-45ec-40aa-a0ab-341557bdc022.png)
+
 
 표현은 앞서 배운 SSS와 거의 비슷하다.  
 `나머지의 최소값`을 `h(x)`로 표현했고 `전체적인 기준`이 되는 값을 `f`로 표현했다. 
