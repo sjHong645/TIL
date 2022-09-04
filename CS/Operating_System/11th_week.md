@@ -239,6 +239,11 @@ ex. int lock = 0; 으로 초기화함
 2) `context-switching`에 의해서 `소모되는 시간` > `프로세스가 실행되는 시간`  
 를 만족할 떄 사용하는게 좋다.
 
+왜냐하면,  
+1) `c.s`이 짧아야 `busy wait`를 통해 기다리는 시간을 줄일 수 있기 때문이다.  
+2) 이 방법은 `context switching`을 하지 않고 `busy waiting`을 통해 계속해서 프로세스의 변화를 주시하기 때문에  
+   `context switching`으로 인한 부담이 큰 작업에 사용하는 것이 적합하다
+
 cf) 길지 않은 시간 = 짧은 시간을 판단하는 기준  
 
 lock을 기다리는 스레드는 2번의 context-switching이 필요하다.  
