@@ -1,7 +1,7 @@
 # TIL
 ### 교재
 - 네트워크 : [그림으로 배우는 HTTP & Network Basic](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=51908132)
-- 데이터베이스 : [SQL 첫 걸음](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=69025381) 
+- 데이터베이스 : [SQL 첫 걸음](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=69025381) + [데이터베이스 개론](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=177462276)
 - JSP : [최범균의 JSP 2.3 웹 프로그래밍 : 기초부터 중급까지](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=70129886)
 - 스프링(Spring) : [스프링 부트와 AWS로 혼자 구현하는 웹 서비스](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=218568947)
 
