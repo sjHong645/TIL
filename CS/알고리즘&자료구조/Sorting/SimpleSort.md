@@ -91,7 +91,7 @@ public <T extends Comparable<T>> T[] sort(T[] array) {
 
 이를 구현하려면 임시적으로 데이터를 저장할 변수 하나는 선언해놓아야 한다.
 
-### 구현
+### 구현 - 오름차순 구현
 ``` java
   public <T extends Comparable<T>> T[] sort(T[] arr) {
     int n = arr.length; // 배열의 크기 n
@@ -101,6 +101,11 @@ public <T extends Comparable<T>> T[] sort(T[] array) {
       for (int j = i + 1; j < n; j++) {
       
       // minIndex번째 값이 j번째 값보다 크다면 minIndex에 j를 저장한다.
+      
+      // A.compareTo(B) 
+      // A < B일 때 -1 return
+      // A > B일 때 1 return
+      // A == B일 때 0 return
         if (arr[minIndex].compareTo(arr[j]) > 0) {
           minIndex = j;
         }
@@ -183,7 +188,7 @@ i = 1일 때 안쪽 for문의 j = 2 ~ (n-1)까지 증가하면서 연산을 n-2�
 최악의 경우를 고려해보면 안쪽 for문의 if-else문의 조건이 항상 참이 되면서 break가 단 한 번도 발생하지 않을 때가 최악의 경우이다.  
 그래서 바깥쪽 for문의 반복횟수와 안쪽 for문의 반복횟수를 곱한 만큼 연산이 진행된다.
 
-따라서, Big-O는 O(n^2) 가 된다는 걸 알 수 있다.
+따라서, Big-O는 `O(n²)`이 된다는 걸 알 수 있다.
 
 
 
