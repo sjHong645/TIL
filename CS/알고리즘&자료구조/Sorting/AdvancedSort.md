@@ -233,13 +233,15 @@ ex)
 			
 		}
 		
-		Swap(arr, left, high); // left와 high가 교차되면 각 위치에 있는 데이터를 교환
+		// pivot = arr[left]이었으니까 
+		// pivot값과 high가 위치한 값을 서로 교환한다. 
+		Swap(arr, left, high); 
 				
 		return high; // 이동한 피벗의 위치 정보 return 
 		
 	}
 	
-  // arr 배열의 idx1과 idx2 위치에 있는 값을 교환
+  	// arr 배열의 idx1과 idx2 위치에 있는 값을 교환
 	void Swap(int[] arr, int idx1, int idx2) { 
 		
 		int temp = arr[idx1];
@@ -311,6 +313,8 @@ a,b,c는 서로 중복되지 않는다고 하자. sorting 알고리즘들을 일
 따라서, `h=n`이면 단말 노드의 개수는 `2ⁿ`이 된다. 
 
 정리하면 단말 노드의 개수가 `2ⁿ`이면 높이는 `n` <=> 단말 노드의 개수가 `n`이라면 높이는 `log₂(n)`이 된다.
+
+그래서 단말 노드가 `n!`개라면 결정 트리의 높이는 ![image](https://user-images.githubusercontent.com/64796257/150618863-2b7d0666-151e-4894-b224-1c74350c09cc.png)이 된다.
 
 앞서 언급했듯이 `트리의 높이`에 따라서 자료의 최악의 경우의 비교횟수가 결정된다고 했다. 
 
