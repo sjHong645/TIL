@@ -20,9 +20,9 @@
 
 ### [Chapter 09 정규화](/CS/DataBase/chapter9.md)
 
-### [Chapter 10 회복과 병행 제어](/CS/DataBase/chapter10-PART1.md)
+### [Chapter 10 회복과 병행 제어 PART 1](/CS/DataBase/chapter10-PART1.md)
 
-### [Chapter 10 회복과 병행 제어](/CS/DataBase/chapter10-PART2.md)
+### [Chapter 10 회복과 병행 제어 PART 2](/CS/DataBase/chapter10-PART2.md)
 
 ### [Chapter 11 보안과 권한 관리](/CS/DataBase/chapter11.md)
 
