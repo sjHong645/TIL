@@ -89,23 +89,143 @@ def union(u, v) :
 
 ex) S_u : u라는 원소가 포함된 집합 
 
-S_u와 S_v를 union하는 상황.  
+S_u와 S_v를 union하는 상황. 이 상황은 아래와 같이 2가지 경우로 나눌 수 있다. 
 
+1) S_v의 루트 노드를 S_u의 루트 노드가 가리키는 상황
 
+![image](https://user-images.githubusercontent.com/64796257/192262922-9116a838-c7a0-4809-a0d5-683e63117e68.png)
 
+2) S_u의 루트 노드를 S_v의 루트 노드가 가리키는 상황
 
+![image](https://user-images.githubusercontent.com/64796257/192262935-f65f486e-e021-434b-b60f-216de2af5a75.png)
 
+1)의 상황과 같이 `높이가 작은 트리`에 `높이가 큰 트리`를 합치게 되면 높이가 증가한다. 
 
+반면, 2)의 상황과 같이 `높이가 큰 트리`에 `높이가 작은 트리`를 합치게 되면 높이가 크게 늘어나지 않는 걸 확인할 수 있다. 
 
+그렇다고 매번 union 할 때마다 트리의 높이를 측정하는 건 비효율적이기 때문에 각각의 노드에 `rank`를 저장하도록 했다. 
 
+```
+노드 u의 rank = 노드 u가 갖고 있는 서브트리의 높이값 
+```
 
+이를 통해 psuedo-code를 작성하면 아래와 같다. 
 
+```
 
+// u_r = u 노드를 갖고 있는 집합의 루트 노드
+// v_r = v 노드를 갖고 있는 집합의 루트 노드
 
+def union(u, v) : 
+  u_r <- find-set(u) 
+  v_r <- find-set(v) 
+  
+  if(rank[u_r] > rank[v_r]) # u노드 트리가 v노드 트리보다 높이가 크다
+    p[v_r] <- u_r # 그래서 v노드 트리가 u 노드 트리를 가리키도록 한다. 
+  
+  else :
+    p[u_r] <- v_r # 그렇지 않으면 반대로 설정 
+    
+    # 두 노드 트리의 높이가 똑같다면 
+    # u또는 v를 가지고 있는 트리에 붙이면서 높이가 1 증가한다. 
+    if(rank[u_r] == rank[v_r]) rank[v_r] <- rank[v_r] + 1 
+  
+```
 
+예시 
 
+![image](https://user-images.githubusercontent.com/64796257/192264112-1e502f7c-71f3-4722-9566-8fab67b8e5af.png)
 
+### 2. Path Compression 
 
+union-by-rank 방식을 봤을 때... `트리의 높이`가 `동일`하다면 전체 트리의 높이가 늘어날 수 있다. 
+
+이 경우에 대해서도 트리의 높이를 최대한 줄일 수 있는 방법이 `Path Compression`이다. 
+
+이전에 `find-set`을 하기 위해서는 해당 노드로부터 시작해서 하나씩 올라가면서 `search` 했어야 했는데  
+여기서는 곧바로 `root node`를 찾도록 코드를 작성할 것이다. 
+
+그렇게 되면 아래와 같이 루트 노드를 찾을 수 있다. 
+
+![image](https://user-images.githubusercontent.com/64796257/192264953-0a7d9660-9b8d-4167-b282-434f9ad672d5.png)
+
+어떻게 이게 가능한지 살펴보자. 
+
+- 이전에 짰던 find-set 함수  
+``` 
+def find-set(u) : 
+  if u is p[u] : 
+      return u
+  else : 
+      return find-set(p[u]) 
+```
+
+u가 root node라면 u를 반환하고 / 아니면 위로 한 칸 올라가서 해당 노드가 root-node인지 파악하는 방식 
+
+⇒ 즉, 1칸, 1칸 올라가면서 root node인지 파악하는 방식으로 동작한다. 
+
+- path compression 방식 
+
+``` 
+def find-set(u) : 
+    if(p[u] != u) : 
+        p[u] <- find-set(p[u]) 
+    
+    return p[u] 
+```
+
+구체적인 동작 방식은 아래와 같다. 
+
+![image](https://user-images.githubusercontent.com/64796257/192265891-93db8537-e16b-4fc2-8aea-ac6a63becc52.png)
+
+### 복잡도 
+
+#### 1. union-by-rank를 사용할 때, root 노드의 rank값 = k ⇒ 트리의 총 노드 개수는 최소 2^k개다. 
+
+- 증명 
+
+1) rank = 0 ⇒ 2^0 = 1개의 노드만 있는 트리가 생성됨
+2) rank = r ⇒ `2^r개의 노드`를 가진다고 가정 
+
+그때 rank값이 r+1이 될 때 노드의 개수가 최소 `2^(r+1)개`가 되는지 확인하자.
+
+`rank값이 1 증가`할 때는 `똑같은 rank의 두 트리`가 `합`쳐질 때다. 
+
+방금 전 가정에서 rank = r ⇒ `2^r개의 노드`라고 했다. 
+
+따라서, rank = r+1일 때의 노드 개수는 rank = r인 트리 2개를 합치면 된다.   
+즉, 2^r + 2^r = 2^(r+1)이 되면서 1번 정리는 성립한다는 걸 알 수 있다. 
+
+#### 2. union-by-rank를 사용할 때, 집합의 노드 개수 = n개 ⇒ 집합의 root node의 rank = O(logn)이 된다. 
+
+1번 정리에서 `root 노드의 rank값 = k ⇒ 트리의 총 노드 개수는 최소 2^k개`라고 했다. 
+
+여기서 `2^k`은 `노드의 총 개수`의 `최소값`이기 때문에 `n ≥ 2^k` 라는 부등식을 만들 수 있다. 
+
+따라서, `n ≥ 2^k` ⇒ `log₂n ≥ k`가 성립하므로 root node의 rank는 `O(logn)`이 된다.
+
+그래서, find-set, union 각각의 시간복잡도는 `높이`와 비례하기 때문에 `Θ(logn)`이 된다. 
+
+#### 3. Path Compression 
+
+앞서 make-set, find-set, union으로 이뤄진 `m개의 연산`을 하고 make-set은 `n번` 연산할 때 시간복잡도는 `O(mlog* n)`이 된다. 
+
+- log* n의 뜻 
+
+![image](https://user-images.githubusercontent.com/64796257/192268219-023ddc11-2117-4a01-8a07-e723c572c795.png)
+
+`log* n`은 n의 값을 굉장히 작게 만들어주기 때문에 무시해도 무방하다. 그래서 `O(m)`이라 해도 된다. 
+
+## Union-find를 이용해서 Cycle 찾기 
+
+ex) `3번 노드 -> 2번 노드` 방향으로 연결하는 상황  
+![image](https://user-images.githubusercontent.com/64796257/192268719-9eeabeab-b127-4c2d-9dfa-e288f8982119.png)
+
+연결하기 전에 두 노드의 `root node`를 비교한다. 
+
+두 노드는 애초에 같은 집합에 있던 노드이기 때문에 두 노드의 root node는 `0번 노드`로 동일하다. 
+
+이를 통해서 두 노드를 연결하게 되면 `cycle`이 생긴다는 걸 파악할 수 있다. 
 
 
 
