@@ -1,3 +1,5 @@
+# [LeetCode](https://leetcode.com/problemset/all/)의 1900여 개의 Easy(595개) + Medium(1292개)를 정복한다
+
 # Tips
 
 ## 1. Scanner 클래스는 import java.util.Scanner 를 해줘야 한다.
