@@ -44,7 +44,7 @@ def make-set(u) :
 ```
 
 
-- find-set(u) : `u라는 원소를 포함`하는 있는 `root node값`을 return 
+- find-set(u) : `u라는 원소를 포함`하는 있는 `root node값`을 return  
 ⇒ root node를 반환하는 이유는 `root node`가 `집합을 대표`하는 노드이기 때문이다.  
 ⇒ 함수의 동작을 보면 `아래`에서부터 `위`로 `한칸` 씩 올라가면서 `원하는 값`이 있는지 찾는다.  
 ⇒ `원하는 값`을 찾는다면 `해당 값의 root node` 값을 반환한다. 
@@ -91,11 +91,11 @@ ex) S_u : u라는 원소가 포함된 집합
 
 S_u와 S_v를 union하는 상황. 이 상황은 아래와 같이 2가지 경우로 나눌 수 있다. 
 
-1) S_v의 루트 노드를 S_u의 루트 노드가 가리키는 상황
+1) S_v의 루트 노드가 S_u의 루트 노드를 가리키는 상황
 
 ![image](https://user-images.githubusercontent.com/64796257/192262922-9116a838-c7a0-4809-a0d5-683e63117e68.png)
 
-2) S_u의 루트 노드를 S_v의 루트 노드가 가리키는 상황
+2) S_u의 루트 노드가 S_v의 루트 노드를 가리키는 상황
 
 ![image](https://user-images.githubusercontent.com/64796257/192262935-f65f486e-e021-434b-b60f-216de2af5a75.png)
 
