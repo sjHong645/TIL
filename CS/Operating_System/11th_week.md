@@ -75,6 +75,10 @@ ex) `turn`의 값은 `0`으로 초기화.
 
 ![image](https://user-images.githubusercontent.com/64796257/147862190-6913c48a-b7cf-4b64-8906-b87b4732efa4.png)
 
+여기서 헷갈리지 말아야 하는 건 `critical section`이 while문 안에 있는 부분이 아니라는 점이다. 
+
+때문에 `while문` 안에 있는 조건문이 `true`라면 `while문`에서 계속 대기하면서 `critical section`에 진입하지 못하는 상황이 발생한다.
+
 `flag`라는 `boolean 배열`을 만들어서 flag[0] = flag[1] = False를 초기값으로 가지도록 했다.
 
 1) `flag[0] = true`라면 `P1`은 `c.s를 수행`할 수 `없고` 
