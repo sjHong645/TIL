@@ -36,8 +36,12 @@
 ![image](https://user-images.githubusercontent.com/64796257/150926691-f79b8869-45d9-45d9-8da3-389af30819a0.png)
 ![image](https://user-images.githubusercontent.com/64796257/150926700-132ad181-03ec-405e-8d5b-dca2aec5179b.png)
 
-이때, `in-coming edges`가 `없는` 노드인 `냄비에 물 붓기라는 노드`는 `다른 노드들` 보다 `선행된 노드`여야 한다.
-⇒ 이 개념이 `Kahn alogrithm`의 본질이다.
+이때, `in-coming edges`가 `없는` 노드인 `냄비에 물 붓기라는 노드`는 `다른 노드들` 보다 `선행된 노드`여야 한다.  
+⇒ 이 개념이 `Kahn alogrithm`의 본질이다.  
+1) `in-coming edge`가 없는 노드를 찾아서 `큐`에 넣는다.
+2) 그 노드의 `out-going edges`를 `제거`한다.
+3) 이 과정을 반복한다. 
+4) 모든 노드를 `큐`에 넣었다면 원소들을 꺼낸다.
 
 ![image](https://user-images.githubusercontent.com/64796257/150926825-fcad9f31-91bb-4fac-a5c7-37f83ac4ac43.png)
 
