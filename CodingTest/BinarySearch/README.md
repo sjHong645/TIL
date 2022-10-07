@@ -15,25 +15,29 @@ target > A[mid] 라면 target값은 mid + 1 ~ last 사이에 있다는 것을 �
 ``` java
 boolean BSearch(int A[], int len, int target) {
 		
-		int first = 0; 
-		int last = len - 1;
-		int mid;
+	int first = 0; 
+	int last = len - 1;
+	int mid;
 		
-		while(first <= last) {			
-			mid = (first + last) / 2;
-      
-			if(target == A[mid]) return true;
+	while(first <= last) {			
+		// mid = (first + last) / 2;
+		// 주석처리된 코드를 적용한다면 start와 last가 굉장히 큰 숫자가 되었을 때
+		// overflow를 발생시킬 수 있다. 
+		
+      		mid = first + (last - first) / 2; 
 			
-			else {
+		if(target == A[mid]) return true;
+			
+		else {
 				
-				if(target < A[mid]) last = mid - 1;
+			if(target < A[mid]) last = mid - 1;
 				
-				else first = mid + 1;
+			else first = mid + 1;
 				
-			}
 		}
+	}
 		
-		return false;
+	return false;
 
 	}
 
