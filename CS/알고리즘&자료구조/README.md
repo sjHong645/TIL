@@ -70,5 +70,5 @@
 - Dijkstra's Algorithm(다익스트라 알고리즘)
 - Bellman-Ford Algorithm
 
-## [A* 알고리즘](./A*.md)
+## [A* 알고리즘](./A_star.md)
 
