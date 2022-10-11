@@ -2,6 +2,8 @@
 
 [출처2](https://tecoble.techcourse.co.kr/post/2021-05-22-cookie-session-jwt/)
 
+[출처3](https://www.geeksforgeeks.org/difference-between-session-and-cookies/)
+
 ## Authentication(인증) vs Authorization(권한 부여) 
 
 - Authentication : 웹 사이트에서 `로그인`하는 동작
@@ -9,9 +11,10 @@
 
 모든 요청마다 로그인을 요구할 수는 없기에 `로그인 상태`를 유지할 수 있어야 하는데 이때 사용하는 기술이 `세션`, `JWT`이다. 
 
-## 세션(Session) 
+## 세션(Session) & 쿠키 
 
-: `브라우저`와 `웹 서버`가 연결되어 `브라우저가 종료`될 때까지의 시점  
+- 세션 : `서버` 쪽에서 저장되는 사용자 정보  
+- 쿠키 : `클라이언트` 쪽에서 저장되는 사용자 정보 
 
 브라우저를 통해 서버에 접속한다.  
 이때, 클라이언트의 HTTP 요청할 때 `쿠키`에 `세션 id`가 없다면 아래와 같은 과정을 거친다.  
@@ -21,14 +24,25 @@
 
 ⇒ 이 기술을 `세션 기반 인증방식` 보통 `세션`이라 한다. 
 
-![image](https://user-images.githubusercontent.com/64796257/194986360-0f7f529a-f77e-4066-852d-755dce8c99a6.png)
+![image](https://user-images.githubusercontent.com/64796257/194996757-c39093ac-dd8b-41cd-b36d-7c03749e0a15.png)
 
-### 세션 & 쿠키 
+1번의 `HTTP Request`를 `로그인`으로 볼 수 있다.  
+쿠키가 없는 상태에서 처음 로그인을 했을 때의 정보가 Server의 `세션`으로 저장된다. 
+
+2번 : 그럼 그 세션의 id를 담은 `쿠키`를 브라우저에게 전달 
+
+3번 : 쿠키가 있는 상태에서 `HTTP 요청`을 한다는 건 `로그인`을 한 상황에서 `HTTP 요청`하는 것이다. 
+
+4번 : 서버에서는 전달받은 `쿠키`를 통해 `클라이언트`가 로그인되었다는 걸 식별한다.   
+      이때, 전달받은 쿠키의 session 정보와 DB에 저장된 session 정보를 비교하면서 식별한다. 그리고 요청에 따라 응답해준다. 
+
+### 특징
 
 | 특징 | 세션 | 쿠키 | 
 | --- | --- | --- | 
 | 만료시점 | 대부분 브라우저 종료시 | 영구 쿠키, 세션 쿠키에 따라 다름 | 
 | 저장 위치 | 서버 | 클라이언트 | 
+| 저장량 | 적음 | 많이 저장할 수 있음 |
 
 서로 반대되는 개념이 아니다.  
 - `세션 id`를 `쿠키`에 담아서 통신하기 때문에 세션은 쿠키를 사용하는 방식이라 볼 수 있다. 
@@ -93,7 +107,7 @@ header, payload는 인코딩된 값이라 복호화 및 조작이 가능하지�
 - `클라이언트`에서는... 해당 웹사이트에 요청할 때마다 `JWT`를 서버에게 같이 보여주면서 `권한을 확인`받는다.  
 - `서버`에서는... `JWT`만 확인해서 `Authorization`이 이뤄지기 때문에 세션 DB에 저장할 필요가 없다.
 
-![image](https://user-images.githubusercontent.com/64796257/194986603-e12b7111-35c3-4588-a703-abb80d5c71e1.png)
+![image](https://user-images.githubusercontent.com/64796257/194998438-8a294abf-b966-4869-b68f-dd6c80eb46af.png)
 
 ### 저장위치 
 
