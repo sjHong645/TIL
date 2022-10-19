@@ -76,7 +76,7 @@ Hint : 입력한 집합 S = {1, 2, 3, 4, 5}이고 t = 12라고 할 때 힌트가
 이는 어떤 의미가 있냐면
 
 `A`라는 문제가 `practical time에 해결`할 수 있는 문제라고 하자.  
-이때, `문제 B에 대한 입력 instance`를 `A의 input`으로 `poly-time reduction`을 했다.
+이때, `문제 B에 대한 입력 instance`를 `A의 instance`로 `poly-time reduction`을 했다.
 
 ⇒ 그러면 `B의 instance`를 `A의 instance`로 `변환`시키고 해당 instance는 `A라는 문제를 통해서 해답`이 나온다.  
 ⇒ 이를 통해 `문제 B`를 `손쉽게 해결할 수 있게 된다`는 측면에서 의의를 가진다.
@@ -108,12 +108,12 @@ TSP(Traveling Salesman Problem) : 가중치가 있는 완전 그래프에서 최
 
 ### NP-Complete 
 - NP-Hard 
-: 문제 A에 대한 `NP-Hard`는 다음과 같이 정의한다.  
-  `NP 문제`가 `문제 A로 poly-time reduction`이 되는 모든 문제를 `문제 A에 대한 NP-Hard`라고 한다.
+: `문제 A가 NP-Hard다`는 다음과 같이 정의된다.  
+  `임의의 NP 문제`가 `문제 A로 poly-time reduction` 될 때 `문제 A`를 `NP-Hard`라고 한다. 
 
 수식으로 표현하면 ![image](https://user-images.githubusercontent.com/64796257/150670025-5f517728-0028-4e30-84a8-626c4fbec88d.png) 
  
-수식을 있는 그대로 해석하면 `NP 문제인 L`을 `poly-time` 내에 `A`로 `reduction`할 수 있을 때 `문제 L`을 `A에 대한 NP-Hard 문제`라 한다.
+수식을 있는 그대로 해석하면 `NP 문제인 L`을 `poly-time` 내에 `A`로 `reduction`할 수 있을 때 `문제 A`을 `NP-Hard 문제`라 한다.
 
 - NP-Complete 
 : 문제 A에 대해서 `해당 문제가 A가 NP`이고 `NP-Hard`일 때 문제 A를 `NP-Complete`라고 한다.
