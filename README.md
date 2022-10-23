@@ -1,38 +1,24 @@
 # TIL
-### 교재
-- 네트워크 : [그림으로 배우는 HTTP & Network Basic](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=51908132)
-- 데이터베이스 : [SQL 첫 걸음](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=69025381) + [데이터베이스 개론](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=177462276)
-- JSP : [최범균의 JSP 2.3 웹 프로그래밍 : 기초부터 중급까지](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=70129886)
-- 스프링(Spring) : [스프링 부트와 AWS로 혼자 구현하는 웹 서비스](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=218568947)
-
-- 정보처리기사 : ~~[2022 시나공 정보처리기사 필기](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=281396175)~~ ~~[2022 시나공 정보처리기사 실기](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=289139285)~~ ⇒ **합격**
-
 ### CS
 
-- DataBase(데이터베이스)
+- [DataBase](https://github.com/sponbob-pat/TIL/tree/main/CS/DataBase)  
+   - 교재 : [데이터베이스 개론](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=287562252)
 
-- Network(네트워크)
+- [Network](https://github.com/sponbob-pat/TIL/tree/main/CS/Network)
 
-- Operating System(운영체제)
+- [Operating System](https://github.com/sponbob-pat/TIL/tree/main/CS/Operating_System)
 
-- 알고리즘 & 자료구조
+- [알고리즘 & 자료구조](https://github.com/sponbob-pat/TIL/tree/main/CS/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%26%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0)  
+   - 교재 : [쉽게 배우는 알고리즘](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=131688391), [윤성우의 열혈 자료구조](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=14783463)
 
-### CodingTest
-
-### JSP
-
-- 톰캣 실행(내 컴퓨터 기준) : C:\apache-tomcat-8.5.73\bin\startup 실행해주면 됨
-
-- JSP 파일 : C:\apache-tomcat-8.5.73\webapps 에 있음
+### [코딩테스트](https://github.com/sponbob-pat/TIL/tree/main/CodingTest)
 
 ### Spring 
 
-[진행 중인 프로젝트](https://github.com/sponbob-pat/freelec-springboot2-webservice)
+- 교재 : [
+스프링 부트와 AWS로 혼자 구현하는 웹 서비스](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=218568947)
 
-[교재](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=218568947)
+[연습 프로젝트](https://github.com/sponbob-pat/freelec-springboot2-webservice)
 
-### AWS 
-
-[교재](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=180114055)
-
+[게시판 프로젝트](https://github.com/sponbob-pat/board)
    
