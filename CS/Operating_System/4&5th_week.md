@@ -49,7 +49,9 @@ ex. `공평성`을 높인다면 그만큼 `성능`이 저하될 수 있다.
 
 ⇒ 보통 대규모의 작업을 할 때 각각의 역할 분담을 Layering 해서 서로의 역할을 나눠서 개발함과 동시에 각각의 Layer에서 Modularity를 진행함으로써 OS의 복잡도를 낮춘다. 
 
-### System call(시스템 콜) : 시스템 호출. 즉, OS를 호출하는 걸 말한다.
+### System call(시스템 콜)
+
+시스템 호출. 즉, OS를 호출하는 걸 말한다.
 
 시스템 콜을 이용하는 이유는 user mode에서 동작할 수 없고 kernel mode에서만 실행할 수 있는 프로그램을 실행하기 위해서다.  
 (ex. Privileged instruction)
