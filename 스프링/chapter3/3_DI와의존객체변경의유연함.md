@@ -100,7 +100,8 @@ MemberRegisterService regSvc = new MemberRegisterService(memberDao);
 ChangePasswordService pwdSvc = new ChangePasswordService(memberDao); 
 ```
 
-이제 `CachedMemberDao`를 사용하도록 수정하자. 한 곳만 수정하면 된다. 
+이제 `CachedMemberDao`를 사용하도록 수정하자. 한 곳만 수정하면 된다.  
+아래와 같이 `MemberDao 객체를 생성`하는 코드만 변경하면 된다. 
 
 ``` java
 // MemberDao memberDao = new MemberDao(); 
