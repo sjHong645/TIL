@@ -29,11 +29,10 @@ import spring.VersionPrinter;
 @Configuration
 public class AppCtx {
 
-
-  // @Bean 어노테이션은 해당 메소드가 생성한 객체를 스프링 빈이라 설정한다. 
-	// 여기서는 3개의 메서드에서 1개의 bean 객체를 생성한다.
-  // 이때, 메서드의 이름을 bean 객체의 이름으로 사용한다.
-	// memberDao() 메서드를 이용해서 생성한 빈 객체는 "memberDao"라는 이름으로 스프링에 등록된다.
+  	// @Bean 어노테이션은 해당 메소드가 생성한 객체를 스프링 빈이라 설정한다. 
+	// 여기서는 3개의 메서드에서 각각 1개의 bean 객체를 생성한다.
+  	// 이때, 메서드의 이름을 bean 객체의 이름으로 사용한다.
+	// ex) memberDao() 메서드를 이용해서 생성한 빈 객체는 "memberDao"라는 이름으로 스프링에 등록된다.
 	@Bean
 	public MemberDao memberDao() {
 		return new MemberDao();
@@ -41,11 +40,17 @@ public class AppCtx {
 	
 	@Bean
 	public MemberRegisterService memberRegSvc() {
-		return new MemberRegisterService(memberDao());
+	
+		// memberDao() 메소드를 호출함
+		// memberDao() 가 생성한 객체를 MemberRegisterService 생성자를 통해 주입함
+		return new MemberRegisterService(memberDao()); 
 	}
 	
 	@Bean
 	public ChangePasswordService changePwdSvc() {
+		
+		// memberDao() 메소드를 호출함
+		// memberDao() 가 생성한 객체를 ChangePasswordService의 setter를 통해 주입함
 		ChangePasswordService pwdSvc = new ChangePasswordService();
 		pwdSvc.setMemberDao(memberDao());
 		return pwdSvc;
