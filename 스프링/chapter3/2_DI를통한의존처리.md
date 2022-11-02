@@ -27,4 +27,4 @@ MemberDao dao = new MemberDao();
 MemberRegisterService svc = new MemberRegisterService(dao); 
 ```
 
-그런데 이렇게까지 코드를 길게 써가면서 `의존 주입`을 하는 이유는 뭘까? 바료 `변경의 유연함` 때문이다. 
+그런데 이렇게까지 코드를 길게 써가면서 `의존 주입`을 하는 이유는 뭘까? 바로 `변경의 유연함` 때문이다. 
