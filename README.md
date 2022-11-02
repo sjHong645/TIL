@@ -14,8 +14,8 @@
 ### [코딩테스트](https://github.com/sponbob-pat/TIL/tree/main/CodingTest)
 
 ### Spring 
-
-- 교재 : [
+- Spring 이론 교재 : [초보 웹 개발자를 위한 스프링5 프로그래밍 입문](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=157472828) 
+- 프로젝트 교재 : [
 스프링 부트와 AWS로 혼자 구현하는 웹 서비스](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=218568947)
 
 [연습 프로젝트](https://github.com/sponbob-pat/freelec-springboot2-webservice)
