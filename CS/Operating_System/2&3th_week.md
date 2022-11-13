@@ -197,7 +197,7 @@ cf) SSD(Solid-State Drive) : 반도체를 이용해서 정보를 저장하는 �
 
 해당 app은 privileged 명령어에 접근할 권한이 없기 때문에 이 사실을 CPU가 OS에게 알리기 위해서 `user mode`를 `kernel mode`로 바꾸고 나서 OS에게 해당 사실을 알려준다.
 
-### CPU의 이벤트 처리 기법 = `Interrupt` : CPU가 동작하는 동안 CPU에게 전달되는 전기 신호 
+### CPU의 이벤트 처리 기법 = `Interrupt` : HW 또는 SW가 동작하는 동안 CPU에게 전달되는 전기 신호 
 
 1) HW Interrupt : `비동기적 이벤트`를 처리하기 위한 기법 (비동기적 이벤트 : 현재 작업과는 무관하게 외부에서 발생하는 이벤트)
 
