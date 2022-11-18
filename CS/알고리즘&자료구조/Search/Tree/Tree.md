@@ -266,16 +266,13 @@ private void preOrder(BinaryNode node) {
 	}
  ```
 
-- 레벨 순회 : 레벨(Level) 순서로 노드 방문 - 수정해야 함.
+- 레벨 순회 : 레벨(Level) 순서로 노드 
 
 ![image](https://user-images.githubusercontent.com/64796257/150249086-a7569742-547c-46bf-bc35-9e25abe5cd5e.png)
 
 Root를 시작점으로 해서 BFS를 하면 된다. (앞서 배운 큐를 이용하자)
 
-![image](https://user-images.githubusercontent.com/64796257/150249194-7abc465e-24d8-4bda-a15d-686c91dc11d9.png)
-![image](https://user-images.githubusercontent.com/64796257/150249217-1a8d58e6-7195-4ff5-9bb5-934b559b40da.png)
-
-Q.pop()을 하고 나서 cout << cur_node->getData() << “ ”; 을 통해서 출력하고자 하는 노드의 데이터를 출력한다.
+[관련 내용](https://github.com/sponbob-pat/TIL/blob/main/CodingTest/11LeetCode%EB%AC%B8%EC%A0%9C/Easy/2Group/111.MinimumDepthofBT.md)
 
 노드를 출력한다는 것 빼고는 BFS와 동일하다.
 
