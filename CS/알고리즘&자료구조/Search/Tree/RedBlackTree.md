@@ -224,6 +224,8 @@ d가 `빨간색`이어서 4번째 레드 블랙 특성인
 
 그렇게 하고 나서 p와 s의 색깔을 바꿔주고 빨간색이었던 r은 검정색으로 바꾼다.
 
+c의 부모 노드에 `검정 노드`가 추가되어도 상관 없는 이유 : [출처](https://ko.wikipedia.org/wiki/%EB%A0%88%EB%93%9C-%EB%B8%94%EB%9E%99_%ED%8A%B8%EB%A6%AC) 에서 삭제 case6
+
 ##### case 1-3) & 2-3) p의 색깔에 상관없이 `<l, r> = <R. B>` // `<s, l, r> = <B, R, B>`
 
 ![image](https://user-images.githubusercontent.com/64796257/150347079-bb1b351c-3780-41d0-94d4-a4d8dba0247e.png)
