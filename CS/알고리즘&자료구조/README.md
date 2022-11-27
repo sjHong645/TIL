@@ -46,8 +46,11 @@
 #### [그래프 개념 및 구현](./Graph/그래프개념&구현.md)  
 #### [Union-Find](./Graph/UnionFind.md)
 #### [DFS와 BFS](./Graph/DFS&BFS.md)
-#### [MST - 최소 신장 트리](./Graph/MST.md)
+#### [MST - 최소 신장 트리](./Graph/MST.md)  
+- kruskal 알고리즘
+- prim 알고리즘 
 #### [Toplogical - 위상 정렬](./Graph/Topological.md)
+- khan 알고리즘
 
 ## [동적 프로그래밍 - DP](./DynamicProgramming.md)
 - 개념 및 방법
