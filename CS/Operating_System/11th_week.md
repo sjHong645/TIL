@@ -475,7 +475,7 @@ wait(mutex) ~ signal(mutex) : 이 사이에 있는 일련의 코드들이 atomic
 ![image](https://user-images.githubusercontent.com/64796257/147863043-4290cb13-17a3-4872-a120-fcfdbe45c811.png)
 
 ```
-rmutext, wmutex, wrt, read = 1
+rmutex, wmutex, wrt, read = 1
 
 readcount, writecount = 0
 ```
