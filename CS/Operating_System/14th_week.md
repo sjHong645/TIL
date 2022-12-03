@@ -179,7 +179,7 @@ reference string을 하나씩 순회하고 있고 해당 자료구조를 계속 
 - Allocation of Frame
 
 10개의 프로세스가 있고 50개의 frame이 있다고 하자.  
-1) fixed allocation : 각각의 프레임에게 똑같은 프레임을 할당한다.
+1) fixed allocation : 각각의 프로세스에게 똑같은 프레임을 할당한다.
 2) priority allocation : 프로세스마다 중요도가 있다면 중요도가 높은 프로세스에게 더 많은 프레임을 할당한다.
 
 ⇒ 이러한 부분들은 정책적이다. 
