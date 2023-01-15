@@ -1,0 +1,12 @@
+- 배열 
+  - [i번째 값을 i+1번째 이후의 값 중 최댓값으로 대체하기](/CodingTest/11LeetCode문제/Easy/8Group/1299.ReplaceElements.md)
+  - [배열의 값들을 순위 값으로 바꾸기](/CodingTest/11LeetCode문제/Easy/8Group/1331.RankTransform.md)
+  - [Check If N and Its Double Exist](/CodingTest/11LeetCode문제/Easy/8Group/1346.CheckifN.md)
+  - [증가하는 배열에 빠진 값 찾기](/CodingTest/11LeetCode문제/Easy/8Group/1539.KthMissing.md)
+  - [Special Array With X Elements Greater Than or Equal X](/CodingTest/11LeetCode문제/Easy/8Group/1608.SpecialArray.md)
+
+- [알파벳을 숫자로 매핑하기](/CodingTest/11LeetCode문제/Easy/8Group/1309.DecryptString.md)
+- [1비트의 개수로 정렬하기](/CodingTest/11LeetCode문제/Easy/8Group/1356.Sort1Bits.md)
+- [i번째 물건을 살 때 j번째 가격과 동일하게 받기](/CodingTest/11LeetCode문제/Easy/8Group/1475.FinalPrice.md)
+- [Map의 value를 기준으로 정렬하기](/CodingTest/11LeetCode문제/Easy/8Group/1636.SortArray.md)
+- [조합](/CodingTest/11LeetCode문제/Easy/8Group/1863.SumOfAll.md)
